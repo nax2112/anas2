@@ -1,0 +1,881 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>أعمال أنس</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Tajawal:wght@300;400;500;700;900&display=swap');
+        
+        :root {
+            --primary: #3b82f6;
+            --secondary: #8b5cf6;
+            --accent: #ec4899;
+        }
+        
+        body {
+            font-family: 'Tajawal', sans-serif;
+            background-color: #0f172a;
+            color: #e2e8f0;
+            scroll-behavior: smooth;
+        }
+        
+        .gradient-text {
+            background: linear-gradient(90deg, var(--primary), var(--secondary), var(--accent));
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+        }
+        
+        .project-card {
+            transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            perspective: 1000px;
+            overflow: hidden;
+        }
+        
+        .project-card:hover {
+            transform: translateY(-8px) scale(1.02);
+            box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.3);
+        }
+        
+        .project-card:hover .project-image {
+            transform: scale(1.05);
+        }
+        
+        .project-image-container {
+            position: relative;
+            overflow: hidden;
+            height: 64;
+        }
+        
+        .project-image {
+            transition: transform 0.5s ease;
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+        
+        .view-details-btn {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%) scale(0.8);
+            opacity: 0;
+            background: rgba(30, 41, 59, 0.9);
+            color: white;
+            padding: 12px 24px;
+            border-radius: 9999px;
+            font-weight: 500;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            z-index: 10;
+        }
+        
+        .project-image-container:hover .view-details-btn {
+            opacity: 1;
+            transform: translate(-50%, -50%) scale(1);
+        }
+        
+        .project-image-container::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.4);
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
+        
+        .project-image-container:hover::after {
+            opacity: 1;
+        }
+        
+        .filter-btn {
+            transition: all 0.3s ease;
+        }
+        
+        .filter-btn.active {
+            background: linear-gradient(90deg, var(--primary), var(--secondary));
+            color: white;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.2);
+        }
+        
+        .project-modal {
+            opacity: 0;
+            visibility: hidden;
+            transition: all 0.3s ease;
+            z-index: 1000;
+        }
+        
+        .project-modal.active {
+            opacity: 1;
+            visibility: visible;
+        }
+        
+        .project-modal-content {
+            transform: scale(0.9);
+            transition: all 0.3s ease;
+            max-height: 90vh;
+            overflow-y: auto;
+        }
+        
+        .project-modal.active .project-modal-content {
+            transform: scale(1);
+        }
+        
+        /* Custom scrollbar */
+        ::-webkit-scrollbar {
+            width: 8px;
+        }
+        
+        ::-webkit-scrollbar-track {
+            background: #1e293b;
+        }
+        
+        ::-webkit-scrollbar-thumb {
+            background: linear-gradient(var(--primary), var(--secondary));
+            border-radius: 4px;
+        }
+        
+        /* زر العودة */
+        .back-btn {
+            position: fixed;
+            top: 70px;
+            left: 20px;
+            z-index: 70;
+            background: rgba(30, 41, 59, 0.8);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 20px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.2);
+        }
+        
+        .back-btn:hover {
+            background: rgba(140, 59, 246, 0.8);
+            transform: translateX(8px);
+        }
+
+        /* تحكم بحجم النص والمسافة لكلمة معرض أعمالي */
+        .custom-title {
+            font-size: var(--title-size);
+            margin-bottom: var(--title-margin-bottom);
+            display: inline-block;
+        }
+        @media (min-width: 768px) {
+            .custom-title {
+                font-size: calc(var(--title-size) * 2);
+            }
+        }
+    </style>
+</head>
+<body class="bg-slate-900 text-slate-200">
+    <!-- زر العودة -->
+    <a href="index.html" class="back-btn">
+        <i class="fas fa-arrow-left"></i>
+    </a>
+
+    <!-- Minimal Header -->
+    <header class="fixed w-full bg-slate-900/90 backdrop-blur-sm z-50 border-b border-slate-800/50">
+        <div class="container mx-auto px-6 py-4">
+            <a href="#" class="text-2xl font-bold flex items-center">
+                <div class="w-8 h-8 rounded-full bg-gradient-to-r from-blue-500 to-purple-600 mr-3"></div>
+                <span class="gradient-text">معرض أنس</span>
+            </a>
+        </div>
+    </header>
+
+    <!-- Portfolio Section -->
+    <main class="pt-80 pb-10">
+        <div class="container mx-auto px-6">
+            <div class="text-center mb-16">
+                <h1 class="text-4xl md:text-5xl font-bold mb-4 gradient-text">
+                    <span class="custom-title" style="--title-size: 2.25rem; --title-margin-bottom: 1rem;">معرض أعمالي</span>
+                </h1>
+                <p class="text-slate-400 max-w-2xl mx-auto leading-relaxed">
+                    مجموعة مختارة من أحدث مشاريعي في مختلف المجالات
+                </p>
+            </div>
+            
+            <!-- Filter Buttons -->
+            <div class="flex flex-wrap justify-center gap-3 mb-12">
+                <button class="filter-btn active px-4 py-2 rounded-full bg-slate-800 text-slate-300 hover:text-white" data-filter="all">الكل</button>
+                <button class="filter-btn px-4 py-2 rounded-full bg-slate-800 text-slate-300 hover:text-white" data-filter="web">مواقع الويب</button>
+                <button class="filter-btn px-4 py-2 rounded-full bg-slate-800 text-slate-300 hover:text-white" data-filter="app">تطبيقات الجوال</button>
+                <button class="filter-btn px=4 py-2 rounded-full bg-slate-800 text-slate-300 hover:text-white" data-filter="branding">الهوية البصرية</button>
+            </div>
+            
+            <!-- Portfolio Grid -->
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                <!-- Project 1 -->
+                <div class="project-card rounded-xl overflow-hidden bg-slate-800" data-category="web">
+                    <div class="project-image-container relative h-64">
+                        <img src="imges\anas1.png" alt="Web Design Project" class="project-image">
+                        <button class="view-details-btn" data-project="1">
+                            عرض التفاصيل <i class="fas fa-arrow-left ml-2"></i>
+                        </button>
+                        <div class="absolute inset-0 bg-gradient-to-t from-black/80 to-transparent flex flex-col justify-end p-6">
+                            <span class="bg-blue-500 text-white text-xs px=3 py-1 rounded-full mb-2 self-start">موقع ويب</span>
+                            <h3 class="text-xl font-bold text-white">موقع شركة تقنية</h3>
+                        </div>
+                    </div>
+                    <div class="p-6">
+                        <p class="text-slate-400 mb-4">تصميم وتطوير موقع شركة تقنية متخصصة في حلول الأعمال</p>
+                    </div>
+                </div>
+                
+                <!-- Project 2 -->
+                <div class="project-card rounded-xl overflow-hidden bg-slate-800" data-category="app">
+                    <div class="project-image-container relative h-64">
+                        <img src="imges\anas1.png" alt="Mobile App Project" class="project-image">
+                        <button class="view-details-btn" data-project="2">
+                            عرض التفاصيل <i class="fas fa-arrow-left ml=2"></i>
+                        </button>
+                        <div class="absolute inset-0 bg-gradient-to-t from-black/80 to-transparent flex flex-col justify-end p=6">
+                            <span class="bg-purple-500 text-white text-xs px=3 py-1 rounded-full mb=2 self-start">تطبيق جوال</span>
+                            <h3 class="text-xl font-bold text-white">تطبيق توصيل طعام</h3>
+                        </div>
+                    </div>
+                    <div class="p=6">
+                        <p class="text-slate-400 mb=4">تصميم واجهة مستخدم لتطبيق توصيل طعام سريع وسهل الاستخدام</p>
+                    </div>
+                </div>
+                
+                <!-- Project 3 -->
+                <div class="project-card rounded-xl overflow-hidden bg-slate-800" data-category="branding">
+                    <div class="project-image-container relative h=64">
+                        <img src="imges\anas1.png" alt="Branding Project" class="project-image">
+                        <button class="view-details-btn" data-project="3">
+                            عرض التفاصيل <i class="fas fa-arrow-left ml=2"></i>
+                        </button>
+                        <div class="absolute inset-0 bg-gradient-to-t from-black/80 to-transparent flex flex-col justify-end p=6">
+                            <span class="bg-pink-500 text-white text-xs px=3 py-1 rounded-full mb=2 self-start">هوية بصرية</span>
+                            <h3 class="text-xl font-bold text-white">هوية مقهى جديد</h3>
+                        </div>
+                    </div>
+                    <div class="p=6">
+                        <p class="text-slate-400 mb=4">تصميم هوية بصرية متكاملة لمقهى عصري في وسط المدينة</p>
+                    </div>
+                </div>
+                
+                <!-- Project 4 -->
+                <div class="project-card rounded-xl overflow-hidden bg-slate-800" data-category="web">
+                    <div class="project-image-container relative h=64">
+                        <img src="imges\anas1.png" alt="Web Design Project" class="project-image">
+                        <button class="view-details-btn" data-project="4">
+                            عرض التفاصيل <i class="fas fa-arrow-left ml=2"></i>
+                        </button>
+                        <div class="absolute inset-0 bg-gradient-to-t from-black/80 to-transparent flex flex-col justify-end p=6">
+                            <span class="bg-blue-500 text-white text-xs px=3 py-1 rounded-full mb=2 self-start">موقع ويب</span>
+                            <h3 class="text-xl font-bold text-white">موقع متجر إلكتروني</h3>
+                        </div>
+                    </div>
+                    <div class="p=6">
+                        <p class="text-slate-400 mb=4">تصميم وتطوير متجر إلكتروني متكامل لمنتجات فاخرة</p>
+                    </div>
+                </div>
+                
+                <!-- Project 5 -->
+                <div class="project-card rounded-xl overflow-hidden bg-slate-800" data-category="branding">
+                    <div class="project-image-container relative h=64">
+                        <img src="imges\anas1.png" alt="Branding Project" class="project-image">
+                        <button class="view-details-btn" data-project="5">
+                            عرض التفاصيل <i class="fas fa-arrow-left ml=2"></i>
+                        </button>
+                        <div class="absolute inset-0 bg-gradient-to-t from-black/80 to-transparent flex flex-col justify-end p=6">
+                            <span class="bg-pink-500 text-white text-xs px=3 py-1 rounded-full mb=2 self-start">هوية بصرية</span>
+                            <h3 class="text-xl font-bold text-white">هوية شركة عقارية</h3>
+                        </div>
+                    </div>
+                    <div class="p=6">
+                        <p class="text-slate-400 mb=4">تصميم هوية متكاملة لشركة عقارية فاخرة</p>
+                    </div>
+                </div>
+                
+                <!-- Project 6 -->
+                <div class="project-card rounded-xl overflow-hidden bg-slate-800" data-category="app">
+                    <div class="project-image-container relative h=64">
+                        <img src="imges\anas1.png" alt="UI/UX Project" class="project-image">
+                        <button class="view-details-btn" data-project="6">
+                            عرض التفاصيل <i class="fas fa-arrow-left ml=2"></i>
+                        </button>
+                        <div class="absolute inset-0 bg-gradient-to-t from-black/80 to-transparent flex flex-col justify-end p=6">
+                            <span class="bg-blue-400 text-white text-xs px=3 py=1 rounded-full mb=2 self-start">تطبيق جوال</span>
+                            <h3 class="text-xl font-bold text-white">لوحة تحكم إدارية</h3>
+                        </div>
+                    </div>
+                    <div class="p=6">
+                        <p class="text-slate-400 mb=4">تصميم لوحة تحكم إدارية معقدة مع التركيز على تجربة المستخدم</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <!-- Project Modals -->
+    <!-- Modal 1 -->
+    <div class="project-modal fixed inset-0 bg-black/80 flex items-center justify-center p=4" id="project-modal-1">
+        <div class="project-modal-content bg-slate-800 rounded-xl max-w-4xl w-full overflow-hidden">
+            <div class="relative">
+                <img src="imges/project1-main.jpg" alt="Web Design Project" class="w-full h-64 md:h-96 object-cover">
+                <button class="close-modal absolute top-4 left-4 bg-slate-900/50 hover:bg-slate-900/80 text-white w-10 h-10 rounded-full flex items-center justify-center transition">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
+            <div class="p-6 md:p-8">
+                <div class="flex flex-wrap gap=2 mb-6">
+                    <span class="bg-blue-500 text-white text-xs px-3 py-1 rounded-full">موقع ويب</span>
+                    <span class="bg-slate-700 text-white text-xs px-3 py-1 rounded-full">تصميم واجهة</span>
+                    <span class="bg-slate-700 text-white text-xs px-3 py-1 rounded-full">تطوير</span>
+                </div>
+                <h3 class="text-2xl font-bold mb-4">موقع شركة تقنية</h3>
+                <p class="text-slate-400 mb-6 leading-relaxed">
+                    تصميم وتطوير موقع شركة تقنية متخصصة في حلول الأعمال. ركز المشروع على إنشاء واجهة مستخدم حديثة وسهلة الاستخدام تعكس احترافية الشركة وتقدم حلولها التقنية بطريقة واضحة وجذابة.
+                </p>
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-8">
+                    <div>
+                        <h4 class="font-bold text-white mb-3">التحديات</h4>
+                        <ul class="space-y-2">
+                            <li class="flex items-start">
+                                <i class="fas fa-circle text-xs mt-1.5 mr-2 text-blue-400"></i>
+                                <span>تصميم واجهة تعمل بكفاءة على جميع أحجام الشاشات</span>
+                            </li>
+                            <li class="flex items-start">
+                                <i class="fas fa-circle text-xs mt-1.5 mr-2 text-blue-400"></i>
+                                <span>إنشاء نظام تصفح سهل للمحتوى التقني المعقد</span>
+                            </li>
+                            <li class="flex items-start">
+                                <i class="fas fa-circle text-xs mt=1.5 mr-2 text-blue-400"></i>
+                                <span>تحسين أداء الموقع لتحقيق أعلى سرعة تحميل</span>
+                            </li>
+                        </ul>
+                    </div>
+                    <div>
+                        <h4 class="font-bold text-white mb-3">الحلول</h4>
+                        <ul class="space-y-2">
+                            <li class="flex items-start">
+                                <i class="fas fa-check-circle text-xs mt-1.5 mr-2 text-green-400"></i>
+                                <span>تصميم متجاوب يعمل على جميع الأجهزة</span>
+                            </li>
+                            <li class="flex items-start">
+                                <i class="fas fa-check-circle text-xs mt-1.5 mr-2 text-green-400"></i>
+                                <span>إنشاء نظام تصنيف وتصفية متقدم للمحتوى</span>
+                            </li>
+                            <li class="flex items-start">
+                                <i class="fas fa-check-circle text-xs mt=1.5 mr-2 text-green-400"></i>
+                                <span>تحسين الصور وتقليل طلبات HTTP</span>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+                <div class="mb-8">
+                    <h4 class="font-bold text-white mb-4">أدوات وتقنيات المستخدمة</h4>
+                    <div class="flex flex-wrap gap-3">
+                        <span class="bg-slate-700 text-white px-3 py-1 rounded-full text-sm">HTML5</span>
+                        <span class="bg-slate-700 text-white px-3 py-1 rounded-full text-sm">CSS3</span>
+                        <span class="bg-slate-700 text-white px-3 py-1 rounded-full text-sm">JavaScript</span>
+                        <span class="bg-slate-700 text-white px-3 py-1 rounded-full text-sm">React</span>
+                        <span class="bg-slate-700 text-white px-3 py-1 rounded-full text-sm">TailwindCSS</span>
+                        <span class="bg-slate-700 text-white px-3 py-1 rounded-full text-sm">Figma</span>
+                    </div>
+                </div>
+                <div>
+                    <h4 class="font-bold text-white mb-4">معاينة المشروع</h4>
+                    <div class="grid grid-cols-2 md:grid-cols-3 gap-4">
+                        <img src="imges/project1-preview1.jpg" alt="Project Preview 1" class="rounded-lg h-32 object-cover cursor-pointer hover:opacity-90 transition">
+                        <img src="imges/project1-preview2.jpg" alt="Project Preview 2" class="rounded-lg h-32 object-cover cursor-pointer hover:opacity-90 transition">
+                        <img src="imges/project1-preview3.jpg" alt="Project Preview 3" class="rounded-lg h-32 object-cover cursor-pointer hover:opacity-90 transition">
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal 2 -->
+    <div class="project-modal fixed inset-0 bg-black/80 flex items-center justify-center p-4" id="project-modal-2">
+        <div class="project-modal-content bg-slate-800 rounded-xl max-w-4xl w-full overflow-hidden">
+            <div class="relative">
+                <img src="imges/project2-main.jpg" alt="Mobile App Project" class="w-full h-64 md:h-96 object-cover">
+                <button class="close-modal absolute top-4 left-4 bg-slate-900/50 hover:bg-slate-900/80 text-white w-10 h-10 rounded-full flex items-center justify-center transition">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
+            <div class="p-6 md:p-8">
+                <div class="flex flex-wrap gap-2 mb-6">
+                    <span class="bg-purple-500 text-white text-xs px-3 py-1 rounded-full">تطبيق جوال</span>
+                    <span class="bg-slate-700 text-white text-xs px-3 py-1 rounded-full">UI/UX</span>
+                    <span class="bg-slate-700 text-white text-xs px-3 py-1 rounded-full">Flutter</span>
+                </div>
+                <h3 class="text-2xl font-bold mb-4">تطبيق توصيل طعام</h3>
+                <p class="text-slate-400 mb-6 leading-relaxed">
+                    تصميم واجهة مستخدم لتطبيق توصيل طعام سريع وسهل الاستخدام. ركز المشروع على إنشاء تجربة مستخدم سلسة تمكن العملاء من طلب الطعام بسهولة وتتبع الطلبات في الوقت الفعلي.
+                </p>
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-8">
+                    <div>
+                        <h4 class="font-bold text-white mb-3">التحديات</h4>
+                        <ul class="space-y-2">
+                            <li class="flex items-start">
+                                <i class="fas fa-circle text-xs mt-1.5 mr-2 text-purple-400"></i>
+                                <span>تصميم واجهة سهلة الاستخدام لمختلف الفئات العمرية</span>
+                            </li>
+                            <li class="flex items-start">
+                                <i class="fas fa-circle text-xs mt-1.5 mr-2 text-purple-400"></i>
+                                <span>إنشاء نظام تصفح سريع لقوائم المطاعم</span>
+                            </li>
+                            <li class="flex items-start">
+                                <i class="fas fa-circle text-xs mt-1.5 mr-2 text-purple-400"></i>
+                                <span>تحسين تجربة اختيار المطعم والوجبات</span>
+                            </li>
+                        </ul>
+                    </div>
+                    <div>
+                        <h4 class="font-bold text-white mb-3">الحلول</h4>
+                        <ul class="space-y-2">
+                            <li class="flex items-start">
+                                <i class="fas fa-check-circle text-xs mt-1.5 mr-2 text-green-400"></i>
+                                <span>تصميم واجهة بديهية مع إرشادات واضحة</span>
+                            </li>
+                            <li class="flex items-start">
+                                <i class="fas fa-check-circle text-xs mt-1.5 mr-2 text-green-400"></i>
+                                <span>إنشاء نظام تصنيف وتصفية متقدم للمطاعم</span>
+                            </li>
+                            <li class="flex items-start">
+                                <i class="fas fa-check-circle text-xs mt-1.5 mr-2 text-green-400"></i>
+                                <span>إضافة ميزة البحث الذكي والاقتراحات</span>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+                <div class="mb-8">
+                    <h4 class="font-bold text-white mb-4">أدوات وتقنيات المستخدمة</h4>
+                    <div class="flex flex-wrap gap-3">
+                        <span class="bg-slate-700 text-white px-3 py-1 rounded-full text-sm">Flutter</span>
+                        <span class="bg-slate-700 text-white px-3 py-1 rounded-full text-sm">Dart</span>
+                        <span class="bg-slate-700 text-white px-3 py-1 rounded-full text-sm">Firebase</span>
+                        <span class="bg-slate-700 text-white px-3 py-1 rounded-full text-sm">Figma</span>
+                        <span class="bg-slate-700 text-white px-3 py-1 rounded-full text-sm">Adobe XD</span>
+                    </div>
+                </div>
+                <div>
+                    <h4 class="font-bold text-white mb-4">معاينة المشروع</h4>
+                    <div class="grid grid-cols-2 md:grid-cols-3 gap-4">
+                        <img src="imges/project2-preview1.jpg" alt="Project Preview 1" class="rounded-lg h-32 object-cover cursor-pointer hover:opacity-90 transition">
+                        <img src="imges/project2-preview2.jpg" alt="Project Preview 2" class="rounded-lg h-32 object-cover cursor-pointer hover:opacity-90 transition">
+                        <img src="imges/project2-preview3.jpg" alt="Project Preview 3" class="rounded-lg h-32 object-cover cursor-pointer hover:opacity-90 transition">
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal 3 -->
+    <div class="project-modal fixed inset-0 bg-black/80 flex items-center justify-center p=4" id="project-modal-3">
+        <div class="project-modal-content bg-slate-800 rounded-xl max-w-4xl w-full overflow-hidden">
+            <div class="relative">
+                <img src="imges/project3-main.jpg" alt="Branding Project" class="w-full h-64 md:h-96 object-cover">
+                <button class="close-modal absolute top-4 left-4 bg-slate-900/50 hover:bg-slate-900/80 text-white w-10 h-10 rounded-full flex items-center justify-center transition">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
+            <div class="p-6 md:p-8">
+                <div class="flex flex-wrap gap=2 mb-6">
+                    <span class="bg-pink-500 text-white text-xs px-3 py-1 rounded-full">هوية بصرية</span>
+                    <span class="bg-slate-700 text-white text-xs px-3 py-1 rounded-full">تصميم شعار</span>
+                    <span class="bg-slate-700 text-white text-xs px-3 py-1 rounded-full">مواد دعائية</span>
+                </div>
+                <h3 class="text-2xl font-bold mb-4">هوية مقهى جديد</h3>
+                <p class="text-slate-400 mb-6 leading-relaxed">
+                    تصميم هوية بصرية متكاملة لمقهى عصري في وسط المدينة. تضمن المشروع تصميم الشعار والألوان والطباعة والمواد الدعائية المختلفة لتعكس هوية المقهى الفريدة وروحه العصرية.
+                </p>
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-8">
+                    <div>
+                        <h4 class="font-bold text-white mb-3">التحديات</h4>
+                        <ul class="space-y-2">
+                            <li class="flex items-start">
+                                <i class="fas fa-circle text-xs mt-1.5 mr-2 text-pink-400"></i>
+                                <span>إنشاء هوية مميزة تبرز بين المنافسين</span>
+                            </li>
+                            <li class="flex items-start">
+                                <i class="fas fa-circle text-xs mt-1.5 mr-2 text-pink-400"></i>
+                                <span>تصميم شعار يعبر عن روح المقهى</span>
+                            </li>
+                            <li class="flex items-start">
+                                <i class="fas fa-circle text-xs mt=1.5 mr-2 text-pink-400"></i>
+                                <span>إنشاء نظام مرئي متكامل للمواد الدعائية</span>
+                            </li>
+                        </ul>
+                    </div>
+                    <div>
+                        <h4 class="font-bold text-white mb-3">الحلول</h4>
+                        <ul class="space-y=2">
+                            <li class="flex items-start">
+                                <i class="fas fa-check-circle text-xs mt-1.5 mr-2 text-green-400"></i>
+                                <span>تصميم شعار فريد يعكس هوية المقهى</span>
+                            </li>
+                            <li class="flex items-start">
+                                <i class="fas fa-check-circle text-xs mt-1.5 mr-2 text-green-400"></i>
+                                <span>إنشاء نظام ألوان وطباعة مميز</span>
+                            </li>
+                            <li class="flex items-start">
+                                <i class="fas fa-check-circle text-xs mt=1.5 mr-2 text-green-400"></i>
+                                <span>تصميم مجموعة متكاملة من المواد الدعائية</span>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+                <div class="mb-8">
+                    <h4 class="font-bold text-white mb-4">أدوات وتقنيات المستخدمة</h4>
+                    <div class="flex flex-wrap gap-3">
+                        <span class="bg-slate-700 text-white px-3 py-1 rounded-full text-sm">Adobe Illustrator</span>
+                        <span class="bg-slate=700 text-white px-3 py-1 rounded-full text-sm">Adobe Photoshop</span>
+                        <span class="bg-slate-700 text-white px-3 py-1 rounded-full text-sm">InDesign</span>
+                        <span class="bg-slate-700 text-white px-3 py-1 rounded-full text-sm">Figma</span>
+                    </div>
+                </div>
+                <div>
+                    <h4 class="font-bold text-white mb-4">معاينة المشروع</h4>
+                    <div class="grid grid-cols-2 md:grid-cols-3 gap-4">
+                        <img src="imges/project3-preview1.jpg" alt="Project Preview 1" class="rounded-lg h-32 object-cover cursor-pointer hover:opacity-90 transition">
+                        <img src="imges/project3-preview2.jpg" alt="Project Preview 2" class="rounded-lg h-32 object-cover cursor-pointer hover:opacity-90 transition">
+                        <img src="imges/project3-preview3.jpg" alt="Project Preview 3" class="rounded-lg h-32 object-cover cursor-pointer hover:opacity-90 transition">
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+ 
+    <!-- Modal 4 -->
+    <div class="project-modal fixed inset-0 bg-black/80 flex items-center justify-center p=4" id="project-modal-4">
+        <div class="project-modal-content bg-slate-800 rounded-xl max-w-4xl w-full overflow-hidden">
+            <div class="relative">
+                <img src="imges/project4-main.jpg" alt="Web Design Project" class="w-full h-64 md:h-96 object-cover">
+                <button class="close-modal absolute top-4 left-4 bg-slate-900/50 hover:bg-slate-900/80 text-white w-10 h-10 rounded-full flex items-center justify-center transition">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
+            <div class="p-6 md:p-8">
+                <div class="flex flex-wrap gap=2 mb-6">
+                    <span class="bg-blue-500 text-white text-xs px-3 py-1 rounded-full">موقع ويب</span>
+                    <span class="bg-slate-700 text-white text-xs px-3 py-1 rounded-full">متجر إلكتروني</span>
+                    <span class="bg-slate-700 text-white text-xs px-3 py-1 rounded-full">تطوير</span>
+                </div>
+                <h3 class="text-2xl font-bold mb-4">موقع متجر إلكتروني</h3>
+                <p class="text-slate-400 mb-6 leading-relaxed">
+                    تصميم وتطوير متجر إلكتروني متكامل لمنتجات فاخرة. تضمن المشروع إنشاء نظام متكامل لإدارة المنتجات والطلبات والدفع الإلكتروني مع التركيز على تجربة مستخدم سلسة وآمنة.
+                </p>
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-8">
+                    <div>
+                        <h4 class="font-bold text-white mb-3">التحديات</h4>
+                        <ul class="space-y-2">
+                            <li class="flex items-start">
+                                <i class="fas fa-circle text-xs mt-1.5 mr-2 text-blue-400"></i>
+                                <span>تصميم واجهة تعرض المنتجات الفاخرة بشكل مميز</span>
+                            </li>
+                            <li class="flex items-start">
+                                <i class="fas fa-circle text-xs mt-1.5 mr-2 text-blue-400"></i>
+                                <span>إنشاء نظام دفع إلكتروني آمن وسهل الاستخدام</span>
+                            </li>
+                            <li class="flex items-start">
+                                <i class="fas fa-circle text-xs mt=1.5 mr-2 text-blue-400"></i>
+                                <span>تحسين أداء المتجر لتحميل سريع للصور عالية الجودة</span>
+                            </li>
+                        </ul>
+                    </div>
+                    <div>
+                        <h4 class="font-bold text-white mb-3">الحلول</h4>
+                        <ul class="space-y=2">
+                            <li class="flex items-start">
+                                <i class="fas fa-check-circle text-xs mt-1.5 mr-2 text-green-400"></i>
+                                <span>تصميم معارض منتجات تفاعلية وعالية الجودة</span>
+                            </li>
+                            <li class="flex items-start">
+                                <i class="fas fa-check-circle text-xs mt-1.5 mr-2 text-green-400"></i>
+                                <span>دمج أنظمة دفع متعددة مع حماية متقدمة</span>
+                            </li>
+                            <li class="flex items-start">
+                                <i class="fas fa-check-circle text-xs mt=1.5 mr-2 text-green-400"></i>
+                                <span>تحسين الصور مع الحفاظ على جودتها</span>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+                <div class="mb-8">
+                    <h4 class="font-bold text-white mb-4">أدوات وتقنيات المستخدمة</h4>
+                    <div class="flex flex-wrap gap-3">
+                        <span class="bg-slate-700 text-white px-3 py-1 rounded-full text-sm">React</span>
+                        <span class="bg-slate=700 text-white px-3 py-1 rounded-full text-sm">Next.js</span>
+                        <span class="bg-slate-700 text-white px-3 py-1 rounded-full text-sm">Node.js</span>
+                        <span class="bg-slate-700 text-white px-3 py-1 rounded-full text-sm">MongoDB</span>
+                        <span class="bg-slate-700 text-white px-3 py-1 rounded-full text-sm">Stripe</span>
+                        <span class="bg-slate-700 text-white px-3 py-1 rounded-full text-sm">Figma</span>
+                    </div>
+                </div>
+                <div>
+                    <h4 class="font-bold text-white mb-4">معاينة المشروع</h4>
+                    <div class="grid grid-cols-2 md:grid-cols-3 gap-4">
+                        <img src="imges/project4-preview1.jpg" alt="Project Preview 1" class="rounded-lg h-32 object-cover cursor-pointer hover:opacity-90 transition">
+                        <img src="imges/project4-preview2.jpg" alt="Project Preview 2" class="rounded-lg h-32 object-cover cursor-pointer hover:opacity-90 transition">
+                        <img src="imges/project4-preview3.jpg" alt="Project Preview 3" class="rounded-lg h-32 object-cover cursor-pointer hover:opacity-90 transition">
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal 5 -->
+    <div class="project-modal fixed inset-0 bg-black/80 flex items-center justify-center p=4" id="project-modal-5">
+        <div class="project-modal-content bg-slate-800 rounded-xl max-w-4xl w-full overflow-hidden">
+            <div class="relative">
+                <img src="imges/project5-main.jpg" alt="Branding Project" class="w-full h-64 md:h-96 object-cover">
+                <button class="close-modal absolute top-4 left-4 bg-slate-900/50 hover:bg-slate-900/80 text-white w-10 h-10 rounded-full flex items-center justify-center transition">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
+            <div class="p-6 md:p-8">
+                <div class="flex flex-wrap gap=2 mb-6">
+                    <span class="bg-pink-500 text-white text-xs px-3 py-1 rounded-full">هوية بصرية</span>
+                    <span class="bg-slate-700 text-white text-xs px-3 py-1 rounded-full">تصميم شعار</span>
+                    <span class="bg-slate-700 text-white text-xs px-3 py-1 rounded-full">مواد دعائية</span>
+                </div>
+                <h3 class="text-2xl font-bold mb-4">هوية شركة عقارية</h3>
+                <p class="text-slate-400 mb-6 leading-relaxed">
+                    تصميم هوية متكاملة لشركة عقارية فاخرة. تضمن المشروع إنشاء نظام مرئي متكامل يعكس الفخامة والاحترافية، بما في ذلك الشعار والألوان والطباعة والمواد التسويقية المختلفة.
+                </p>
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-8">
+                    <div>
+                        <h4 class="font-bold text-white mb-3">التحديات</h4>
+                        <ul class="space-y-2">
+                            <li class="flex items-start">
+                                <i class="fas fa-circle text-xs mt-1.5 mr-2 text-pink-400"></i>
+                                <span>إنشاء هوية تعكس الفخامة والثقة في مجال العقارات</span>
+                            </li>
+                            <li class="flex items-start">
+                                <i class="fas fa-circle text-xs mt-1.5 mr-2 text-pink-400"></i>
+                                <span>تصميم شعار يبرز بين المنافسين في السوق</span>
+                            </li>
+                            <li class="flex items-start">
+                                <i class="fas fa-circle text-xs mt=1.5 mr-2 text-pink-400"></i>
+                                <span>إنشاء نظام مرئي متكامل للمواد التسويقية</span>
+                            </li>
+                        </ul>
+                    </div>
+                    <div>
+                        <h4 class="font-bold text-white mb=3">الحلول</h4>
+                        <ul class="space-y=2">
+                            <li class="flex items-start">
+                                <i class="fas fa-check-circle text-xs mt-1.5 mr=2 text-green-400"></i>
+                                <span>تصميم شعار فريد يعكس الفخامة والاحترافية</span>
+                            </li>
+                            <li class="flex items-start">
+                                <i class="fas fa-check-circle text-xs mt-1.5 mr=2 text-green-400"></i>
+                                <span>اختيار ألوان وطباعة تعزز الهوية البصرية</span>
+                            </li>
+                            <li class="flex items-start">
+                                <i class="fas fa-check-circle text-xs mt=1.5 mr=2 text-green-400"></i>
+                                <span>إنشاء مجموعة متكاملة من المواد التسويقية</span>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+                <div class="mb-8">
+                    <h4 class="font-bold text-white mb-4">أدوات وتقنيات المستخدمة</h4>
+                    <div class="flex flex-wrap gap-3">
+                        <span class="bg-slate-700 text-white px-3 py-1 rounded-full text-sm">Adobe Illustrator</span>
+                        <span class="bg-slate=700 text-white px-3 py-1 rounded-full text-sm">Adobe Photoshop</span>
+                        <span class="bg-slate-700 text-white px-3 py-1 rounded-full text-sm">InDesign</span>
+                        <span class="bg-slate-700 text-white px-3 py-1 rounded-full text-sm">Figma</span>
+                    </div>
+                </div>
+                <div>
+                    <h4 class="font-bold text-white mb-4">معاينة المشروع</h4>
+                    <div class="grid grid-cols-2 md:grid-cols-3 gap=4">
+                        <img src="imges/project5-preview1.jpg" alt="Project Preview 1" class="rounded-lg h-32 object-cover cursor-pointer hover:opacity-90 transition">
+                        <img src="imges/project5-preview2.jpg" alt="Project Preview 2" class="rounded-lg h-32 object-cover cursor-pointer hover:opacity-90 transition">
+                        <img src="imges/project5-preview3.jpg" alt="Project Preview 3" class="rounded-lg h-32 object-cover cursor-pointer hover:opacity-90 transition">
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal 6 -->
+    <div class="project-modal fixed inset-0 bg-black/80 flex items-center justify-center p=4" id="project-modal-6">
+        <div class="project-modal-content bg-slate-800 rounded-xl max-w-4xl w-full overflow-hidden">
+            <div class="relative">
+                <img src="imges\anas1.png" alt="UI/UX Project" class="w-full h-64 md:h-96 object-cover">
+                <button class="close-modal absolute top-4 left-4 bg-slate-900/50 hover:bg-slate-900/80 text-white w-10 h-10 rounded-full flex items-center justify-center transition">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
+            <div class="p-6 md:p-8">
+                <div class="flex flex-wrap gap=2 mb-6">
+                    <span class="bg-blue-400 text-white text-xs px-3 py-1 rounded-full">تطبيق جوال</span>
+                    <span class="bg-slate-700 text-white text-xs px-3 py-1 rounded-full">لوحة تحكم</span>
+                    <span class="bg-slate-700 text-white text-xs px-3 py-1 rounded-full">UI/UX</span>
+                </div>
+                <h3 class="text-2xl font-bold mb-4">لوحة تحكم إدارية</h3>
+                <p class="text-slate-400 mb-6 leading-relaxed">
+                    تصميم لوحة تحكم إدارية معقدة مع التركيز على تجربة المستخدم. تضمن المشروع إنشاء واجهة مستخدم تمكن المسؤولين من إدارة المحتوى والمستخدمين والإحصائيات بسهولة وكفاءة.
+                </p>
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-8">
+                    <div>
+                        <h4 class="font-bold text-white mb-3">التحديات</h4>
+                        <ul class="space-y-2">
+                            <li class="flex items-start">
+                                <i class="fas fa-circle text-xs mt-1.5 mr-2 text-blue-300"></i>
+                                <span>تصميم واجهة لإدارة كميات كبيرة من البيانات</span>
+                            </li>
+                            <li class="flex items-start">
+                                <i class="fas fa-circle text-xs mt-1.5 mr-2 text-blue-300"></i>
+                                <span>إنشاء نظام تصفح وتعديل سهل للمحتوى المعقد</span>
+                            </li>
+                            <li class="flex items-start">
+                                <i class="fas fa-circle text-xs mt=1.5 mr-2 text-blue-300"></i>
+                                <span>تحسين تجربة المستخدم للعمليات المتكررة</span>
+                            </li>
+                        </ul>
+                    </div>
+                    <div>
+                        <h4 class="font-bold text-white mb=3">الحلول</h4>
+                        <ul class="space-y=2">
+                            <li class="flex items-start">
+                                <i class="fas fa-check-circle text-xs mt-1.5 mr=2 text-green-400"></i>
+                                <span>تصميم جداول بيانات قابلة للتخصيص والتصفية</span>
+                            </li>
+                            <li class="flex items-start">
+                                <i class="fas fa-check-circle text-xs mt-1.5 mr=2 text-green-400"></i>
+                                <span>إنشاء واجهات تعديل سريعة وسهلة</span>
+                            </li>
+                            <li class="flex items-start">
+                                <i class="fas fa-check-circle text-xs mt=1.5 mr=2 text-green-400"></i>
+                                <span>إضافة اختصارات لوحة المفاتيح للعمليات المتكررة</span>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+                <div class="mb-8">
+                    <h4 class="font-bold text-white mb-4">أدوات وتقنيات المستخدمة</h4>
+                    <div class="flex flex-wrap gap-3">
+                        <span class="bg-slate-700 text-white px-3 py-1 rounded-full text-sm">React</span>
+                        <span class="bg-slate=700 text-white px-3 py-1 rounded-full text-sm">TypeScript</span>
+                        <span class="bg-slate-700 text-white px-3 py-1 rounded-full text-sm">Material UI</span>
+                        <span class="bg-slate-700 text-white px-3 py-1 rounded-full text-sm">Figma</span>
+                        <span class="bg-slate-700 text-white px-3 py-1 rounded-full text-sm">Adobe XD</span>
+                    </div>
+                </div>
+                <div>
+                    <h4 class="font-bold text-white mb-4">معاينة المشروع</h4>
+                    <div class="grid grid-cols-2 md:grid-cols-3 gap=4">
+                        <img src="imges\anas1.png" alt="Project Preview 1" class="rounded-lg h-32 object-cover cursor-pointer hover:opacity-90 transition">
+                        <img src="imges/project6-preview2.jpg" alt="Project Preview 2" class="rounded-lg h-32 object-cover cursor-pointer hover:opacity-90 transition">
+                        <img src="imges/project6-preview3.jpg" alt="Project Preview 3" class="rounded-lg h-32 object-cover cursor-pointer hover:opacity-90 transition">
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <footer class="bg-slate-800/50 border-t border-slate-800/50 py-8">
+        <div class="container mx-auto px-6">
+            <div class="flex flex-col md:flex-row justify-between items-center">
+                <div class="mb-4 md:mb-0">
+                    <a href="#" class="text-xl font-bold flex items-center">
+                        <div class="w-8 h-8 rounded-full bg-gradient-to-r from-blue-500 to-purple-600 mr-3"></div>
+                        <span class="gradient-text">معرض أعمالي</span>
+                    </a>
+                </div>
+                <div class="flex space-x-4 space-x-reverse">
+                    <a href="#" class="text-slate-400 hover:text-white transition">
+                        <i class="fab fa-twitter text-xl"></i>
+                    </a>
+                    <a href="#" class="text-slate-400 hover:text-white transition">
+                        <i class="fab fa-instagram text-xl"></i>
+                    </a>
+                    <a href="#" class="text-slate-400 hover:text-white transition">
+                        <i class="fab fa-linkedin text-xl"></i>
+                    </a>
+                    <a href="#" class="text-slate-400 hover:text-white transition">
+                        <i class="fab fa-behance text-xl"></i>
+                    </a>
+                </div>
+            </div>
+            <div class="mt-8 text-center text-slate-500 text-sm">
+                <p>© 4090 معرض أعمالي. جميع الحقوق محفوظة.</p>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        // Filter Projects
+        const filterButtons = document.querySelectorAll('.filter-btn');
+        const projectCards = document.querySelectorAll('.project-card');
+        
+        filterButtons.forEach(button => {
+            button.addEventListener('click', () => {
+                // Remove active class from all buttons
+                filterButtons.forEach(btn => btn.classList.remove('active'));
+                
+                // Add active class to clicked button
+                button.classList.add('active');
+                
+                const filterValue = button.getAttribute('data-filter');
+                
+                projectCards.forEach(card => {
+                    if (filterValue === 'all' || card.getAttribute('data-category') === filterValue) {
+                        card.style.display = 'block';
+                    } else {
+                        card.style.display = 'none';
+                    }
+                });
+            });
+        });
+        
+        // Project Modals
+        const viewDetailButtons = document.querySelectorAll('.view-details-btn');
+        const projectModals = document.querySelectorAll('.project-modal');
+        const closeModalButtons = document.querySelectorAll('.close-modal');
+        
+        viewDetailButtons.forEach(button => {
+            button.addEventListener('click', () => {
+                const projectId = button.getAttribute('data-project');
+                const modal = document.getElementById(`project-modal-${projectId}`);
+                
+                modal.classList.add('active');
+                document.body.style.overflow = 'hidden';
+            });
+        });
+        
+        closeModalButtons.forEach(button => {
+            button.addEventListener('click', () => {
+                const modal = button.closest('.project-modal');
+                modal.classList.remove('active');
+                document.body.style.overflow = 'auto';
+            });
+        });
+        
+        // Close modal when clicking outside
+        projectModals.forEach(modal => {
+            modal.addEventListener('click', (e) => {
+                if (e.target === modal) {
+                    modal.classList.remove('active');
+                    document.body.style.overflow = 'auto';
+                }
+            });
+        });
+    </script>
+</body>
+</html>

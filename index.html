@@ -1,0 +1,811 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>معرض أعمالي | مصمم رقمية</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Tajawal:wght@300;400;500;700;900&display=swap');
+        
+        :root {
+            --primary: #3b82f6;
+            --secondary: #8b5cf6;
+            --accent: #ec4899;
+        }
+        
+        body {
+            font-family: 'Tajawal', sans-serif;
+            background-color: #0f172a;
+            color: #e2e8f0;
+            scroll-behavior: smooth;
+        }
+        
+        .glass-card {
+            background: rgba(15, 23, 42, 0.7);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+        
+        .gradient-text {
+            background: linear-gradient(90deg, var(--primary), var(--secondary), var(--accent));
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+        }
+        
+        .project-card {
+            transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            perspective: 1000px;
+        }
+        
+        .project-card:hover {
+            transform: translateY(-8px);
+            box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.3);
+        }
+        
+        .project-tag {
+            transition: all 0.3s ease;
+        }
+        
+        .project-card:hover .project-tag {
+            transform: translateY(-5px);
+            background: linear-gradient(90deg, var(--primary), var(--secondary));
+        }
+        
+        .floating {
+            animation: float 6s ease-in-out infinite;
+        }
+        
+        @keyframes float {
+            0% { transform: translateY(0px); }
+            50% { transform: translateY(-20px); }
+            100% { transform: translateY(0px); }
+        }
+        
+        .cursor-trail {
+            position: fixed;
+            width: 20px;
+            height: 20px;
+            border-radius: 50%;
+            background: radial-gradient(circle, rgba(59, 130, 246, 0.8) 0%, rgba(139, 92, 246, 0.6) 100%);
+            pointer-events: none;
+            transform: translate(-50%, -50%);
+            z-index: 9999;
+            mix-blend-mode: screen;
+        }
+        
+        .nav-link {
+            position: relative;
+        }
+        
+        .nav-link::after {
+            content: '';
+            position: absolute;
+            width: 0;
+            height: 2px;
+            bottom: -2px;
+            right: 0;
+            background: linear-gradient(90deg, var(--primary), var(--secondary));
+            transition: width 0.3s ease;
+        }
+        
+        .nav-link:hover::after {
+            width: 100%;
+        }
+        
+        .progress-bar {
+            height: 6px;
+            background: linear-gradient(90deg, var(--primary), var(--secondary));
+            position: fixed;
+            top: 0;
+            right: 0;
+            z-index: 1000;
+            transition: width 0.1s;
+        }
+        
+        .skill-bar {
+            background: linear-gradient(90deg, var(--primary), var(--secondary));
+            animation: skillAnimation 2s ease-out forwards;
+            width: 0;
+        }
+        
+        @keyframes skillAnimation {
+            from { width: 0; }
+            to { width: var(--skill-level); }
+        }
+        
+        .parallax {
+            background-attachment: fixed;
+            background-position: center;
+            background-repeat: no-repeat;
+            background-size: cover;
+        }
+        
+        .contact-input {
+            background: rgba(15, 23, 42, 0.5);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            transition: all 0.3s ease;
+        }
+        
+        .contact-input:focus {
+            border-color: var(--primary);
+            box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.3);
+        }
+        
+        .social-icon {
+            transition: all 0.3s ease;
+        }
+        
+        .social-icon:hover {
+            transform: translateY(-5px) scale(1.1);
+        }
+        
+        .project-modal {
+            opacity: 0;
+            visibility: hidden;
+            transition: all 0.3s ease;
+        }
+        
+        .project-modal.active {
+            opacity: 1;
+            visibility: visible;
+        }
+        
+        .project-modal-content {
+            transform: scale(0.9);
+            transition: all 0.3s ease;
+        }
+        
+        .project-modal.active .project-modal-content {
+            transform: scale(1);
+        }
+    </style>
+</head>
+<body class="bg-slate-900 text-slate-200">
+    <!-- Progress Bar -->
+    <div class="progress-bar" id="progressBar"></div>
+    
+    <!-- Cursor Trail -->
+    <div class="cursor-trail" id="cursorTrail"></div>
+    
+    <!-- Navigation -->
+    <nav class="fixed w-full bg-slate-900/80 backdrop-blur-sm z-50 border-b border-slate-800/50">
+        <div class="container mx-auto px-6 py-4 flex justify-between items-center">
+            <a href="#" class="text-2xl font-bold flex items-center">
+                <div class="w-8 h-8 rounded-full bg-gradient-to-r from-blue-500 to-purple-600 mr-3"></div>
+                <span class="gradient-text">المصمم </span>
+                <span class="text-white">أنس </span>
+            </a>
+            
+            <div class="hidden md:flex space-x-8 space-x-reverse">
+                <a href="#" class="nav-link text-white">الرئيسية</a>
+                <a href="#portfolio" class="nav-link text-slate-300 hover:text-white">المشاريع</a>
+                <a href="#services" class="nav-link text-slate-300 hover:text-white">الخدمات</a>
+                <a href="#about" class="nav-link text-slate-300 hover:text-white">عني</a>
+                <a href="#contact" class="nav-link text-slate-300 hover:text-white">اتصل بي</a>
+            </div>
+            
+            <button id="mobile-menu-button" class="md:hidden text-white focus:outline-none">
+                <i class="fas fa-bars text-2xl"></i>
+            </button>
+        </div>
+    </nav>
+
+    <!-- Mobile Menu -->
+    <div id="mobile-menu" class="fixed inset-0 bg-slate-900/95 z-40 pt-20 px-6 backdrop-blur-lg transform translate-x-full transition-transform duration-300">
+        <div class="flex flex-col space-y-6 text-right">
+            <a href="#" class="text-2xl font-medium text-white py-2 border-b border-slate-700">الرئيسية</a>
+            <a href="#portfolio" class="text-2xl font-medium text-slate-300 py-2 border-b border-slate-700">المشاريع</a>
+            <a href="#services" class="text-2xl font-medium text-slate-300 py-2 border-b border-slate-700">الخدمات</a>
+            <a href="#about" class="text-2xl font-medium text-slate-300 py-2 border-b border-slate-700">عني</a>
+            <a href="#contact" class="text-2xl font-medium text-slate-300 py-2 border-b border-slate-700">اتصل بي</a>
+        </div>
+        <button class="absolute top-6 left-6 text-white text-2xl" id="close-mobile-menu">
+            <i class="fas fa-times"></i>
+        </button>
+    </div>
+
+    <!-- Hero Section -->
+    <section class="min-h-screen flex items-center justify-center pt-20 relative overflow-hidden">
+        <div class="absolute inset-0 z-0">
+            <div class="absolute inset-0 bg-gradient-to-b from-slate-900/90 to-slate-900"></div>
+            <div class="absolute inset-0 opacity-20">
+                <div class="absolute top-1/4 left-1/4 w-64 h-64 rounded-full bg-blue-500/30 blur-3xl"></div>
+                <div class="absolute top-1/3 right-1/3 w-96 h-96 rounded-full bg-purple-500/30 blur-3xl"></div>
+                <div class="absolute bottom-1/4 left-1/2 w-80 h-80 rounded-full bg-pink-500/30 blur-3xl"></div>
+            </div>
+        </div>
+        
+        <div class="container mx-auto px-6 relative z-10">
+            <div class="flex flex-col lg:flex-row-reverse items-center">
+                <div class="lg:w-1/2 mb-16 lg:mb-0 flex justify-center">
+                    <div class="relative w-full max-w-md">
+                        <div class="absolute -inset-4 bg-gradient-to-r from-blue-500 to-purple-500 rounded-2xl blur-xl opacity-20 animate-pulse"></div>
+                        <div class="relative rounded-2xl overflow-hidden border border-slate-700/50">
+                            <img src="imges\Untitled-1.png" alt="Designer working" class="w-full floating">
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="lg:w-1/2 text-right">
+                    <h1 class="text-4xl md:text-6xl font-bold mb-6">
+                        مرحباً، أنا <span class="gradient-text">المصمم أنس</span>
+                    </h1>
+                    <div class="inline-block mb-6">
+                        <span class="bg-slate-800 text-blue-400 px-4 py-2 rounded-full text-sm font-medium">
+                            <i class="fas fa-sparkle mr-2"></i> مصمم واجهات رقمية
+                        </span>
+                    </div>
+                    <p class="text-xl md:text-2xl text-slate-400 mb-8 leading-relaxed">
+                        أبتكر تجارب رقمية ساحرة تجمع بين الجماليات والوظيفية لتحقيق أهداف عملك
+                    </p>
+                    <div class="flex flex-col sm:flex-row space-y-4 sm:space-y-0 sm:space-x-4 space-x-reverse justify-end">
+                        <a href="#portfolio" class="bg-gradient-to-r from-blue-500 to-purple-600 hover:from-blue-600 hover:to-purple-700 text-white px-8 py-3 rounded-full font-medium transition-all duration-300 shadow-lg hover:shadow-xl inline-flex items-center justify-center">
+                            تصفح أعمالي <i class="fas fa-arrow-left ml-3"></i>
+                        </a>
+                        <a href="#contact" class="glass-card hover:border-blue-500 text-white px-8 py-3 rounded-full font-medium transition-all duration-300 inline-flex items-center justify-center">
+                            تواصل معي <i class="fas fa-paper-plane ml-3"></i>
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Services Section -->
+    <section id="services" class="py-20 bg-gradient-to-b from-slate-900 to-slate-800">
+        <div class="container mx-auto px-6">
+            <div class="text-center mb-16">
+                <h2 class="text-3xl md:text-4xl font-bold mb-4">خدماتي</h2>
+                <div class="w-20 h-1 bg-gradient-to-r from-blue-500 to-purple-500 mx-auto mb-6"></div>
+                <p class="text-slate-400 max-w-2xl mx-auto leading-relaxed">
+                    حلول تصميمية متكاملة تلبي احتياجاتك الرقمية وتواكب أحدث الاتجاهات
+                </p>
+            </div>
+            
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+                <!-- Service 1 -->
+                <div class="glass-card rounded-xl p-8 hover:border-blue-500 transition-all duration-300">
+                    <div class="w-16 h-16 rounded-full bg-gradient-to-r from-blue-500 to-blue-600 flex items-center justify-center text-white text-2xl mb-6">
+                        <i class="fas fa-paint-brush"></i>
+                    </div>
+                    <h3 class="text-xl font-bold mb-4">تصميم الهوية البصرية</h3>
+                    <p class="text-slate-400 mb-4">
+                        تصميم هوية متكاملة تعكس شخصية علامتك التجارية وتترك انطباعاً مميزاً لدى عملائك
+                    </p>
+                    <ul class="space-y-2 text-slate-400">
+                        <li class="flex items-center">
+                            <i class="fas fa-check-circle text-blue-400 mr-2"></i>
+                            تصميم الشعار والهوية
+                        </li>
+                        <li class="flex items-center">
+                            <i class="fas fa-check-circle text-blue-400 mr-2"></i>
+                            دليل الاستخدام
+                        </li>
+                        <li class="flex items-center">
+                            <i class="fas fa-check-circle text-blue-400 mr-2"></i>
+                            تطبيقات الهوية
+                        </li>
+                    </ul>
+                </div>
+                
+                <!-- Service 2 -->
+                <div class="glass-card rounded-xl p-8 hover:border-purple-500 transition-all duration-300">
+                    <div class="w-16 h-16 rounded-full bg-gradient-to-r from-purple-500 to-purple-600 flex items-center justify-center text-white text-2xl mb-6">
+                        <i class="fas fa-laptop-code"></i>
+                    </div>
+                    <h3 class="text-xl font-bold mb-4">تصميم واجهات المستخدم</h3>
+                    <p class="text-slate-400 mb-4">
+                        واجهات مستخدم بديهية وجذابة تحسن تجربة المستخدم وتزيد من معدلات التحويل
+                    </p>
+                    <ul class="space-y-2 text-slate-400">
+                        <li class="flex items-center">
+                            <i class="fas fa-check-circle text-purple-400 mr-2"></i>
+                            تصميم مواقع الويب
+                        </li>
+                        <li class="flex items-center">
+                            <i class="fas fa-check-circle text-purple-400 mr-2"></i>
+                            تطبيقات الجوال
+                        </li>
+                        <li class="flex items-center">
+                            <i class="fas fa-check-circle text-purple-400 mr-2"></i>
+                            واجهات البرامج
+                        </li>
+                    </ul>
+                </div>
+                
+                <!-- Service 3 -->
+                <div class="glass-card rounded-xl p-8 hover:border-pink-500 transition-all duration-300">
+                    <div class="w-16 h-16 rounded-full bg-gradient-to-r from-pink-500 to-pink-600 flex items-center justify-center text-white text-2xl mb-6">
+                        <i class="fas fa-bullhorn"></i>
+                    </div>
+                    <h3 class="text-xl font-bold mb-4">تصميم إعلانات</h3>
+                    <p class="text-slate-400 mb-4">
+                        إعلانات جذابة ومؤثرة تلفت الانتباه وتزيد من فعالية حملاتك التسويقية
+                    </p>
+                    <ul class="space-y-2 text-slate-400">
+                        <li class="flex items-center">
+                            <i class="fas fa-check-circle text-pink-400 mr-2"></i>
+                            إعلانات التواصل الاجتماعي
+                        </li>
+                        <li class="flex items-center">
+                            <i class="fas fa-check-circle text-pink-400 mr-2"></i>
+                            تصميم اللوحات الإعلانية
+                        </li>
+                        <li class="flex items-center">
+                            <i class="fas fa-check-circle text-pink-400 mr-2"></i>
+                            مواد ترويجية مطبوعة
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Portfolio Button Section -->
+    <section id="portfolio" class="py-20 bg-slate-800/10">
+        <div class="container mx-auto px-6 text-center">
+            <h2 class="text-3xl md:text-4xl font-bold mb-6">أعمالي التصميمية</h2>
+            <p class="text-slate-400 max-w-2xl mx-auto mb-10 leading-relaxed">
+                استكشف مجموعة من مشاريعي التي تعكس إبداعي وخبرتي في التصميم الرقمي
+            </p>
+            <a href="portfolio.html" class="inline-block bg-gradient-to-r from-blue-500 to-purple-600 hover:from-blue-600 hover:to-purple-700 text-white px-8 py-4 rounded-full font-medium text-lg transition-all duration-300 shadow-lg hover:shadow-xl">
+                عرض معرض الأعمال الكامل <i class="fas fa-arrow-left ml-3"></i>
+            </a>
+        </div>
+    </section>
+
+    <!-- Stats Section -->
+    <section class="py-16 bg-gradient-to-r from-blue-900/50 to-purple-900/50">
+        <div class="container mx-auto px-6">
+            <div class="grid grid-cols-2 md:grid-cols-4 gap-8 text-center">
+                <div class="glass-card p-6 rounded-xl">
+                    <div class="text-4xl font-bold text-white mb-2" id="stat1">56</div>
+                    <div class="text-blue-300">مشروع مكتمل</div>
+                </div>
+                <div class="glass-card p-6 rounded-xl">
+                    <div class="text-4xl font-bold text-white mb-2" id="stat2">56</div>
+                    <div class="text-purple-300">عميل راضٍ</div>
+                </div>
+                <div class="glass-card p-6 rounded-xl">
+                    <div class="text-4xl font-bold text-white mb-2" id="stat3">0</div>
+                    <div class="text-pink-300">جائزة فوز</div>
+                </div>
+                <div class="glass-card p-6 rounded-xl">
+                    <div class="text-4xl font-bold text-white mb-2" id="stat4">6000</div>
+                    <div class="text-blue-300">ساعة عمل</div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- About Section -->
+    <section id="about" class="py-20 bg-slate-900">
+        <div class="container mx-auto px-6">
+            <div class="flex flex-col lg:flex-row-reverse items-center">
+                <div class="lg:w-1/2 mb-12 lg:mb-0 lg:pl-12">
+                    <h2 class="text-3xl md:text-4xl font-bold mb-6">عني</h2>
+                    <div class="w-20 h-1 bg-gradient-to-r from-blue-500 to-purple-500 mb-6"></div>
+                    <p class="text-slate-400 mb-6 leading-relaxed">
+                        مصمم واجهات رقمية مع أكثر من 8 سنوات من الخبرة في إنشاء حلول بصرية مبتكرة. أؤمن بالتصميم الذي يجمع بين الجماليات والوظيفية لخلق تجارب مستخدم لا تنسى.
+                    </p>
+                    <p class="text-slate-400 mb-8 leading-relaxed">
+                        بدأت رحلتي في عالم التصميم منذ الصغر، وتطور شغفي مع تطور التقنيات الرقمية. اليوم، أساعد الشركات والعلامات التجارية على تقديم أنفسهم بأفضل صورة في العالم الرقمي.
+                    </p>
+                    
+                    <div class="mb-8">
+                        <h3 class="font-bold text-lg text-white mb-4">مهاراتي</h3>
+                        <div class="space-y-4">
+                            <div>
+                                <div class="flex justify-between mb-1">
+                                    <span class="text-sm font-medium text-slate-400">تصميم واجهات المستخدم</span>
+                                    <span class="text-sm text-blue-400">95%</span>
+                                </div>
+                                <div class="w-full bg-slate-700 rounded-full h-2">
+                                    <div class="skill-bar h-2 rounded-full" style="--skill-level: 95%"></div>
+                                </div>
+                            </div>
+                            <div>
+                                <div class="flex justify-between mb-1">
+                                    <span class="text-sm font-medium text-slate-400">تجربة المستخدم</span>
+                                    <span class="text-sm text-purple-400">90%</span>
+                                </div>
+                                <div class="w-full bg-slate-700 rounded-full h-2">
+                                    <div class="skill-bar h-2 rounded-full" style="--skill-level: 90%"></div>
+                                </div>
+                            </div>
+                            <div>
+                                <div class="flex justify-between mb-1">
+                                    <span class="text-sm font-medium text-slate-400">تصميم الهوية</span>
+                                    <span class="text-sm text-pink-400">85%</span>
+                                </div>
+                                <div class="w-full bg-slate-700 rounded-full h-2">
+                                    <div class="skill-bar h-2 rounded-full" style="--skill-level: 85%"></div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <a href="#contact" class="inline-block bg-gradient-to-r from-blue-500 to-purple-600 hover:from-blue-600 hover:to-purple-700 text-white px-6 py-3 rounded-lg font-medium transition-all duration-300 shadow-lg hover:shadow-xl">
+                        تواصل معي <i class="fas fa-paper-plane ml-2"></i>
+                    </a>
+                </div>
+                
+                <div class="lg:w-1/3 ml-20">
+                    <div class="relative">
+                        <div class="absolute -inset-4 bg-gradient-to-r from-blue-500 to-purple-500 rounded-2xl blur-lg opacity-20 animate-pulse"></div>
+                        <div class="relative rounded-2xl overflow-hidden border border-slate-700/50">
+                            <img src="imges\IMG_1885.JPG" alt="Designer portrait" class="w-full">
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Testimonials Section -->
+    <section class="py-20 bg-slate-800/10">
+        <div class="container mx-auto px-6">
+            <div class="text-center mb-16">
+                <h2 class="text-3xl md:text-4xl font-bold mb-4">آراء العملاء</h2>
+                <div class="w-20 h-1 bg-gradient-to-r from-blue-500 to-purple-500 mx-auto mb-6"></div>
+                <p class="text-slate-400 max-w-2xl mx-auto leading-relaxed">
+                    ما يقوله عملائي عن تجربتهم في العمل معي
+                </p>
+            </div>
+            
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+                <!-- Testimonial 1 -->
+                <div class="glass-card p-8 rounded-xl">
+                    <div class="flex items-center mb-6">
+                        <div class="w-12 h-12 rounded-full overflow-hidden mr-4">
+                            <img src="images/client-1.jpg" alt="Client" class="w-full h-full object-cover">
+                        </div>
+                        <div>
+                            <h4 class="font-bold text-white">سارة أحمد</h4>
+                            <p class="text-sm text-slate-400">مديرة تسويق - نوفا تك</p>
+                        </div>
+                    </div>
+                    <p class="text-slate-400 mb-6">
+                        "عمل رائع! استطاع عمر فهم احتياجاتنا تماماً وتحويلها إلى تصميمات تفوق توقعاتنا. الهوية الجديدة ساعدتنا على تمييز أنفسنا في السوق."
+                    </p>
+                    <div class="flex text-yellow-400">
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                    </div>
+                </div>
+                
+                <!-- Testimonial 2 -->
+                <div class="glass-card p-8 rounded-xl">
+                    <div class="flex items-center mb-6">
+                        <div class="w-12 h-12 rounded-full overflow-hidden mr-4">
+                            <img src="images/client-2.jpg" alt="Client" class="w-full h-full object-cover">
+                        </div>
+                        <div>
+                            <h4 class="font-bold text-white">خالد محمد</h4>
+                            <p class="text-sm text-slate-400">مؤسس - كوفي هاوس</p>
+                        </div>
+                    </div>
+                    <p class="text-slate-400 mb-6">
+                        "التصميمات التي قدمها عمر لمقهانا كانت مميزة جداً وتعكس هويتنا بالضبط. زبائننا يحبون الهوية الجديدة ونسبة المبيعات زادت بنسبة 30% بعد التغيير."
+                    </p>
+                    <div class="flex text-yellow-400">
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                    </div>
+                </div>
+                
+                <!-- Testimonial 3 -->
+                <div class="glass-card p-8 rounded-xl">
+                    <div class="flex items-center mb-6">
+                        <div class="w-12 h-12 rounded-full overflow-hidden mr-4">
+                            <img src="images/client-3.jpg" alt="Client" class="w-full h-full object-cover">
+                        </div>
+                        <div>
+                            <h4 class="font-bold text-white">نورا عبدالله</h4>
+                            <p class="text-sm text-slate-400">مديرة منتج - فيت لايف</p>
+                        </div>
+                    </div>
+                    <p class="text-slate-400 mb-6">
+                        "واجهة التطبيق التي صممها عمر ساعدت على تحسين تجربة المستخدم بشكل كبير. معدلات الاحتفاظ بالزبائن زادت بنسبة 45% بعد إطلاق التصميم الجديد."
+                    </p>
+                    <div class="flex text-yellow-400">
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star-half-alt"></i>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Contact Section -->
+    <section id="contact" class="py-20 bg-slate-900">
+        <div class="container mx-auto px-6">
+            <div class="text-center mb-16">
+                <h2 class="text-3xl md:text-4xl font-bold mb-4">تواصل معي</h2>
+                <div class="w-20 h-1 bg-gradient-to-r from-blue-500 to-purple-500 mx-auto mb-6"></div>
+                <p class="text-slate-400 max-w-2xl mx-auto leading-relaxed">
+                    هل لديك مشروع أو فكرة تريد مناقشتها؟ لا تتردد في التواصل معي وسأكون سعيداً بالمساعدة
+                </p>
+            </div>
+            
+            <div class="max-w-4xl mx-auto glass-card rounded-2xl shadow-xl overflow-hidden">
+                <div class="grid md:grid-cols-2">
+                    <div class="p-8 md:p-12">
+                        <h3 class="text-2xl font-bold mb-6">أرسل لي رسالة</h3>
+                        <form class="space-y-6">
+                            <div>
+                                <label for="name" class="block text-sm font-medium text-slate-400 mb-2">الاسم</label>
+                                <input type="text" id="name" class="w-full px-4 py-3 contact-input rounded-lg focus:outline-none text-white placeholder-slate-500">
+                            </div>
+                            <div>
+                                <label for="email" class="block text-sm font-medium text-slate-400 mb-2">البريد الإلكتروني</label>
+                                <input type="email" id="email" class="w-full px-4 py-3 contact-input rounded-lg focus:outline-none text-white placeholder-slate-500">
+                            </div>
+                            <div>
+                                <label for="message" class="block text-sm font-medium text-slate-400 mb-2">الرسالة</label>
+                                <textarea id="message" rows="4" class="w-full px-4 py-3 contact-input rounded-lg focus:outline-none text-white placeholder-slate-500"></textarea>
+                            </div>
+                            <button type="submit" class="w-full bg-gradient-to-r from-blue-500 to-purple-600 hover:from-blue-600 hover:to-purple-700 text-white px-6 py-3 rounded-lg font-medium transition-all duration-300 shadow-lg hover:shadow-xl">
+                                إرسال الرسالة <i class="fas fa-paper-plane ml-2"></i>
+                            </button>
+                        </form>
+                    </div>
+                    
+                    <div class="bg-gradient-to-br from-slate-800 to-slate-900 p-8 md:p-12 flex flex-col justify-center">
+                        <h3 class="text-2xl font-bold mb-6">معلومات التواصل</h3>
+                        <div class="space-y-6">
+                            <div class="flex items-start">
+                                <div class="bg-blue-500/10 p-3 rounded-lg mr-4">
+                                    <i class="fas fa-envelope text-blue-400 text-xl"></i>
+                                </div>
+                                <div>
+                                    <h4 class="font-medium text-white">البريد الإلكتروني</h4>
+                                    <a href="mailto:hello@example.com" class="text-slate-400 hover:text-blue-400 transition">anasabomadini@gmail.com</a>
+                                </div>
+                            </div>
+                            <div class="flex items-start">
+                                <div class="bg-purple-500/10 p-3 rounded-lg mr-4">
+                                    <i class="fas fa-phone-alt text-purple-400 text-xl"></i>
+                                </div>
+                                <div>
+                                    <h4 class="font-medium text-white">الهاتف</h4>
+                                    <a href="tel:+966501234567" class="text-slate-400 hover:text-blue-400 transition">+966575570110</a>
+                                </div>
+                            </div>
+                            <div class="flex items-start">
+                                <div class="bg-pink-500/10 p-3 rounded-lg mr-4">
+                                    <i class="fas fa-map-marker-alt text-pink-400 text-xl"></i>
+                                </div>
+                                <div>
+                                    <h4 class="font-medium text-white">الموقع</h4>
+                                    <p class="text-slate-400">المنطقة الشرقية ، المملكة العربية السعودية</p>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="mt-8">
+                            <h4 class="font-medium text-white mb-4">وسائل التواصل الاجتماعي</h4>
+                            <div class="flex space-x-4 space-x-reverse">
+                                <a href="#" class="social-icon bg-slate-700 hover:bg-blue-500 w-10 h-10 rounded-full flex items-center justify-center transition">
+                                    <i class="fab fa-behance"></i>
+                                </a>
+                                <a href="#" class="social-icon bg-slate-700 hover:bg-pink-500 w-10 h-10 rounded-full flex items-center justify-center transition">
+                                    <i class="fab fa-dribbble"></i>
+                                </a>
+                                <a href="#" class="social-icon bg-slate-700 hover:bg-blue-600 w-10 h-10 rounded-full flex items-center justify-center transition">
+                                    <i class="fab fa-linkedin-in"></i>
+                                </a>
+                                <a href="#" class="social-icon bg-slate-700 hover:bg-purple-500 w-10 h-10 rounded-full flex items-center justify-center transition">
+                                    <i class="fab fa-instagram"></i>
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="bg-slate-900 py-12 border-t border-slate-800">
+        <div class="container mx-auto px-6">
+            <div class="flex flex-col md:flex-row-reverse justify-between items-center">
+                <div class="mb-6 md:mb-0">
+                    <a href="#" class="text-2xl font-bold flex items-center">
+                        <div class="w-8 h-8 rounded-full bg-gradient-to-r from-blue-500 to-purple-600 mr-3"></div>
+                        <span class="gradient-text">المصمم</span>
+                        <span class="text-white">أنس</span>
+                    </a>
+                </div>
+                
+                <div class="mb-6 md:mb-0 text-center md:text-right">
+                    <p class="text-slate-400">
+                        © 2025 جميع الحقوق محفوظة للمصمم أنس . صمم بتفانٍ وحب.
+                    </p>
+                </div>
+                
+                <div class="flex space-x-4 space-x-reverse">
+                    <a href="#" class="social-icon text-slate-400 hover:text-blue-400 transition">
+                        <i class="fab fa-behance text-xl"></i>
+                    </a>
+                    <a href="#" class="social-icon text-slate-400 hover:text-pink-400 transition">
+                        <i class="fab fa-dribbble text-xl"></i>
+                    </a>
+                    <a href="#" class="social-icon text-slate-400 hover:text-blue-500 transition">
+                        <i class="fab fa-linkedin-in text-xl"></i>
+                    </a>
+                    <a href="#" class="social-icon text-slate-400 hover:text-purple-400 transition">
+                        <i class="fab fa-instagram text-xl"></i>
+                    </a>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        // Mobile menu toggle
+        const mobileMenuButton = document.getElementById('mobile-menu-button');
+        const closeMobileMenu = document.getElementById('close-mobile-menu');
+        const mobileMenu = document.getElementById('mobile-menu');
+        
+        mobileMenuButton.addEventListener('click', () => {
+            mobileMenu.classList.remove('translate-x-full');
+            document.body.style.overflow = 'hidden';
+        });
+        
+        closeMobileMenu.addEventListener('click', () => {
+            mobileMenu.classList.add('translate-x-full');
+            document.body.style.overflow = 'auto';
+        });
+        
+        // Close mobile menu when clicking on a link
+        const mobileLinks = document.querySelectorAll('#mobile-menu a');
+        mobileLinks.forEach(link => {
+            link.addEventListener('click', () => {
+                mobileMenu.classList.add('translate-x-full');
+                document.body.style.overflow = 'auto';
+            });
+        });
+        
+        // Smooth scrolling for anchor links
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                
+                const targetId = this.getAttribute('href');
+                if (targetId === '#') return;
+                
+                const targetElement = document.querySelector(targetId);
+                if (targetElement) {
+                    targetElement.scrollIntoView({
+                        behavior: 'smooth'
+                    });
+                }
+            });
+        });
+        
+        // Add shadow to navbar on scroll
+        window.addEventListener('scroll', function() {
+            const nav = document.querySelector('nav');
+            if (window.scrollY > 50) {
+                nav.classList.add('shadow-lg');
+                nav.classList.add('bg-slate-900/90');
+            } else {
+                nav.classList.remove('shadow-lg');
+                nav.classList.remove('bg-slate-900/90');
+            }
+        });
+        
+        // Progress bar on scroll
+        window.addEventListener('scroll', function() {
+            const progressBar = document.getElementById('progressBar');
+            const scrollTop = document.documentElement.scrollTop || document.body.scrollTop;
+            const scrollHeight = document.documentElement.scrollHeight - document.documentElement.clientHeight;
+            const scrollProgress = (scrollTop / scrollHeight) * 100;
+            progressBar.style.width = scrollProgress + '%';
+        });
+        
+        // Cursor trail effect
+        document.addEventListener('DOMContentLoaded', function() {
+            const cursorTrail = document.getElementById('cursorTrail');
+            let mouseX = 0, mouseY = 0;
+            let trailX = 0, trailY = 0;
+            const speed = 0.2;
+            
+            document.addEventListener('mousemove', function(e) {
+                mouseX = e.clientX;
+                mouseY = e.clientY;
+            });
+            
+            function animate() {
+                const dx = mouseX - trailX;
+                const dy = mouseY - trailY;
+                
+                trailX += dx * speed;
+                trailY += dy * speed;
+                
+                cursorTrail.style.left = trailX + 'px';
+                cursorTrail.style.top = trailY + 'px';
+                
+                requestAnimationFrame(animate);
+            }
+            
+            animate();
+        });
+        
+        // Animate stats
+        function animateStats() {
+            const stat1 = document.getElementById('stat1');
+            const stat2 = document.getElementById('stat2');
+            const stat3 = document.getElementById('stat3');
+            const stat4 = document.getElementById('stat4');
+            
+            const target1 = 56;
+            const target2 = 56;
+            const target3 = 3;
+            const target4 = 6000;
+            
+            let count1 = 0;
+            let count2 = 0;
+            let count3 = 0;
+            let count4 = 0;
+            
+            const duration = 2000; // 2 seconds
+            const interval = 20;
+            const steps = duration / interval;
+            const increment1 = target1 / steps;
+            const increment2 = target2 / steps;
+            const increment3 = target3 / steps;
+            const increment4 = target4 / steps;
+            
+            const timer = setInterval(() => {
+                count1 += increment1;
+                count2 += increment2;
+                count3 += increment3;
+                count4 += increment4;
+                
+                if (count1 >= target1) count1 = target1;
+                if (count2 >= target2) count2 = target2;
+                if (count3 >= target3) count3 = target3;
+                if (count4 >= target4) count4 = target4;
+                
+                stat1.textContent = Math.floor(count1);
+                stat2.textContent = Math.floor(count2);
+                stat3.textContent = Math.floor(count3);
+                stat4.textContent = Math.floor(count4);
+                
+                if (count1 >= target1 && count2 >= target2 && count3 >= target3 && count4 >= target4) {
+                    clearInterval(timer);
+                }
+            }, interval);
+        }
+        
+        // Trigger stats animation when stats section is in view
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    animateStats();
+                    observer.unobserve(entry.target);
+                }
+            });
+        }, { threshold: 0.5 });
+        
+        const statsSection = document.querySelector('section.py-16');
+        if (statsSection) {
+            observer.observe(statsSection);
+        }
+    </script>
+</body>
+</html>
