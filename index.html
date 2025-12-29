@@ -297,6 +297,25 @@
         @keyframes spin {
             to { transform: rotate(360deg); }
         }
+    
+        /* Mobile & accessibility tweaks */
+        html[dir="rtl"] #scrollToTopBtn { left: 20px; right: auto; }
+        html[dir="ltr"] #scrollToTopBtn { right: 20px; left: auto; }
+        html[dir="rtl"] #whatsapp-fab { left: 20px; right: auto; }
+        html[dir="ltr"] #whatsapp-fab { right: 20px; left: auto; }
+        html[dir="rtl"] #close-mobile-menu { left: auto; right: 1.5rem; }
+        html[dir="ltr"] #close-mobile-menu { right: auto; left: 1.5rem; }
+
+        @media (max-width: 640px) {
+            #scrollToTopBtn { width: 44px; height: 44px; bottom: 18px; }
+            #whatsapp-fab { width: 52px; height: 52px; bottom: 18px; }
+            .glass-card { border-radius: 18px; }
+        }
+
+        @media (prefers-reduced-motion: reduce) {
+            * { animation-duration: 0.001ms !important; animation-iteration-count: 1 !important; transition-duration: 0.001ms !important; scroll-behavior: auto !important; }
+        }
+
     </style>
 </head>
 <body class="bg-gray-950">
@@ -319,7 +338,7 @@
     
     <nav class="fixed w-full z-[990] border-b border-slate-800/30 transition-all duration-300 ease-in-out" id="navbar" style="top: 0;">
         <div class="absolute inset-x-0 bottom-0 h-px bg-gradient-to-r from-transparent via-indigo-500/30 to-transparent"></div>
-        <div class="container mx-auto px-6 py-4 flex justify-between items-center">
+        <div class="container mx-auto px-4 sm:px-6 py-4 flex justify-between items-center">
             <a href="#" class="text-2xl font-bold flex items-center gap-2">
                 <span class="gradient-text" data-en="Designer">المصمم</span>
                 <span class="text-white" data-en="Anas">أنـس</span>
@@ -330,6 +349,8 @@
                 <a href="#services" class="nav-link text-slate-300 hover:text-white" data-en="Services">الخدمات</a>
                 <a href="#portfolio" class="nav-link text-slate-300 hover:text-white" data-en="Portfolio">المشاريع</a>
                 <a href="#about" class="nav-link text-slate-300 hover:text-white" data-en="About">عني</a>
+                <a href="#testimonials" class="nav-link text-slate-300 hover:text-white" data-en="Testimonials">آراء العملاء</a>
+                <a href="#faq" class="nav-link text-slate-300 hover:text-white" data-en="FAQ">الأسئلة الشائعة</a>
                 <a href="#contact" class="nav-link text-slate-300 hover:text-white" data-en="Contact">اتصل بي</a>
             </div>
 
@@ -350,6 +371,8 @@
             <a href="#services" class="text-2xl font-medium text-slate-300 py-2 border-b border-slate-700" data-en="Services">الخدمات</a>
             <a href="#portfolio" class="text-2xl font-medium text-slate-300 py-2 border-b border-slate-700" data-en="Portfolio">المشاريع</a>
             <a href="#about" class="text-2xl font-medium text-slate-300 py-2 border-b border-slate-700" data-en="About">عني</a>
+            <a href="#testimonials" class="text-2xl font-medium text-slate-300 py-2 border-b border-slate-700" data-en="Testimonials">آراء العملاء</a>
+            <a href="#faq" class="text-2xl font-medium text-slate-300 py-2 border-b border-slate-700" data-en="FAQ">الأسئلة الشائعة</a>
             <a href="#contact" class="text-2xl font-medium text-slate-300 py-2 border-b border-slate-700" data-en="Contact">اتصل بي</a>
         </div>
         <button class="absolute top-6 left-6 text-white text-3xl" id="close-mobile-menu">
@@ -359,11 +382,16 @@
     
     <button id="scrollToTopBtn" title="Go to top"><i class="fas fa-arrow-up"></i></button>
 
+
+    <a id="whatsapp-fab" href="https://wa.me/966575570110" target="_blank" aria-label="WhatsApp" class="fixed bottom-5 right-5 z-[999] w-14 h-14 rounded-full bg-gradient-to-r from-green-500 to-emerald-600 text-white flex items-center justify-center shadow-xl transition-transform duration-300 hover:scale-105">
+        <i class="fab fa-whatsapp text-3xl"></i>
+    </a>
+
     <!-- Page Content Wrapper -->
     <div class="relative">
         <!-- القسم الرئيسي -->
         <header class="min-h-screen flex items-center justify-center pt-24 pb-12 relative">
-            <div class="container mx-auto px-6 relative z-10">
+            <div class="container mx-auto px-4 sm:px-6 relative z-10">
                 <div class="grid lg:grid-cols-2 gap-12 items-center">
                     <!-- Hero Text -->
                     <div class="text-right reveal" id="hero-text-content">
@@ -434,7 +462,7 @@
         <main>
             <!-- قسم الخدمات -->
             <section id="services" class="py-20">
-                <div class="container mx-auto px-6">
+                <div class="container mx-auto px-4 sm:px-6">
                     <div class="text-center mb-16 reveal">
                         <h2 class="text-3xl md:text-4xl font-bold mb-4" data-en="My Services">خدماتي</h2>
                         <div class="w-24 h-1 bg-gradient-to-r from-indigo-500 to-purple-500 mx-auto"></div>
@@ -485,9 +513,80 @@
                 </div>
             </section>
 
+
+            <!-- قسم طريقة العمل -->
+            <section id="process" class="py-20 bg-gray-900/30">
+                <div class="container mx-auto px-4 sm:px-6">
+                    <div class="text-center mb-16 reveal">
+                        <h2 class="text-3xl md:text-4xl font-bold mb-4" data-en="How I Work">كيف أشتغل معك؟</h2>
+                        <div class="w-24 h-1 bg-gradient-to-r from-indigo-500 to-purple-500 mx-auto"></div>
+                        <p class="text-slate-400 max-w-3xl mx-auto leading-relaxed mt-4" data-en="A clear process that keeps everything fast, organized, and delivered on time.">
+                            خطوات واضحة تخلي الشغل سريع ومرتب وتستلم نتيجتك في وقتها.
+                        </p>
+                    </div>
+
+                    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
+                        <div class="glass-card rounded-2xl p-7 reveal">
+                            <div class="flex items-center justify-between mb-4">
+                                <span class="text-xs bg-slate-800/60 border border-slate-700/60 text-slate-200 px-3 py-1 rounded-full" data-en="Step 1">الخطوة 1</span>
+                                <i class="fas fa-magnifying-glass text-indigo-400 text-xl"></i>
+                            </div>
+                            <h3 class="text-xl font-bold mb-3" data-en="Discovery">فهم الهدف</h3>
+                            <p class="text-slate-400 leading-relaxed" data-en="We align on your goals, audience, and the exact pages/sections you need.">
+                                نحدد هدف الموقع، الجمهور، والصفحات المطلوبة — بدون كلام كثير وبدون تعقيد.
+                            </p>
+                        </div>
+
+                        <div class="glass-card rounded-2xl p-7 reveal" style="transition-delay: 150ms;">
+                            <div class="flex items-center justify-between mb-4">
+                                <span class="text-xs bg-slate-800/60 border border-slate-700/60 text-slate-200 px-3 py-1 rounded-full" data-en="Step 2">الخطوة 2</span>
+                                <i class="fas fa-pen-ruler text-purple-400 text-xl"></i>
+                            </div>
+                            <h3 class="text-xl font-bold mb-3" data-en="UI/UX Design">تصميم UI/UX</h3>
+                            <p class="text-slate-400 leading-relaxed" data-en="I design a clean layout and user flow, then we approve it before development.">
+                                أصمم واجهة مرتبة وتجربة استخدام واضحة، وبعد موافقتك نبدأ التطوير.
+                            </p>
+                        </div>
+
+                        <div class="glass-card rounded-2xl p-7 reveal" style="transition-delay: 300ms;">
+                            <div class="flex items-center justify-between mb-4">
+                                <span class="text-xs bg-slate-800/60 border border-slate-700/60 text-slate-200 px-3 py-1 rounded-full" data-en="Step 3">الخطوة 3</span>
+                                <i class="fas fa-code text-fuchsia-400 text-xl"></i>
+                            </div>
+                            <h3 class="text-xl font-bold mb-3" data-en="Development">تطوير وتجهيز</h3>
+                            <p class="text-slate-400 leading-relaxed" data-en="Fast, responsive build with clean code, performance checks, and SEO basics.">
+                                تطوير سريع ومتجاوب + فحص سرعة + أساسيات SEO — عشان الموقع يطلع مضبوط.
+                            </p>
+                        </div>
+
+                        <div class="glass-card rounded-2xl p-7 reveal" style="transition-delay: 450ms;">
+                            <div class="flex items-center justify-between mb-4">
+                                <span class="text-xs bg-slate-800/60 border border-slate-700/60 text-slate-200 px-3 py-1 rounded-full" data-en="Step 4">الخطوة 4</span>
+                                <i class="fas fa-rocket text-indigo-300 text-xl"></i>
+                            </div>
+                            <h3 class="text-xl font-bold mb-3" data-en="Launch & Support">إطلاق + دعم</h3>
+                            <p class="text-slate-400 leading-relaxed" data-en="We publish the site, connect analytics, and I support you after launch if needed.">
+                                نطلق الموقع، نربط الإحصائيات، وأكون معك بعد الإطلاق لأي تعديلات أو دعم.
+                            </p>
+                        </div>
+                    </div>
+
+                    <div class="mt-12 flex flex-col sm:flex-row gap-4 justify-center reveal">
+                        <a href="#contact" class="btn-primary bg-gradient-to-r from-indigo-500 to-purple-600 text-white px-10 py-4 rounded-full font-semibold text-lg inline-flex items-center justify-center">
+                            <span data-en="Start a Project">ابدأ مشروعك الآن</span>
+                            <i class="fas fa-arrow-left mr-3"></i>
+                        </a>
+                        <a href="#portfolio" class="bg-slate-800/50 border border-slate-700 hover:border-indigo-500 text-white px-10 py-4 rounded-full font-semibold text-lg transition-all duration-300 inline-flex items-center justify-center">
+                            <span data-en="See Recent Work">شوف آخر أعمالي</span>
+                            <i class="fas fa-eye mr-3"></i>
+                        </a>
+                    </div>
+                </div>
+            </section>
+
             <!-- قسم معرض الأعمال -->
             <section id="portfolio" class="py-20 bg-gray-900/50">
-                <div class="container mx-auto px-6 text-center reveal">
+                <div class="container mx-auto px-4 sm:px-6 text-center reveal">
                     <h2 class="text-3xl md:text-4xl font-bold mb-6" data-en="My Design Works">أعمالي التصميمية</h2>
                     <p class="text-slate-400 max-w-2xl mx-auto mb-10 leading-relaxed" data-en="Explore a collection of my projects that reflect my creativity and expertise in digital design.">
                         استكشف مجموعة من مشاريعي التي تعكس إبداعي وخبرتي في التصميم الرقمي.
@@ -500,7 +599,7 @@
 
             <!-- قسم الإحصائيات -->
             <section id="stats-section" class="py-20">
-                <div class="container mx-auto px-6">
+                <div class="container mx-auto px-4 sm:px-6">
                     <div class="grid grid-cols-2 md:grid-cols-4 gap-8 text-center">
                         <div class="reveal">
                             <div class="text-5xl font-bold gradient-text mb-2" id="stat1">0</div>
@@ -524,13 +623,13 @@
 
             <!-- قسم "عني" -->
             <section id="about" class="py-20 bg-gray-900/50">
-                <div class="container mx-auto px-6">
+                <div class="container mx-auto px-4 sm:px-6">
                     <div class="grid lg:grid-cols-2 gap-16 items-center">
                         <div class="reveal">
                             <div class="relative">
                                 <div class="absolute -inset-2 bg-gradient-to-r from-purple-600 to-fuchsia-600 rounded-2xl blur-xl opacity-30 group-hover:opacity-50 transition-opacity duration-300"></div>
                                 <div class="relative group">
-                                    <img src="imges/img_1885.jpg" alt="صورة شخصية للمصمم" class="relative w-full rounded-2xl shadow-2xl transition-all duration-700 ease-out group-hover:scale-105" onerror="this.onerror=null;this.src='https://placehold.co/600x600/030712/e5e7eb?text=Anas';">
+                                    <img src="imges/img_1885.jpg" alt="صورة شخصية للمصمم" class="relative w-full rounded-2xl shadow-2xl transition-all duration-700 ease-out group-hover:scale-105" loading="lazy" onerror="this.onerror=null;this.src='https://placehold.co/600x600/030712/e5e7eb?text=Anas';">
                                     <div class="absolute inset-0 bg-gradient-to-br from-indigo-500/20 to-purple-600/30 rounded-2xl opacity-0 group-hover:opacity-100 transition-opacity duration-700"></div>
                                     <div class="absolute inset-0 border-2 border-transparent group-hover:border-indigo-400/50 rounded-2xl transition-all duration-700 ease-out"></div>
                                 </div>
@@ -579,62 +678,194 @@
 
             <!-- قسم آراء العملاء -->
             <section id="testimonials" class="py-20">
-                <div class="container mx-auto px-6">
+                <div class="container mx-auto px-4 sm:px-6">
                     <div class="text-center mb-16 reveal">
                         <h2 class="text-3xl md:text-4xl font-bold mb-4" data-en="Client Testimonials">آراء العملاء</h2>
                         <div class="w-24 h-1 bg-gradient-to-r from-indigo-500 to-purple-500 mx-auto"></div>
+                        <p class="text-slate-400 max-w-3xl mx-auto leading-relaxed mt-4" data-en="Honest feedback from clients after delivery — focused on quality, speed, and results.">
+                            كلام عملاء بعد التسليم — يركّز على الجودة، السرعة، والنتيجة.
+                        </p>
                     </div>
-                    
-                    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
-                        <!-- رأي العميل 1 -->
+
+                    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
                         <div class="glass-card p-8 rounded-2xl reveal">
-                            <i class="fas fa-quote-right text-indigo-500 text-3xl mb-4"></i>
-                            <p class="text-slate-300 mb-6" data-en-quote="&quot;Thank you, Anas, for your cooperation. Your work is excellent, mashallah.&quot;">
-                                "نشكرك يا انس على تعاونك معنا شغلك ممتاز ماشاءالله"
+                            <div class="flex items-center justify-between mb-4">
+                                <div class="flex gap-1 text-yellow-400" aria-label="5 stars">
+                                    <i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i>
+                                </div>
+                                <i class="fas fa-quote-right text-indigo-500 text-2xl"></i>
+                            </div>
+                            <p class="text-slate-300 mb-6 leading-relaxed" data-en-quote="&quot;Super organized and fast. The website looks premium and works perfectly on mobile.&quot;">
+                                "مرتب جداً وسريع بالتسليم. الموقع طلع فخم ويشتغل ممتاز على الجوال."
                             </p>
-                            <div class="flex items-center">
-                                <img src="https://placehold.co/48x48/1f2937/a5b4fc?text=M" alt="Client" class="w-12 h-12 rounded-full object-cover mr-4">
-                                <div>
-                                    <h4 class="font-bold text-white" data-en="Al-Misk Al-Khaleejia Company">شركة المسك الخليجية</h4>
-                                    <p class="text-sm text-slate-400" data-en="Marketing Director">مديرة تسويق</p>
+                            <div class="flex items-center gap-4">
+                                <div class="w-12 h-12 rounded-full bg-slate-800 flex items-center justify-center text-indigo-200 font-bold">M</div>
+                                <div class="dir-text">
+                                    <h4 class="font-bold text-white" data-en="Maha Al-Shehri">مها الشهري</h4>
+                                    <p class="text-sm text-slate-400" data-en="Marketing Lead • Riyadh">قائدة تسويق • الرياض</p>
                                 </div>
                             </div>
                         </div>
-                        <!-- رأي العميل 2 -->
-                        <div class="glass-card p-8 rounded-2xl reveal" style="transition-delay: 150ms;">
-                            <i class="fas fa-quote-right text-purple-500 text-3xl mb-4"></i>
-                            <p class="text-slate-300 mb-6" data-en-quote="&quot;May Allah reward you. You are cooperative, patient, and professional, mashallah. May Allah grant you success.&quot;">
-                                "الله يعطيك العافيه متعاون وصبور ومحترف مشاءلله الله يوفقك ويفتح عليك"
+
+                        <div class="glass-card p-8 rounded-2xl reveal" style="transition-delay: 120ms;">
+                            <div class="flex items-center justify-between mb-4">
+                                <div class="flex gap-1 text-yellow-400" aria-label="5 stars">
+                                    <i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i>
+                                </div>
+                                <i class="fas fa-quote-right text-purple-500 text-2xl"></i>
+                            </div>
+                            <p class="text-slate-300 mb-6 leading-relaxed" data-en-quote="&quot;Great communication. He understood exactly what we wanted and delivered clean UI/UX.&quot;">
+                                "تواصل ممتاز وفهم المطلوب من أول مرة. الواجهة نظيفة وتجربة المستخدم ممتازة."
                             </p>
-                            <div class="flex items-center">
-                                <img src="https://placehold.co/48x48/1f2937/c084fc?text=F" alt="Client" class="w-12 h-12 rounded-full object-cover mr-4">
-                                <div>
-                                    <h4 class="font-bold text-white" data-en="Fahad">فهد</h4>
-                                    <p class="text-sm text-slate-400" data-en="Nasaem Founder">مؤسس نسائم</p>
+                            <div class="flex items-center gap-4">
+                                <div class="w-12 h-12 rounded-full bg-slate-800 flex items-center justify-center text-purple-200 font-bold">A</div>
+                                <div class="dir-text">
+                                    <h4 class="font-bold text-white" data-en="Abdullah Al-Otaibi">عبدالله العتيبي</h4>
+                                    <p class="text-sm text-slate-400" data-en="Clinic Owner • Dammam">مالك عيادة • الدمام</p>
                                 </div>
                             </div>
                         </div>
-                        <!-- رأي العميل 3 -->
-                        <div class="glass-card p-8 rounded-2xl reveal" style="transition-delay: 300ms;">
-                            <i class="fas fa-quote-right text-fuchsia-500 text-3xl mb-4"></i>
-                            <p class="text-slate-300 mb-6" data-en-quote="&quot;Excellent, he designed a restaurant menu professionally. Thank you.&quot;">
-                                "ممتاز صمم لي منيو مطعم بشكل محترف شكرا لك"
-                            </p>
-                            <div class="flex items-center">
-                                <img src="https://placehold.co/48x48/1f2937/f0abfc?text=M" alt="Client" class="w-12 h-12 rounded-full object-cover mr-4">
-                                <div>
-                                    <h4 class="font-bold text-white" data-en="Mohammed">محمد</h4>
-                                    <p class="text-sm text-slate-400" data-en="Makbous Zaman Founder">مؤسس مكبوس زمان</p>
+
+                        <div class="glass-card p-8 rounded-2xl reveal" style="transition-delay: 240ms;">
+                            <div class="flex items-center justify-between mb-4">
+                                <div class="flex gap-1 text-yellow-400" aria-label="5 stars">
+                                    <i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i>
                                 </div>
+                                <i class="fas fa-quote-right text-fuchsia-500 text-2xl"></i>
+                            </div>
+                            <p class="text-slate-300 mb-6 leading-relaxed" data-en-quote="&quot;The landing page improved our WhatsApp leads. Fast loading and looks modern.&quot;">
+                                "صفحة الهبوط حسّنت طلبات الواتساب عندنا. سريعة بالتحميل وشكلها حديث."
+                            </p>
+                            <div class="flex items-center gap-4">
+                                <div class="w-12 h-12 rounded-full bg-slate-800 flex items-center justify-center text-fuchsia-200 font-bold">S</div>
+                                <div class="dir-text">
+                                    <h4 class="font-bold text-white" data-en="Sara Al-Harbi">سارة الحربي</h4>
+                                    <p class="text-sm text-slate-400" data-en="Operations Manager • Jeddah">مديرة عمليات • جدة</p>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="glass-card p-8 rounded-2xl reveal" style="transition-delay: 360ms;">
+                            <div class="flex items-center justify-between mb-4">
+                                <div class="flex gap-1 text-yellow-400" aria-label="4.5 stars">
+                                    <i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star-half-stroke"></i>
+                                </div>
+                                <i class="fas fa-quote-right text-indigo-500 text-2xl"></i>
+                            </div>
+                            <p class="text-slate-300 mb-6 leading-relaxed" data-en-quote="&quot;Delivered exactly as agreed. The details in spacing and typography are spot on.&quot;">
+                                "سلّم نفس المتفق عليه بالضبط. تفاصيل المسافات والخطوط كانت دقيقة."
+                            </p>
+                            <div class="flex items-center gap-4">
+                                <div class="w-12 h-12 rounded-full bg-slate-800 flex items-center justify-center text-indigo-200 font-bold">N</div>
+                                <div class="dir-text">
+                                    <h4 class="font-bold text-white" data-en="Noura Al-Qahtani">نورة القحطاني</h4>
+                                    <p class="text-sm text-slate-400" data-en="Project Manager • Khobar">مديرة مشروع • الخبر</p>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="glass-card p-8 rounded-2xl reveal" style="transition-delay: 480ms;">
+                            <div class="flex items-center justify-between mb-4">
+                                <div class="flex gap-1 text-yellow-400" aria-label="5 stars">
+                                    <i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i>
+                                </div>
+                                <i class="fas fa-quote-right text-purple-500 text-2xl"></i>
+                            </div>
+                            <p class="text-slate-300 mb-6 leading-relaxed" data-en-quote="&quot;He optimized the site speed and fixed mobile layout issues. Huge improvement.&quot;">
+                                "حسّن سرعة الموقع وحل مشاكل التوافق مع الجوال. فرق واضح."
+                            </p>
+                            <div class="flex items-center gap-4">
+                                <div class="w-12 h-12 rounded-full bg-slate-800 flex items-center justify-center text-purple-200 font-bold">F</div>
+                                <div class="dir-text">
+                                    <h4 class="font-bold text-white" data-en="Fahad Al-Mutairi">فهد المطيري</h4>
+                                    <p class="text-sm text-slate-400" data-en="E-commerce Founder • Riyadh">مؤسس متجر إلكتروني • الرياض</p>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="glass-card p-8 rounded-2xl reveal" style="transition-delay: 600ms;">
+                            <div class="flex items-center justify-between mb-4">
+                                <div class="flex gap-1 text-yellow-400" aria-label="5 stars">
+                                    <i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i>
+                                </div>
+                                <i class="fas fa-quote-right text-fuchsia-500 text-2xl"></i>
+                            </div>
+                            <p class="text-slate-300 mb-6 leading-relaxed" data-en-quote="&quot;Professional and patient. He suggested improvements that made the site more convincing.&quot;">
+                                "محترف وصبور. اقترح إضافات مهمة خلت الموقع أقنع للعميل النهائي."
+                            </p>
+                            <div class="flex items-center gap-4">
+                                <div class="w-12 h-12 rounded-full bg-slate-800 flex items-center justify-center text-fuchsia-200 font-bold">M</div>
+                                <div class="dir-text">
+                                    <h4 class="font-bold text-white" data-en="Mohammed Al-Salem">محمد السالم</h4>
+                                    <p class="text-sm text-slate-400" data-en="Restaurant Founder • Qassim">مؤسس مطعم • القصيم</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+            </section>
+
+
+            <!-- قسم الأسئلة الشائعة -->
+            <section id="faq" class="py-20 bg-gray-900/50">
+                <div class="container mx-auto px-4 sm:px-6">
+                    <div class="text-center mb-16 reveal">
+                        <h2 class="text-3xl md:text-4xl font-bold mb-4" data-en="FAQ">الأسئلة الشائعة</h2>
+                        <div class="w-24 h-1 bg-gradient-to-r from-indigo-500 to-purple-500 mx-auto"></div>
+                        <p class="text-slate-400 max-w-3xl mx-auto leading-relaxed mt-4" data-en="Quick answers for the most common questions before we start.">
+                            إجابات سريعة لأكثر الأسئلة تكرارًا قبل ما نبدأ.
+                        </p>
+                    </div>
+
+                    <div class="max-w-3xl mx-auto space-y-4">
+                        <div class="glass-card rounded-2xl p-6 reveal" data-accordion>
+                            <button class="w-full flex items-center justify-between gap-4 text-right" data-accordion-btn>
+                                <span class="font-bold text-white text-lg" data-en="How long does a website take?">كم ياخذ وقت تنفيذ الموقع؟</span>
+                                <i class="fas fa-chevron-down text-slate-300 transition-transform duration-300" data-accordion-icon></i>
+                            </button>
+                            <div class="mt-4 text-slate-400 leading-relaxed hidden" data-accordion-panel data-en="Most small business websites take 3–10 days depending on pages and content readiness.">
+                                غالبًا مواقع الشركات الصغيرة تاخذ من 3 إلى 10 أيام حسب عدد الصفحات وتجهيز المحتوى.
+                            </div>
+                        </div>
+
+                        <div class="glass-card rounded-2xl p-6 reveal" style="transition-delay: 120ms;" data-accordion>
+                            <button class="w-full flex items-center justify-between gap-4 text-right" data-accordion-btn>
+                                <span class="font-bold text-white text-lg" data-en="Do you provide hosting and domain?">هل توفر استضافة ودومين؟</span>
+                                <i class="fas fa-chevron-down text-slate-300 transition-transform duration-300" data-accordion-icon></i>
+                            </button>
+                            <div class="mt-4 text-slate-400 leading-relaxed hidden" data-accordion-panel data-en="I can guide you to the best option and help with setup, or I can manage it for you based on your preference.">
+                                أقدر أرشح لك أفضل خيار وأساعدك بالإعداد، أو أتولى الموضوع بالكامل حسب رغبتك.
+                            </div>
+                        </div>
+
+                        <div class="glass-card rounded-2xl p-6 reveal" style="transition-delay: 240ms;" data-accordion>
+                            <button class="w-full flex items-center justify-between gap-4 text-right" data-accordion-btn>
+                                <span class="font-bold text-white text-lg" data-en="Will the site be mobile-friendly?">هل الموقع بيكون متوافق مع الجوال؟</span>
+                                <i class="fas fa-chevron-down text-slate-300 transition-transform duration-300" data-accordion-icon></i>
+                            </button>
+                            <div class="mt-4 text-slate-400 leading-relaxed hidden" data-accordion-panel data-en="Yes — mobile-first responsive layout, tested on common screen sizes with clean typography and spacing.">
+                                نعم — تصميم Mobile-first متجاوب، مع اختبار على مقاسات شاشات مختلفة وتنسيق واضح.
+                            </div>
+                        </div>
+
+                        <div class="glass-card rounded-2xl p-6 reveal" style="transition-delay: 360ms;" data-accordion>
+                            <button class="w-full flex items-center justify-between gap-4 text-right" data-accordion-btn>
+                                <span class="font-bold text-white text-lg" data-en="Can you add analytics and tracking?">هل تضيف إحصائيات وتتبع؟</span>
+                                <i class="fas fa-chevron-down text-slate-300 transition-transform duration-300" data-accordion-icon></i>
+                            </button>
+                            <div class="mt-4 text-slate-400 leading-relaxed hidden" data-accordion-panel data-en="Yes — Google Analytics / simple tracking and conversion events if needed.">
+                                نعم — ربط Google Analytics / تتبع بسيط + أحداث تحويل إذا احتجت.
                             </div>
                         </div>
                     </div>
                 </div>
             </section>
 
+
             <!-- قسم التواصل -->
             <section id="contact" class="py-20 bg-gray-900/50">
-                <div class="container mx-auto px-6">
+                <div class="container mx-auto px-4 sm:px-6">
                     <div class="text-center mb-16 reveal">
                         <h2 class="text-3xl md:text-4xl font-bold mb-4" data-en="Contact Me">تواصل معي</h2>
                         <div class="w-24 h-1 bg-gradient-to-r from-indigo-500 to-purple-500 mx-auto"></div>
@@ -664,7 +895,7 @@
         <!-- التذييل -->
         <footer class="bg-gray-950 py-12 border-t border-slate-800/30 relative">
             <div class="absolute inset-x-0 top-0 h-px bg-gradient-to-r from-transparent via-indigo-500/30 to-transparent"></div>
-            <div class="container mx-auto px-6 text-center text-slate-400">
+            <div class="container mx-auto px-4 sm:px-6 text-center text-slate-400">
                 <p data-en="© 2025 All rights reserved for Designer Anas. Designed with dedication and love.">
                     © 2025 جميع الحقوق محفوظة للمصمم أنس. صمم بتفانٍ وحب.
                 </p>
@@ -676,333 +907,392 @@
     <script src="https://cdn.jsdelivr.net/npm/particles.js@2.0.0/particles.min.js"></script>
 
     <script>
-        document.addEventListener('DOMContentLoaded', () => {
-            // --- شاشة التحميل ---
-            const preloader = document.getElementById('preloader');
-            window.addEventListener('load', () => {
-                preloader.style.opacity = '0';
-                setTimeout(() => {
-                    preloader.style.display = 'none';
-                }, 500);
-            });
+document.addEventListener('DOMContentLoaded', () => {
+  // ===== Helpers =====
+  const $ = (sel, root = document) => root.querySelector(sel);
+  const $$ = (sel, root = document) => Array.from(root.querySelectorAll(sel));
 
-            // --- مؤشر الفأرة المخصص ---
-            const isTouchDevice = 'ontouchstart' in window || navigator.maxTouchPoints > 0;
+  // ===== Preloader =====
+  const preloader = document.getElementById('preloader');
+  const hidePreloader = () => {
+    if (!preloader) return;
+    preloader.style.opacity = '0';
+    setTimeout(() => {
+      preloader.style.display = 'none';
+    }, 500);
+  };
+  window.addEventListener('load', hidePreloader, { once: true });
+  setTimeout(hidePreloader, 1800);
 
-            if (isTouchDevice) {
-                // On touch devices, remove the custom cursor elements entirely.
-                document.querySelector('.cursor-dot')?.remove();
-                document.querySelector('.cursor-outline')?.remove();
-            } else {
-                // On non-touch devices, hide the default cursor and enable the custom one.
-                document.body.style.cursor = 'none';
-                const cursorDot = document.querySelector('.cursor-dot');
-                const cursorOutline = document.querySelector('.cursor-outline');
-                window.addEventListener('mousemove', (e) => {
-                    const { clientX: posX, clientY: posY } = e;
-                    cursorDot.style.left = `${posX}px`;
-                    cursorDot.style.top = `${posY}px`;
-                    cursorOutline.animate({
-                        left: `${posX}px`,
-                        top: `${posY}px`
-                    }, { duration: 500, fill: 'forwards' });
-                });
-                document.querySelectorAll('a, button, .glass-card, .gallery-item').forEach(el => {
-                    el.addEventListener('mouseenter', () => cursorOutline.classList.add('hover'));
-                    el.addEventListener('mouseleave', () => cursorOutline.classList.remove('hover'));
-                });
-            }
+  // ===== Custom cursor =====
+  const isTouchDevice = 'ontouchstart' in window || navigator.maxTouchPoints > 0;
+  if (isTouchDevice) {
+    $('.cursor-dot')?.remove();
+    $('.cursor-outline')?.remove();
+  } else {
+    const cursorDot = $('.cursor-dot');
+    const cursorOutline = $('.cursor-outline');
+    if (cursorDot && cursorOutline) {
+      document.body.style.cursor = 'none';
+      window.addEventListener('mousemove', (e) => {
+        const { clientX: posX, clientY: posY } = e;
+        cursorDot.style.left = `${posX}px`;
+        cursorDot.style.top = `${posY}px`;
+        cursorOutline.animate(
+          { left: `${posX}px`, top: `${posY}px` },
+          { duration: 500, fill: 'forwards' }
+        );
+      }, { passive: true });
 
-            // --- تأثير 3D للبطاقات ---
-            const cards = document.querySelectorAll('.glass-card');
-            cards.forEach(card => {
-                card.addEventListener('mousemove', (e) => {
-                    const { left, top, width, height } = card.getBoundingClientRect();
-                    const x = e.clientX - left - width / 2;
-                    const y = e.clientY - top - height / 2;
-                    const rotateX = (y / height) * -10;
-                    const rotateY = (x / width) * 10;
-                    card.style.transform = `perspective(1000px) rotateX(${rotateX}deg) rotateY(${rotateY}deg) scale3d(1.05, 1.05, 1.05)`;
-                });
-                card.addEventListener('mouseleave', () => {
-                    card.style.transform = 'perspective(1000px) rotateX(0) rotateY(0) scale3d(1, 1, 1)';
-                });
-            });
+      $$('a, button, .glass-card, .gallery-item').forEach((el) => {
+        el.addEventListener('mouseenter', () => cursorOutline.classList.add('hover'));
+        el.addEventListener('mouseleave', () => cursorOutline.classList.remove('hover'));
+      });
+    }
+  }
 
-            // --- تأثير Parallax للصورة الرئيسية ---
-            const heroImage = document.getElementById('hero-image-container');
-            window.addEventListener('mousemove', (e) => {
-                const { clientX, clientY } = e;
-                const x = (clientX / window.innerWidth - 0.5) * 30;
-                const y = (clientY / window.innerHeight - 0.5) * 30;
-                if(heroImage) {
-                    heroImage.style.transform = `translateX(${x}px) translateY(${y}px)`;
-                }
-            });
+  // ===== 3D cards =====
+  if (!isTouchDevice) {
+    $$('.glass-card').forEach((card) => {
+      card.addEventListener('mousemove', (e) => {
+        const { left, top, width, height } = card.getBoundingClientRect();
+        const x = e.clientX - left - width / 2;
+        const y = e.clientY - top - height / 2;
+        const rotateX = (y / height) * -10;
+        const rotateY = (x / width) * 10;
+        card.style.transform = `perspective(1000px) rotateX(${rotateX}deg) rotateY(${rotateY}deg) scale3d(1.05, 1.05, 1.05)`;
+      });
+      card.addEventListener('mouseleave', () => {
+        card.style.transform = 'perspective(1000px) rotateX(0) rotateY(0) scale3d(1, 1, 1)';
+      });
+    });
+  }
 
-            // --- قاموس الترجمة (بدون تغيير) ---
-            // ... (الكود الأصلي للترجمة هنا) ...
-            
-            // --- تأثير الكتابة للعنوان الفرعي (بدون تغيير) ---
-            const typingElement = document.getElementById('typing-subtitle');
-            const subtitles = {
-                ar: "مصمم ومطوّر مواقع وتجارب رقمية",
-                en: "Designer & Web Developer"
-            };
-            let typingTimeout;
+  // ===== Hero parallax =====
+  const heroImage = document.getElementById('hero-image-container');
+  if (!isTouchDevice && heroImage) {
+    window.addEventListener('mousemove', (e) => {
+      const { clientX, clientY } = e;
+      const x = (clientX / window.innerWidth - 0.5) * 30;
+      const y = (clientY / window.innerHeight - 0.5) * 30;
+      heroImage.style.transform = `translateX(${x}px) translateY(${y}px)`;
+    }, { passive: true });
+  }
 
-            function startTypingAnimation() {
-                if (typingTimeout) clearTimeout(typingTimeout);
-                typingElement.innerHTML = '';
-                let i = 0;
-                const text = subtitles[currentLang];
-                function typeWriter() {
-                    if (i < text.length) {
-                        typingElement.innerHTML += text.charAt(i);
-                        i++;
-                        typingTimeout = setTimeout(typeWriter, 70);
-                    }
-                }
-                typeWriter();
-            }
-            // startTypingAnimation(); // سيتم استدعاؤها من دالة الترجمة
+  // ===== Mobile menu =====
+  const mobileMenuButton = document.getElementById('mobile-menu-button');
+  const closeMobileMenu = document.getElementById('close-mobile-menu');
+  const mobileMenu = document.getElementById('mobile-menu');
+  const mobileLinks = $$('#mobile-menu a');
 
-            // --- القائمة المتجاوبة (Mobile Menu) (بدون تغيير) ---
-            const mobileMenuButton = document.getElementById('mobile-menu-button');
-            const closeMobileMenu = document.getElementById('close-mobile-menu');
-            const mobileMenu = document.getElementById('mobile-menu');
-            const mobileLinks = document.querySelectorAll('#mobile-menu a');
-            const toggleMenu = (open) => {
-                if (open) {
-                    mobileMenu.classList.remove('translate-x-full');
-                    document.body.style.overflow = 'hidden';
-                } else {
-                    mobileMenu.classList.add('translate-x-full');
-                    document.body.style.overflow = ''; 
-                }
-            };
-            mobileMenuButton.addEventListener('click', () => toggleMenu(true));
-            closeMobileMenu.addEventListener('click', () => toggleMenu(false));
-            mobileLinks.forEach(link => link.addEventListener('click', () => toggleMenu(false)));
+  const toggleMenu = (open) => {
+    if (!mobileMenu) return;
+    if (open) {
+      mobileMenu.classList.remove('translate-x-full');
+      document.body.style.overflow = 'hidden';
+    } else {
+      mobileMenu.classList.add('translate-x-full');
+      document.body.style.overflow = '';
+    }
+  };
 
-            // --- تحسين إخفاء وإظهار القائمة عند التمرير ---
-            let lastScrollTop = 0;
-            const navbar = document.getElementById('navbar');
-            const scrollToTopBtn = document.getElementById('scrollToTopBtn');
-            const navbarHeight = navbar.offsetHeight;
-            
-            window.addEventListener('scroll', function() {
-                let scrollTop = window.pageYOffset || document.documentElement.scrollTop;
-                
-                // تحسين سلوك إخفاء/إظهار القائمة
-                if (scrollTop > lastScrollTop && scrollTop > navbarHeight) {
-                    // التمرير لأسفل
-                    navbar.style.top = `-${navbarHeight}px`;
-                } else {
-                    // التمرير لأعلى أو في الأعلى
-                    navbar.style.top = "0";
-                }
-                lastScrollTop = scrollTop <= 0 ? 0 : scrollTop;
+  mobileMenuButton?.addEventListener('click', () => toggleMenu(true));
+  closeMobileMenu?.addEventListener('click', () => toggleMenu(false));
+  mobileLinks.forEach((link) => link.addEventListener('click', () => toggleMenu(false)));
 
-                // إضافة/إزالة خلفية القائمة
-                if (scrollTop > 50) {
-                    navbar.classList.add('bg-gray-950/90');
-                    navbar.classList.add('backdrop-blur-xl');
-                } else {
-                    navbar.classList.remove('bg-gray-950/90');
-                    navbar.classList.remove('backdrop-blur-xl');
-                }
-                
-                // التحكم في زر العودة للأعلى
-                if (scrollTop > 300) {
-                    scrollToTopBtn.classList.add('show');
-                } else {
-                    scrollToTopBtn.classList.remove('show');
-                }
-            }, { passive: true });
+  // ===== Navbar hide/show + Scroll to top =====
+  let lastScrollTop = 0;
+  const navbar = document.getElementById('navbar');
+  const scrollToTopBtn = document.getElementById('scrollToTopBtn');
 
-            // --- وظيفة زر العودة للأعلى ---
-            scrollToTopBtn.addEventListener('click', () => {
-                window.scrollTo({ top: 0, behavior: 'smooth' });
-            });
+  const onScrollUI = () => {
+    const scrollTop = window.pageYOffset || document.documentElement.scrollTop;
 
-            // --- شريط التقدم (بدون تغيير) ---
-            const progressBar = document.getElementById('progressBar');
-            window.addEventListener('scroll', () => {
-                const scrollHeight = document.documentElement.scrollHeight - document.documentElement.clientHeight;
-                const scrollProgress = (window.scrollY / scrollHeight) * 100;
-                progressBar.style.width = scrollProgress + '%';
-            });
+    if (navbar) {
+      const navbarHeight = navbar.offsetHeight || 0;
+      if (scrollTop > lastScrollTop && scrollTop > navbarHeight) {
+        navbar.style.top = `-${navbarHeight}px`;
+      } else {
+        navbar.style.top = '0';
+      }
 
-            // --- عداد الأرقام المتحرك (بدون تغيير) ---
-            function animateStats(element, start, end, duration) {
-                let startTimestamp = null;
-                const step = (timestamp) => {
-                    if (!startTimestamp) startTimestamp = timestamp;
-                    const progress = Math.min((timestamp - startTimestamp) / duration, 1);
-                    element.innerText = Math.floor(progress * (end - start) + start).toLocaleString();
-                    if (progress < 1) window.requestAnimationFrame(step);
-                };
-                window.requestAnimationFrame(step);
-            }
+      if (scrollTop > 50) navbar.classList.add('bg-gray-950/90', 'backdrop-blur-xl');
+      else navbar.classList.remove('bg-gray-950/90', 'backdrop-blur-xl');
+    }
 
-            // --- Intersection Observer للتحريكات (بدون تغيير) ---
-            const observer = new IntersectionObserver((entries) => {
-                entries.forEach(entry => {
-                    if (entry.isIntersecting) {
-                        entry.target.classList.add('visible');
-                        if (entry.target.id === 'stats-section') {
-                            animateStats(document.getElementById('stat1'), 0, 185, 2000);
-                            animateStats(document.getElementById('stat2'), 0, 78, 2000);
-                            animateStats(document.getElementById('stat3'), 0, 16, 2000);
-                            animateStats(document.getElementById('stat4'), 0, 6000, 2000);
-                            observer.unobserve(entry.target);
-                        }
-                    }
-                });
-            }, { threshold: 0.1 });
-            document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
-            observer.observe(document.getElementById('stats-section'));
+    if (scrollToTopBtn) {
+      if (scrollTop > 300) scrollToTopBtn.classList.add('show');
+      else scrollToTopBtn.classList.remove('show');
+    }
 
-            // --- تشغيل خلفية الجسيمات ---
-            particlesJS('particles-js', {
-                "particles": {
-                    "number": { "value": 80, "density": { "enable": true, "value_area": 1000 } },
-                    "color": { "value": ["#4f46e5", "#a855f7", "#d946ef"] },
-                    "shape": { "type": "circle", "stroke": { "width": 0, "color": "#000000" } },
-                    "opacity": { "value": 0.5, "random": true, "anim": { "enable": true, "speed": 1, "opacity_min": 0.1, "sync": false } },
-                    "size": { "value": 3, "random": true, "anim": { "enable": false } },
-                    "line_linked": { "enable": true, "distance": 150, "color": "#4f46e5", "opacity": 0.4, "width": 1 },
-                    "move": { "enable": true, "speed": 2, "direction": "none", "random": false, "straight": false, "out_mode": "out", "bounce": false }
-                },
-                "interactivity": {
-                    "detect_on": "canvas",
-                    "events": { "onhover": { "enable": true, "mode": "grab" }, "onclick": { "enable": true, "mode": "push" }, "resize": true },
-                    "modes": { "grab": { "distance": 140, "line_linked": { "opacity": 1 } }, "push": { "particles_nb": 4 } }
-                },
-                "retina_detect": true
-            });
-            
-            // --- كود الترجمة الكامل ---
-            const translations = {
-                ar: {
-                    designer: "المصمم", anas: "أنـس", home: "الرئيسية", portfolio: "المشاريع", services: "الخدمات", about: "عني", contact: "اتصل بي",
-                    hello: "مرحباً، أنا ", professionalDesigner: "مصمم ومطوّر مواقع وتجارب رقمية",
-                    heroP: "أبتكر تجارب رقمية ساحرة تجمع بين الجماليات والوظيفية لتحقيق أهداف عملك.",
-                    browseWork: "تصفح أعمالي", contactMe: "تواصل معي", myServices: "خدماتي",
-                    visualIdentity: "تصميم الهوية البصرية",
-                    visualIdentityP: "تصميم هوية متكاملة تعكس شخصية علامتك التجارية وتترك انطباعاً مميزاً لدى عملائك.",
-                    uiUxDesign: "تصميم واجهات وتجربة المستخدم",
-                    uiUxDesignP: "واجهات مستخدم بديهية وجذابة تحسن تجربة المستخدم وتزيد من معدلات التحويل.",
-                    advertisingDesign: "تصميم إعلانات",
-                    advertisingDesignP: "إعلانات جذابة ومؤثرة تلفت الانتباه وتزيد من فعالية حملاتك التسويقية.",
-                    myDesignWorks: "أعمالي التصميمية",
-                    myDesignWorksP: "استكشف مجموعة من مشاريعي التي تعكس إبداعي وخبرتي في التصميم الرقمي.",
-                    viewFullPortfolio: "عرض معرض الأعمال الكامل",
-                    projects: "مشروع منجز", clients: "عميل سعيد", certificates: "شهادات معتمدة", workingHours: "ساعة عمل",
-                    whoIsAnas: "من هو أنس؟",
-                    aboutP1: "مصمم واجهات رقمية مع أكثر من 5 سنوات من الخبرة في إنشاء حلول بصرية مبتكرة. أؤمن بالتصميم الذي يجمع بين الجماليات والوظيفية لخلق تجارب مستخدم لا تنسى.",
-                    skillUiUx: "تصميم واجهات وتجربة المستخدم", skillBranding: "الهوية البصرية والعلامات التجارية", skillWeb: "تطوير الويب",
-                    clientTestimonials: "آراء العملاء",
-                    client1Company: "شركة المسك الخليجية", client1Title: "مديرة تسويق", client1Quote: `"نشكرك يا انس على تعاونك معنا شغلك ممتاز ماشاءالله"`,
-                    client2Name: "فهد", client2Title: "مؤسس نسائم", client2Quote: `"الله يعطيك العافيه متعاون وصبور ومحترف مشاءلله الله يوفقك ويفتح عليك"`,
-                    client3Name: "محمد", client3Title: "مؤسس مكبوس زمان", client3Quote: `"ممتاز صمم لي منيو مطعم بشكل محترف شكرا لك"`,
-                    contactMeSection: "تواصل معي",
-                    contactMeSectionP: "هل لديك مشروع أو فكرة تريد مناقشتها؟ لا تتردد في التواصل معي وسأكون سعيداً بالمساعدة.",
-                    sendViaWhatsApp: "أرسل عبر الواتساب", or: "أو",
-                    footerText: "© 2025 جميع الحقوق محفوظة للمصمم أنس. صمم بتفانٍ وحب.",
-                    langButton: "English"
-                },
-                en: {
-                    designer: "Designer", anas: "Anas", home: "Home", portfolio: "Portfolio", services: "Services", about: "About", contact: "Contact",
-                    hello: "Hello, I'm ", professionalDesigner: "Designer & Web Developer",
-                    heroP: "I create captivating digital experiences that blend aesthetics with functionality to achieve your business goals.",
-                    browseWork: "Browse My Work", contactMe: "Contact Me", myServices: "My Services",
-                    visualIdentity: "Visual Identity Design",
-                    visualIdentityP: "Comprehensive identity design that reflects your brand's personality and leaves a distinctive impression on your customers.",
-                    uiUxDesign: "UI/UX Design",
-                    uiUxDesignP: "Intuitive and attractive user interfaces that enhance user experience and increase conversion rates.",
-                    advertisingDesign: "Advertising Design",
-                    advertisingDesignP: "Attractive and impactful advertisements that grab attention and increase the effectiveness of your marketing campaigns.",
-                    myDesignWorks: "My Design Works",
-                    myDesignWorksP: "Explore a collection of my projects that reflect my creativity and expertise in digital design.",
-                    viewFullPortfolio: "View Full Portfolio",
-                    projects: "Projects Completed", clients: "Happy Clients", certificates: "Certificates", workingHours: "Working Hours",
-                    whoIsAnas: "Who is Anas?",
-                    aboutP1: "A digital interface designer with over 5 years of experience in creating innovative visual solutions. I believe in design that combines aesthetics and functionality to create unforgettable user experiences.",
-                    skillUiUx: "UI/UX Design", skillBranding: "Branding", skillWeb: "Web Development",
-                    clientTestimonials: "Client Testimonials",
-                    client1Company: "Al-Misk Al-Khaleejia Company", client1Title: "Marketing Director", client1Quote: `"Thank you, Anas, for your cooperation. Your work is excellent, mashallah."`,
-                    client2Name: "Fahad", client2Title: "Nasaem Founder", client2Quote: `"May Allah reward you. You are cooperative, patient, and professional, mashallah. May Allah grant you success."`,
-                    client3Name: "Mohammed", client3Title: "Makbous Zaman Founder", client3Quote: `"Excellent, he designed a restaurant menu professionally. Thank you."`,
-                    contactMeSection: "Contact Me",
-                    contactMeSectionP: "Do you have a project or an idea you want to discuss? Feel free to contact me, and I'll be happy to help.",
-                    sendViaWhatsApp: "Send via WhatsApp", or: "OR",
-                    footerText: "© 2025 All rights reserved for Designer Anas. Designed with dedication and love.",
-                    langButton: "العربية"
-                }
-            };
+    lastScrollTop = scrollTop <= 0 ? 0 : scrollTop;
+  };
 
-            let currentLang = 'ar';
-            const elementsToTranslate = document.querySelectorAll('[data-en], [data-en-quote]');
-            
-            elementsToTranslate.forEach(el => {
-                el.dataset.ar = el.innerHTML;
-                if(el.dataset.enQuote) el.dataset.arQuote = el.innerHTML;
-            });
+  window.addEventListener('scroll', onScrollUI, { passive: true });
+  scrollToTopBtn?.addEventListener('click', () => window.scrollTo({ top: 0, behavior: 'smooth' }));
 
-            function updateContent() {
-                document.documentElement.lang = currentLang;
-                document.documentElement.dir = currentLang === 'ar' ? 'rtl' : 'ltr';
-                document.body.classList.toggle('en', currentLang === 'en');
+  // ===== Accordion (FAQ) =====
+  $$('[data-accordion]').forEach((item) => {
+    const btn = item.querySelector('[data-accordion-btn]');
+    const panel = item.querySelector('[data-accordion-panel]');
+    const icon = item.querySelector('[data-accordion-icon]');
+    if (!btn || !panel) return;
 
-                elementsToTranslate.forEach(el => {
-                    const enText = el.dataset.en;
-                    const arText = el.dataset.ar;
-                    const enQuote = el.dataset.enQuote;
-                    const arQuote = el.dataset.arQuote;
+    btn.addEventListener('click', () => {
+      const isOpen = !panel.classList.contains('hidden');
 
-                    if (currentLang === 'en') {
-                        if (enQuote) el.innerHTML = enQuote;
-                        else if (enText) el.innerHTML = enText;
-                    } else {
-                        if (arQuote) el.innerHTML = arQuote;
-                        else if (arText) el.innerHTML = arText;
-                    }
-                });
-                
-                document.getElementById('language-toggle').textContent = translations[currentLang].langButton;
-                
-                const heroTextContent = document.getElementById('hero-text-content');
-                const desktopNavLinks = document.getElementById('desktop-nav-links');
-                if (currentLang === 'en') {
-                    heroTextContent.classList.remove('text-right');
-                    heroTextContent.classList.add('text-left');
-                    heroTextContent.querySelector('div.flex').classList.remove('justify-end');
-                    heroTextContent.querySelector('div.flex').classList.add('justify-start');
-                    desktopNavLinks.classList.remove('gap-8');
-                    desktopNavLinks.classList.add('gap-6');
-                } else {
-                    heroTextContent.classList.remove('text-left');
-                    heroTextContent.classList.add('text-right');
-                    heroTextContent.querySelector('div.flex').classList.remove('justify-start');
-                    heroTextContent.querySelector('div.flex').classList.add('justify-end');
-                    desktopNavLinks.classList.remove('gap-6');
-                    desktopNavLinks.classList.add('gap-8');
-                }
-                
-                startTypingAnimation();
-            }
+      $$('[data-accordion-panel]').forEach((p) => {
+        if (p !== panel) p.classList.add('hidden');
+      });
+      $$('[data-accordion-icon]').forEach((i) => {
+        if (i !== icon) i.classList.remove('rotate-180');
+      });
 
-            document.getElementById('language-toggle').addEventListener('click', () => {
-                currentLang = currentLang === 'ar' ? 'en' : 'ar';
-                updateContent();
-            });
+      if (isOpen) {
+        panel.classList.add('hidden');
+        icon?.classList.remove('rotate-180');
+      } else {
+        panel.classList.remove('hidden');
+        icon?.classList.add('rotate-180');
+      }
+    });
+  });
 
-            // Initial call
-            startTypingAnimation();
+  // ===== Progress bar =====
+  const progressBar = document.getElementById('progressBar');
+  const onScrollProgress = () => {
+    if (!progressBar) return;
+    const scrollHeight = document.documentElement.scrollHeight - document.documentElement.clientHeight;
+    if (scrollHeight <= 0) return;
+    const scrollProgress = (window.scrollY / scrollHeight) * 100;
+    progressBar.style.width = `${scrollProgress}%`;
+  };
+  window.addEventListener('scroll', onScrollProgress, { passive: true });
+  onScrollProgress();
 
-        });
-    </script>
+  // ===== Stats counter =====
+  function animateStats(element, start, end, duration) {
+    if (!element) return;
+    let startTimestamp = null;
+    const step = (timestamp) => {
+      if (!startTimestamp) startTimestamp = timestamp;
+      const progress = Math.min((timestamp - startTimestamp) / duration, 1);
+      element.innerText = Math.floor(progress * (end - start) + start).toLocaleString();
+      if (progress < 1) window.requestAnimationFrame(step);
+    };
+    window.requestAnimationFrame(step);
+  }
+
+  // ===== Intersection Observer =====
+  const statsSection = document.getElementById('stats-section');
+  const revealEls = $$('.reveal');
+
+  if ('IntersectionObserver' in window) {
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach((entry) => {
+        if (!entry.isIntersecting) return;
+        entry.target.classList.add('visible');
+
+        if (entry.target === statsSection) {
+          animateStats(document.getElementById('stat1'), 0, 185, 2000);
+          animateStats(document.getElementById('stat2'), 0, 78, 2000);
+          animateStats(document.getElementById('stat3'), 0, 16, 2000);
+          animateStats(document.getElementById('stat4'), 0, 6000, 2000);
+          observer.unobserve(entry.target);
+        }
+      });
+    }, { threshold: 0.1 });
+
+    revealEls.forEach((el) => observer.observe(el));
+    if (statsSection) observer.observe(statsSection);
+  } else {
+    // Fallback: show all
+    revealEls.forEach((el) => el.classList.add('visible'));
+  }
+
+  // ===== Particles background =====
+  const particlesCount = window.innerWidth < 768 ? 40 : 80;
+  const linkDistance = window.innerWidth < 768 ? 120 : 150;
+  if (window.particlesJS) {
+    window.particlesJS('particles-js', {
+      particles: {
+        number: { value: particlesCount, density: { enable: true, value_area: 1000 } },
+        color: { value: ['#4f46e5', '#a855f7', '#d946ef'] },
+        shape: { type: 'circle', stroke: { width: 0, color: '#000000' } },
+        opacity: { value: 0.5, random: true, anim: { enable: true, speed: 1, opacity_min: 0.1, sync: false } },
+        size: { value: 3, random: true, anim: { enable: false } },
+        line_linked: { enable: true, distance: linkDistance, color: '#4f46e5', opacity: 0.35, width: 1 },
+        move: { enable: true, speed: 2, direction: 'none', random: false, straight: false, out_mode: 'out', bounce: false }
+      },
+      interactivity: {
+        detect_on: 'canvas',
+        events: { onhover: { enable: true, mode: 'grab' }, onclick: { enable: true, mode: 'push' }, resize: true },
+        modes: { grab: { distance: 140, line_linked: { opacity: 1 } }, push: { particles_nb: 4 } }
+      },
+      retina_detect: true
+    });
+  } else {
+    const p = document.getElementById('particles-js');
+    if (p) p.style.display = 'none';
+  }
+
+  // ===== Translations =====
+  const translations = {
+    ar: {
+      designer: 'المصمم', anas: 'أنـس', home: 'الرئيسية', portfolio: 'المشاريع', services: 'الخدمات', about: 'عني', contact: 'اتصل بي',
+      hello: 'مرحباً، أنا ', professionalDesigner: 'مصمم ومطوّر مواقع وتجارب رقمية',
+      heroP: 'أبتكر تجارب رقمية ساحرة تجمع بين الجماليات والوظيفية لتحقيق أهداف عملك.',
+      browseWork: 'تصفح أعمالي', contactMe: 'تواصل معي', myServices: 'خدماتي',
+      visualIdentity: 'تصميم الهوية البصرية',
+      visualIdentityP: 'تصميم هوية متكاملة تعكس شخصية علامتك التجارية وتترك انطباعاً مميزاً لدى عملائك.',
+      uiUxDesign: 'تصميم واجهات وتجربة المستخدم',
+      uiUxDesignP: 'واجهات مستخدم بديهية وجذابة تحسن تجربة المستخدم وتزيد من معدلات التحويل.',
+      advertisingDesign: 'تصميم إعلانات',
+      advertisingDesignP: 'إعلانات جذابة ومؤثرة تلفت الانتباه وتزيد من فعالية حملاتك التسويقية.',
+      myDesignWorks: 'أعمالي التصميمية',
+      myDesignWorksP: 'استكشف مجموعة من مشاريعي التي تعكس إبداعي وخبرتي في التصميم الرقمي.',
+      viewFullPortfolio: 'عرض معرض الأعمال الكامل',
+      projects: 'مشروع منجز', clients: 'عميل سعيد', certificates: 'شهادات معتمدة', workingHours: 'ساعة عمل',
+      whoIsAnas: 'من هو أنس؟',
+      aboutP1: 'مصمم واجهات رقمية مع أكثر من 5 سنوات من الخبرة في إنشاء حلول بصرية مبتكرة. أؤمن بالتصميم الذي يجمع بين الجماليات والوظيفية لخلق تجارب مستخدم لا تنسى.',
+      skillUiUx: 'تصميم واجهات وتجربة المستخدم', skillBranding: 'الهوية البصرية والعلامات التجارية', skillWeb: 'تطوير الويب',
+      clientTestimonials: 'آراء العملاء',
+      client1Company: 'شركة المسك الخليجية', client1Title: 'مديرة تسويق', client1Quote: '"نشكرك يا انس على تعاونك معنا شغلك ممتاز ماشاءالله"',
+      client2Name: 'فهد', client2Title: 'مؤسس نسائم', client2Quote: '"الله يعطيك العافيه متعاون وصبور ومحترف مشاءلله الله يوفقك ويفتح عليك"',
+      client3Name: 'محمد', client3Title: 'مؤسس مكبوس زمان', client3Quote: '"ممتاز صمم لي منيو مطعم بشكل محترف شكرا لك"',
+      contactMeSection: 'تواصل معي',
+      contactMeSectionP: 'هل لديك مشروع أو فكرة تريد مناقشتها؟ لا تتردد في التواصل معي وسأكون سعيداً بالمساعدة.',
+      sendViaWhatsApp: 'أرسل عبر الواتساب', or: 'أو',
+      footerText: '© 2025 جميع الحقوق محفوظة للمصمم أنس. صمم بتفانٍ وحب.',
+      langButton: 'English'
+    },
+    en: {
+      designer: 'Designer', anas: 'Anas', home: 'Home', portfolio: 'Portfolio', services: 'Services', about: 'About', contact: 'Contact',
+      hello: "Hello, I'm ", professionalDesigner: 'Designer & Web Developer',
+      heroP: 'I create captivating digital experiences that blend aesthetics with functionality to achieve your business goals.',
+      browseWork: 'Browse My Work', contactMe: 'Contact Me', myServices: 'My Services',
+      visualIdentity: 'Visual Identity Design',
+      visualIdentityP: "Comprehensive identity design that reflects your brand's personality and leaves a distinctive impression on your customers.",
+      uiUxDesign: 'UI/UX Design',
+      uiUxDesignP: 'Intuitive and attractive user interfaces that enhance user experience and increase conversion rates.',
+      advertisingDesign: 'Advertising Design',
+      advertisingDesignP: 'Attractive and impactful advertisements that grab attention and increase the effectiveness of your marketing campaigns.',
+      myDesignWorks: 'My Design Works',
+      myDesignWorksP: 'Explore a collection of my projects that reflect my creativity and expertise in digital design.',
+      viewFullPortfolio: 'View Full Portfolio',
+      projects: 'Projects Completed', clients: 'Happy Clients', certificates: 'Certificates', workingHours: 'Working Hours',
+      whoIsAnas: 'Who is Anas?',
+      aboutP1: 'A digital interface designer with over 5 years of experience in creating innovative visual solutions. I believe in design that combines aesthetics and functionality to create unforgettable user experiences.',
+      skillUiUx: 'UI/UX Design', skillBranding: 'Branding', skillWeb: 'Web Development',
+      clientTestimonials: 'Client Testimonials',
+      client1Company: 'Al-Misk Al-Khaleejia Company', client1Title: 'Marketing Director', client1Quote: '"Thank you, Anas, for your cooperation. Your work is excellent, mashallah."',
+      client2Name: 'Fahad', client2Title: 'Nasaem Founder', client2Quote: '"May Allah reward you. You are cooperative, patient, and professional, mashallah. May Allah grant you success."',
+      client3Name: 'Mohammed', client3Title: 'Makbous Zaman Founder', client3Quote: '"Excellent, he designed a restaurant menu professionally. Thank you."',
+      contactMeSection: 'Contact Me',
+      contactMeSectionP: "Do you have a project or an idea you want to discuss? Feel free to contact me, and I'll be happy to help.",
+      sendViaWhatsApp: 'Send via WhatsApp', or: 'OR',
+      footerText: '© 2025 All rights reserved for Designer Anas. Designed with dedication and love.',
+      langButton: 'العربية'
+    }
+  };
+
+  // ===== Language state =====
+  let currentLang = (localStorage.getItem('siteLang') === 'en') ? 'en' : 'ar';
+
+  const elementsToTranslate = $$('[data-en], [data-en-quote]');
+  elementsToTranslate.forEach((el) => {
+    // Keep the original Arabic HTML as-is
+    el.dataset.ar = el.innerHTML;
+    if (el.dataset.enQuote) el.dataset.arQuote = el.innerHTML;
+  });
+
+  // ===== Typing subtitle =====
+  const typingElement = document.getElementById('typing-subtitle');
+  const subtitles = {
+    ar: 'مصمم ومطوّر مواقع وتجارب رقمية',
+    en: 'Designer & Web Developer'
+  };
+  let typingTimeout;
+
+  function startTypingAnimation() {
+    if (!typingElement) return;
+    if (typingTimeout) clearTimeout(typingTimeout);
+    typingElement.innerHTML = '';
+    let i = 0;
+    const text = subtitles[currentLang] || subtitles.ar;
+
+    const typeWriter = () => {
+      if (i < text.length) {
+        typingElement.innerHTML += text.charAt(i);
+        i += 1;
+        typingTimeout = setTimeout(typeWriter, 70);
+      }
+    };
+    typeWriter();
+  }
+
+  function updateContent() {
+    document.documentElement.lang = currentLang;
+    document.documentElement.dir = currentLang === 'ar' ? 'rtl' : 'ltr';
+    document.body.classList.toggle('en', currentLang === 'en');
+
+    elementsToTranslate.forEach((el) => {
+      const enText = el.dataset.en;
+      const arText = el.dataset.ar;
+      const enQuote = el.dataset.enQuote;
+      const arQuote = el.dataset.arQuote;
+
+      if (currentLang === 'en') {
+        if (enQuote) el.innerHTML = enQuote;
+        else if (enText) el.innerHTML = enText;
+      } else {
+        if (arQuote) el.innerHTML = arQuote;
+        else if (arText) el.innerHTML = arText;
+      }
+    });
+
+    const langToggle = document.getElementById('language-toggle');
+    if (langToggle) langToggle.textContent = translations[currentLang].langButton;
+
+    // Small layout alignment adjustments
+    const heroTextContent = document.getElementById('hero-text-content');
+    const desktopNavLinks = document.getElementById('desktop-nav-links');
+    if (heroTextContent) {
+      if (currentLang === 'en') {
+        heroTextContent.classList.remove('text-right');
+        heroTextContent.classList.add('text-left');
+        const heroBtns = heroTextContent.querySelector('div.flex');
+        if (heroBtns) {
+          heroBtns.classList.remove('justify-end');
+          heroBtns.classList.add('justify-start');
+        }
+        desktopNavLinks?.classList.remove('gap-8');
+        desktopNavLinks?.classList.add('gap-6');
+      } else {
+        heroTextContent.classList.remove('text-left');
+        heroTextContent.classList.add('text-right');
+        const heroBtns = heroTextContent.querySelector('div.flex');
+        if (heroBtns) {
+          heroBtns.classList.remove('justify-start');
+          heroBtns.classList.add('justify-end');
+        }
+        desktopNavLinks?.classList.remove('gap-6');
+        desktopNavLinks?.classList.add('gap-8');
+      }
+    }
+
+    localStorage.setItem('siteLang', currentLang);
+    startTypingAnimation();
+  }
+
+  document.getElementById('language-toggle')?.addEventListener('click', () => {
+    currentLang = currentLang === 'ar' ? 'en' : 'ar';
+    updateContent();
+  });
+
+  // Initial render
+  updateContent();
+});
+</script>
 </body>
 </html>

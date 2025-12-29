@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="ar" dir="rtl">
+<html lang="en" dir="ltr">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -276,10 +276,10 @@
     <nav class="fixed w-full z-[990] border-b border-slate-800/30 transition-all duration-300 ease-in-out" id="navbar" style="top: 0;">
         <div class="absolute inset-x-0 bottom-0 h-px bg-gradient-to-r from-transparent via-indigo-500/30 to-transparent"></div>
         <div class="container mx-auto px-4 sm:px-6 py-4 flex justify-between items-center">
-            <a href="index.html" class="text-white text-2xl hover:text-indigo-400 transition-colors">
-                <i class="fas fa-arrow-right"></i>
+            <a id="back-home-link" href="index.html" class="text-white text-2xl hover:text-indigo-400 transition-colors">
+                <i id="back-home-icon" class="fas fa-arrow-right"></i>
             </a>
-            <a href="index.html" class="text-2xl font-bold flex items-center gap-2">
+            <a id="home-logo-link" href="index.html" class="text-2xl font-bold flex items-center gap-2">
                 <span class="gradient-text" data-en="Designer">المصمم</span>
                 <span class="text-white" data-en="Anas">أنـس</span>
             </a>
@@ -385,7 +385,7 @@
     </div>
 
     <!-- مكتبة الجسيمات المتحركة -->
-    <script src="https://cdn.jsdelivr.net/npm/particles.js@2.0.0/particles.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/particles.js@2.0.0/particles.min.js"></script>
 
     <script>
 document.addEventListener('DOMContentLoaded', () => {
