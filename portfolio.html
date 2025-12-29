@@ -3,877 +3,582 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>أعمال أنس</title>
+    <meta name="description" content="معرض أعمال المصمم أنس — تصميم واجهات وهوية بصرية وتطوير مواقع حديثة ومتجاوبة.">
+    <meta name="theme-color" content="#030712">
+    <title>معرض الأعمال | المصمم أنس - تصميم وتطوير مواقع</title>
     <script src="https://cdn.tailwindcss.com"></script>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
     <style>
-        @import url('https://fonts.googleapis.com/css2?family=Tajawal:wght@300;400;500;700;900&display=swap');
+        /* استيراد الخطوط المحسنة */
+        @import url('https://fonts.googleapis.com/css2?family=Cairo:wght@300;400;500;700;900&display=swap');
+        @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;700;900&display=swap');
         
+        /* متغيرات الألوان الرئيسية */
         :root {
-            --primary: #3b82f6;
-            --secondary: #8b5cf6;
-            --accent: #ec4899;
+            --primary: #4f46e5; /* Indigo */
+            --secondary: #a855f7; /* Purple */
+            --accent: #d946ef; /* Fuchsia */
+            --bg-dark: #030712; /* Gray-950 */
+            --bg-card: rgba(17, 24, 39, 0.7); /* Gray-900 with alpha */
+            --border-color: rgba(255, 255, 255, 0.1);
         }
         
+        /* تحسين إعدادات الجسم الأساسية */
         body {
-            font-family: 'Tajawal', sans-serif;
-            background-color: #0f172a;
-            color: #e2e8f0;
+            font-family: 'Cairo', sans-serif;
+            background-color: var(--bg-dark);
+            color: #e5e7eb;
             scroll-behavior: smooth;
+            overflow-x: hidden;
+            -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
+            text-rendering: optimizeLegibility;
+            will-change: scroll-position;
         }
+
+        body.en {
+            font-family: 'Poppins', sans-serif;
+        }
+
+        /* شريط التمرير المخصص */
+        ::-webkit-scrollbar { width: 8px; }
+        ::-webkit-scrollbar-track { background: var(--bg-dark); }
+        ::-webkit-scrollbar-thumb { background: linear-gradient(var(--primary), var(--secondary)); border-radius: 10px; }
+        ::-webkit-scrollbar-thumb:hover { background: linear-gradient(var(--secondary), var(--primary)); }
         
+        /* نص متدرج الألوان */
         .gradient-text {
             background: linear-gradient(90deg, var(--primary), var(--secondary), var(--accent));
             -webkit-background-clip: text;
-            background-clip: text;
-            color: transparent;
-        }
-        
-        .project-card {
-            transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-            perspective: 1000px;
-            overflow: hidden;
-        }
-        
-        .project-card:hover {
-            transform: translateY(-8px) scale(1.02);
-            box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.3);
-        }
-        
-        .project-card:hover .project-image {
-            transform: scale(1.05);
-        }
-        
-        .project-image-container {
+            -webkit-text-fill-color: transparent;
+            background-size: 300% auto;
+            animation: gradientText 3s ease infinite;
+            text-shadow: 0 2px 10px rgba(79, 70, 229, 0.3);
             position: relative;
-            overflow: hidden;
-            height: 64;
+            display: inline-block;
         }
         
-        .project-image {
-            transition: transform 0.5s ease;
-            width: 100%;
-            height: 100%;
-            object-fit: cover;
+        @keyframes gradientText {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
         }
         
-        .view-details-btn {
-            position: absolute;
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%, -50%) scale(0.8);
-            opacity: 0;
-            background: rgba(30, 41, 59, 0.9);
-            color: white;
-            padding: 12px 24px;
-            border-radius: 9999px;
-            font-weight: 500;
-            transition: all 0.3s ease;
-            display: flex;
-            align-items: center;
-            z-index: 10;
-        }
-        
-        .project-image-container:hover .view-details-btn {
-            opacity: 1;
-            transform: translate(-50%, -50%) scale(1);
-        }
-        
-        .project-image-container::after {
-            content: '';
-            position: absolute;
+        /* شريط التقدم */
+        .progress-bar {
+            height: 4px;
+            background: linear-gradient(90deg, var(--primary), var(--secondary), var(--accent));
+            position: fixed;
             top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: rgba(0, 0, 0, 0.4);
-            opacity: 0;
-            transition: opacity 0.3s ease;
-        }
-        
-        .project-image-container:hover::after {
-            opacity: 1;
-        }
-        
-        .filter-btn {
-            transition: all 0.3s ease;
-        }
-        
-        .filter-btn.active {
-            background: linear-gradient(90deg, var(--primary), var(--secondary));
-            color: white;
-            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.2);
-        }
-        
-        .project-modal {
-            opacity: 0;
-            visibility: hidden;
-            transition: all 0.3s ease;
+            right: 0;
             z-index: 1000;
         }
         
-        .project-modal.active {
+        /* مؤشر الفأرة المخصص */
+        .cursor-dot, .cursor-outline {
+            pointer-events: none;
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            border-radius: 50%;
+            z-index: 9999;
+            opacity: 0;
+            transition: opacity 0.3s, transform 0.3s;
+        }
+        .cursor-dot {
+            width: 8px;
+            height: 8px;
+            background-color: var(--secondary);
+        }
+        .cursor-outline {
+            width: 40px;
+            height: 40px;
+            border: 2px solid var(--secondary);
+            transition: width 0.3s, height 0.3s, border-color 0.3s, transform 0.1s linear;
+        }
+        body:hover .cursor-dot, body:hover .cursor-outline { opacity: 1; }
+        .cursor-outline.hover {
+            width: 60px;
+            height: 60px;
+            border-color: var(--accent);
+        }
+
+        /* زر العودة للأعلى */
+        #scrollToTopBtn {
+            position: fixed;
+            bottom: 20px;
+            left: 20px;
+            width: 50px;
+            height: 50px;
+            background: linear-gradient(45deg, var(--primary), var(--secondary));
+            color: white;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            z-index: 100;
+            opacity: 0;
+            transform: translateY(100px);
+            transition: opacity 0.3s, transform 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+        }
+        #scrollToTopBtn.show {
+            opacity: 1;
+            transform: translateY(0);
+        }
+        #scrollToTopBtn:hover {
+            box-shadow: 0 0 20px rgba(168, 85, 247, 0.6);
+            transform: scale(1.1);
+        }
+
+        /* شاشة التحميل */
+        #preloader {
+            position: fixed;
+            inset: 0;
+            background-color: var(--bg-dark);
+            z-index: 10000;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: opacity 0.5s ease;
+        }
+        .loader {
+            width: 50px;
+            height: 50px;
+            border: 5px solid var(--border-color);
+            border-top-color: var(--primary);
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+        }
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+
+        /* Portfolio Page Specific Styles */
+        .gallery-item {
+            break-inside: avoid;
+            margin-bottom: 1.5rem;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+        .gallery-item:hover {
+            transform: translateY(-8px);
+            box-shadow: 0 20px 40px -10px rgba(0, 0, 0, 0.5);
+        }
+        .gallery-item .item-content {
+            transition: transform 0.3s ease;
+        }
+        .gallery-item .overlay {
+            opacity: 0;
+            transition: opacity 0.4s ease;
+            transform: translateY(20px);
+        }
+        .gallery-item:hover .overlay {
+            opacity: 1;
+            transform: translateY(0);
+        }
+        .gallery-item:hover img {
+            transform: scale(1.05);
+        }
+
+        .category-btn {
+            transition: all 0.3s ease;
+            position: relative;
+        }
+        .category-btn.active {
+            background-color: var(--primary);
+            color: white;
+            box-shadow: 0 0 15px rgba(79, 70, 229, 0.5);
+        }
+        .category-btn:not(.active):hover {
+            background-color: #1f2937; /* Gray-800 */
+        }
+        
+        .modal {
+            opacity: 0;
+            visibility: hidden;
+            transition: opacity 0.3s ease, visibility 0.3s ease;
+        }
+        .modal.active {
             opacity: 1;
             visibility: visible;
         }
-        
-        .project-modal-content {
-            transform: scale(0.9);
-            transition: all 0.3s ease;
-            max-height: 90vh;
-            overflow-y: auto;
+        .modal-content {
+            transform: scale(0.9) translateY(20px);
+            transition: transform 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
         }
-        
-        .project-modal.active .project-modal-content {
-            transform: scale(1);
+        .modal.active .modal-content {
+            transform: scale(1) translateY(0);
         }
-        
-        /* Custom scrollbar */
-        ::-webkit-scrollbar {
-            width: 8px;
+
+        .slider-container {
+            display: flex;
+            transition: transform 0.5s cubic-bezier(0.25, 1, 0.5, 1);
+            direction: ltr;
         }
-        
-        ::-webkit-scrollbar-track {
-            background: #1e293b;
-        }
-        
-        ::-webkit-scrollbar-thumb {
-            background: linear-gradient(var(--primary), var(--secondary));
-            border-radius: 4px;
-        }
-        
-        /* زر العودة */
-        .back-btn {
-            position: fixed;
-            top: 70px;
-            left: 20px;
-            z-index: 70;
-            background: rgba(30, 41, 59, 0.8);
-            backdrop-filter: blur(10px);
-            border: 1px solid rgba(255, 255, 255, 0.1);
-            width: 50px;
-            height: 50px;
+        .slider-slide { min-width: 100%; height: 100%; position: relative; }
+        .slider-slide img { width: 100%; height: 100%; object-fit: contain; }
+        .slider-arrow {
+            position: absolute;
+            top: 50%;
+            transform: translateY(-50%);
+            width: 44px;
+            height: 44px;
+            background-color: rgba(0, 0, 0, 0.4);
             border-radius: 50%;
             display: flex;
             align-items: center;
             justify-content: center;
             color: white;
-            font-size: 20px;
             cursor: pointer;
+            z-index: 10;
             transition: all 0.3s ease;
-            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.2);
         }
-        
-        .back-btn:hover {
-            background: rgba(140, 59, 246, 0.8);
-            transform: translateX(8px);
-        }
-
-        /* تحكم بحجم النص والمسافة لكلمة معرض أعمالي */
-        .custom-title {
-            font-size: var(--title-size);
-            margin-bottom: var(--title-margin-bottom);
-            display: inline-block;
-        }
-        @media (min-width: 768px) {
-            .custom-title {
-                font-size: calc(var(--title-size) * 2);
-            }
-        }
+        .slider-arrow:hover { background-color: var(--primary); transform: translateY(-50%) scale(1.1); }
+        .slider-arrow.prev { right: 1rem; }
+        .slider-arrow.next { left: 1rem; }
     </style>
 </head>
-<body class="bg-slate-900 text-slate-200">
-    <!-- زر العودة -->
-    <a href="index.html" class="back-btn">
-        <i class="fas fa-arrow-left"></i>
-    </a>
+<body class="bg-gray-950">
+    <!-- Global Background Elements -->
+    <div class="fixed inset-0 -z-10">
+        <div class="absolute inset-0 bg-[radial-gradient(ellipse_at_center,_var(--tw-gradient-stops))] from-gray-900/80 to-gray-950"></div>
+        <div class="absolute left-1/2 top-0 -z-10 -translate-x-1/2 blur-3xl xl:-top-6">
+            <div class="aspect-[1155/678] w-[72.1875rem] bg-gradient-to-tr from-[#4f46e5] to-[#a855f7] opacity-30" style="clip-path: polygon(74.1% 44.1%, 100% 61.6%, 97.5% 26.9%, 85.5% 0.1%, 80.7% 2%, 72.5% 32.5%, 60.2% 62.4%, 52.4% 68.1%, 47.5% 58.3%, 45.2% 34.5%, 27.5% 76.7%, 0.1% 64.9%, 17.9% 100%, 27.6% 76.8%, 76.1% 97.7%, 74.1% 44.1%)"></div>
+        </div>
+    </div>
+    <div id="particles-js" class="fixed inset-0 -z-[5]"></div>
 
-    <!-- Minimal Header -->
-    <header class="fixed w-full bg-slate-900/90 backdrop-blur-sm z-50 border-b border-slate-800/50">
-        <div class="container mx-auto px-6 py-4">
-            <a href="#" class="text-2xl font-bold flex items-center">
-                <div class="w-8 h-8 rounded-full bg-gradient-to-r from-blue-500 to-purple-600 mr-3"></div>
-                <span class="gradient-text">معرض أنس</span>
+    <!-- Fixed UI elements -->
+    <div id="preloader">
+        <div class="loader"></div>
+    </div>
+    <div class="cursor-dot"></div>
+    <div class="cursor-outline"></div>
+    <div class="progress-bar" id="progressBar"></div>
+    
+    <nav class="fixed w-full z-[990] border-b border-slate-800/30 transition-all duration-300 ease-in-out" id="navbar" style="top: 0;">
+        <div class="absolute inset-x-0 bottom-0 h-px bg-gradient-to-r from-transparent via-indigo-500/30 to-transparent"></div>
+        <div class="container mx-auto px-6 py-4 flex justify-between items-center">
+            <a href="index.html" class="text-white text-2xl hover:text-indigo-400 transition-colors">
+                <i class="fas fa-arrow-right"></i>
             </a>
+            <a href="index.html" class="text-2xl font-bold flex items-center gap-2">
+                <span class="gradient-text" data-en="Designer">المصمم</span>
+                <span class="text-white" data-en="Anas">أنـس</span>
+            </a>
+            <button id="language-toggle" class="bg-indigo-600 hover:bg-indigo-700 text-white text-sm px-4 py-2 rounded-full transition-colors duration-300 font-semibold">
+                English
+            </button>
         </div>
-    </header>
+    </nav>
+    
+    <button id="scrollToTopBtn" title="Go to top"><i class="fas fa-arrow-up"></i></button>
 
-    <!-- Portfolio Section -->
-    <main class="pt-80 pb-10">
-        <div class="container mx-auto px-6">
-            <div class="text-center mb-16">
-                <h1 class="text-4xl md:text-5xl font-bold mb-4 gradient-text">
-                    <span class="custom-title" style="--title-size: 2.25rem; --title-margin-bottom: 1rem;">معرض أعمالي</span>
+    <!-- Page Content Wrapper -->
+    <div class="relative">
+        <!-- [FIX] Increased top padding from pt-40 to pt-48 -->
+        <main class="container mx-auto px-4 sm:px-6 py-12 md:py-16 pt-48">
+            <!-- ترويسة الصفحة -->
+            <header class="text-center mb-12 md:mb-16">
+                <h1 class="text-4xl md:text-5xl lg:text-6xl font-extrabold mb-4">
+                    <span class="gradient-text" data-en="My Portfolio">معرض أعمالي</span>
                 </h1>
-                <p class="text-slate-400 max-w-2xl mx-auto leading-relaxed">
-                    مجموعة مختارة من أحدث مشاريعي في مختلف المجالات
+                <p class="mt-6 text-lg md:text-xl text-slate-400 max-w-3xl mx-auto" data-en="Here you will find selected projects showcasing my UI/UX, branding, and website work — from concepts to polished final results.">
+                    هنا تلقى مشاريع مختارة تبرز شغفي بالتصميم وتطوير المواقع — من الفكرة إلى نتيجة نهائية جاهزة.
                 </p>
-            </div>
-            
-            <!-- Filter Buttons -->
-            <div class="flex flex-wrap justify-center gap-3 mb-12">
-                <button class="filter-btn active px-4 py-2 rounded-full bg-slate-800 text-slate-300 hover:text-white" data-filter="all">الكل</button>
-                <button class="filter-btn px-4 py-2 rounded-full bg-slate-800 text-slate-300 hover:text-white" data-filter="web">مواقع الويب</button>
-                <button class="filter-btn px-4 py-2 rounded-full bg-slate-800 text-slate-300 hover:text-white" data-filter="app">تطبيقات الجوال</button>
-                <button class="filter-btn px=4 py-2 rounded-full bg-slate-800 text-slate-300 hover:text-white" data-filter="branding">الهوية البصرية</button>
-            </div>
-            
-            <!-- Portfolio Grid -->
-            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-                <!-- Project 1 -->
-                <div class="project-card rounded-xl overflow-hidden bg-slate-800" data-category="web">
-                    <div class="project-image-container relative h-64">
-                        <img src="imges\anas1.png" alt="Web Design Project" class="project-image">
-                        <button class="view-details-btn" data-project="1">
-                            عرض التفاصيل <i class="fas fa-arrow-left ml-2"></i>
-                        </button>
-                        <div class="absolute inset-0 bg-gradient-to-t from-black/80 to-transparent flex flex-col justify-end p-6">
-                            <span class="bg-blue-500 text-white text-xs px=3 py-1 rounded-full mb-2 self-start">موقع ويب</span>
-                            <h3 class="text-xl font-bold text-white">موقع شركة تقنية</h3>
-                        </div>
-                    </div>
-                    <div class="p-6">
-                        <p class="text-slate-400 mb-4">تصميم وتطوير موقع شركة تقنية متخصصة في حلول الأعمال</p>
-                    </div>
-                </div>
-                
-                <!-- Project 2 -->
-                <div class="project-card rounded-xl overflow-hidden bg-slate-800" data-category="app">
-                    <div class="project-image-container relative h-64">
-                        <img src="imges\anas1.png" alt="Mobile App Project" class="project-image">
-                        <button class="view-details-btn" data-project="2">
-                            عرض التفاصيل <i class="fas fa-arrow-left ml=2"></i>
-                        </button>
-                        <div class="absolute inset-0 bg-gradient-to-t from-black/80 to-transparent flex flex-col justify-end p=6">
-                            <span class="bg-purple-500 text-white text-xs px=3 py-1 rounded-full mb=2 self-start">تطبيق جوال</span>
-                            <h3 class="text-xl font-bold text-white">تطبيق توصيل طعام</h3>
-                        </div>
-                    </div>
-                    <div class="p=6">
-                        <p class="text-slate-400 mb=4">تصميم واجهة مستخدم لتطبيق توصيل طعام سريع وسهل الاستخدام</p>
-                    </div>
-                </div>
-                
-                <!-- Project 3 -->
-                <div class="project-card rounded-xl overflow-hidden bg-slate-800" data-category="branding">
-                    <div class="project-image-container relative h=64">
-                        <img src="imges\anas1.png" alt="Branding Project" class="project-image">
-                        <button class="view-details-btn" data-project="3">
-                            عرض التفاصيل <i class="fas fa-arrow-left ml=2"></i>
-                        </button>
-                        <div class="absolute inset-0 bg-gradient-to-t from-black/80 to-transparent flex flex-col justify-end p=6">
-                            <span class="bg-pink-500 text-white text-xs px=3 py-1 rounded-full mb=2 self-start">هوية بصرية</span>
-                            <h3 class="text-xl font-bold text-white">هوية مقهى جديد</h3>
-                        </div>
-                    </div>
-                    <div class="p=6">
-                        <p class="text-slate-400 mb=4">تصميم هوية بصرية متكاملة لمقهى عصري في وسط المدينة</p>
-                    </div>
-                </div>
-                
-                <!-- Project 4 -->
-                <div class="project-card rounded-xl overflow-hidden bg-slate-800" data-category="web">
-                    <div class="project-image-container relative h=64">
-                        <img src="imges\anas1.png" alt="Web Design Project" class="project-image">
-                        <button class="view-details-btn" data-project="4">
-                            عرض التفاصيل <i class="fas fa-arrow-left ml=2"></i>
-                        </button>
-                        <div class="absolute inset-0 bg-gradient-to-t from-black/80 to-transparent flex flex-col justify-end p=6">
-                            <span class="bg-blue-500 text-white text-xs px=3 py-1 rounded-full mb=2 self-start">موقع ويب</span>
-                            <h3 class="text-xl font-bold text-white">موقع متجر إلكتروني</h3>
-                        </div>
-                    </div>
-                    <div class="p=6">
-                        <p class="text-slate-400 mb=4">تصميم وتطوير متجر إلكتروني متكامل لمنتجات فاخرة</p>
-                    </div>
-                </div>
-                
-                <!-- Project 5 -->
-                <div class="project-card rounded-xl overflow-hidden bg-slate-800" data-category="branding">
-                    <div class="project-image-container relative h=64">
-                        <img src="imges\anas1.png" alt="Branding Project" class="project-image">
-                        <button class="view-details-btn" data-project="5">
-                            عرض التفاصيل <i class="fas fa-arrow-left ml=2"></i>
-                        </button>
-                        <div class="absolute inset-0 bg-gradient-to-t from-black/80 to-transparent flex flex-col justify-end p=6">
-                            <span class="bg-pink-500 text-white text-xs px=3 py-1 rounded-full mb=2 self-start">هوية بصرية</span>
-                            <h3 class="text-xl font-bold text-white">هوية شركة عقارية</h3>
-                        </div>
-                    </div>
-                    <div class="p=6">
-                        <p class="text-slate-400 mb=4">تصميم هوية متكاملة لشركة عقارية فاخرة</p>
-                    </div>
-                </div>
-                
-                <!-- Project 6 -->
-                <div class="project-card rounded-xl overflow-hidden bg-slate-800" data-category="app">
-                    <div class="project-image-container relative h=64">
-                        <img src="imges\anas1.png" alt="UI/UX Project" class="project-image">
-                        <button class="view-details-btn" data-project="6">
-                            عرض التفاصيل <i class="fas fa-arrow-left ml=2"></i>
-                        </button>
-                        <div class="absolute inset-0 bg-gradient-to-t from-black/80 to-transparent flex flex-col justify-end p=6">
-                            <span class="bg-blue-400 text-white text-xs px=3 py=1 rounded-full mb=2 self-start">تطبيق جوال</span>
-                            <h3 class="text-xl font-bold text-white">لوحة تحكم إدارية</h3>
-                        </div>
-                    </div>
-                    <div class="p=6">
-                        <p class="text-slate-400 mb=4">تصميم لوحة تحكم إدارية معقدة مع التركيز على تجربة المستخدم</p>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </main>
+            </header>
 
-    <!-- Project Modals -->
-    <!-- Modal 1 -->
-    <div class="project-modal fixed inset-0 bg-black/80 flex items-center justify-center p=4" id="project-modal-1">
-        <div class="project-modal-content bg-slate-800 rounded-xl max-w-4xl w-full overflow-hidden">
-            <div class="relative">
-                <img src="imges/project1-main.jpg" alt="Web Design Project" class="w-full h-64 md:h-96 object-cover">
-                <button class="close-modal absolute top-4 left-4 bg-slate-900/50 hover:bg-slate-900/80 text-white w-10 h-10 rounded-full flex items-center justify-center transition">
-                    <i class="fas fa-times"></i>
-                </button>
-            </div>
-            <div class="p-6 md:p-8">
-                <div class="flex flex-wrap gap=2 mb-6">
-                    <span class="bg-blue-500 text-white text-xs px-3 py-1 rounded-full">موقع ويب</span>
-                    <span class="bg-slate-700 text-white text-xs px-3 py-1 rounded-full">تصميم واجهة</span>
-                    <span class="bg-slate-700 text-white text-xs px-3 py-1 rounded-full">تطوير</span>
+            <!-- فلاتر التصنيفات -->
+            <section id="categories" class="mb-12">
+                <div class="flex flex-wrap justify-center gap-3 md:gap-4">
+                    <button class="category-btn active bg-gray-800 hover:bg-gray-700 text-slate-200 px-5 py-2 rounded-full font-semibold" data-category="all" data-en="All">الكل</button>
+                    <button class="category-btn bg-gray-800 hover:bg-gray-700 text-slate-200 px-5 py-2 rounded-full font-semibold" data-category="ui" data-en="UI">واجهات المستخدم</button>
+                    <button class="category-btn bg-gray-800 hover:bg-gray-700 text-slate-200 px-5 py-2 rounded-full font-semibold" data-category="branding" data-en="Branding">الهوية البصرية</button>
+                    <button class="category-btn bg-gray-800 hover:bg-gray-700 text-slate-200 px-5 py-2 rounded-full font-semibold" data-category="print" data-en="Print">تصميم مطبوع</button>
+                    <button class="category-btn bg-gray-800 hover:bg-gray-700 text-slate-200 px-5 py-2 rounded-full font-semibold" data-category="web" data-en="Web">تصميم ويب</button>
+                    <button class="category-btn bg-gray-800 hover:bg-gray-700 text-slate-200 px-5 py-2 rounded-full font-semibold" data-category="logos-artworks" data-en="Logos">شعارات</button>
                 </div>
-                <h3 class="text-2xl font-bold mb-4">موقع شركة تقنية</h3>
-                <p class="text-slate-400 mb-6 leading-relaxed">
-                    تصميم وتطوير موقع شركة تقنية متخصصة في حلول الأعمال. ركز المشروع على إنشاء واجهة مستخدم حديثة وسهلة الاستخدام تعكس احترافية الشركة وتقدم حلولها التقنية بطريقة واضحة وجذابة.
+            </section>
+
+            <!-- شبكة المعرض (Masonry) -->
+            <section id="gallery">
+                <div class="sm:columns-2 lg:columns-3 gap-6 md:gap-8" id="galleryGrid">
+                    <!-- سيتم إضافة عناصر المعرض هنا بواسطة JavaScript -->
+                </div>
+            </section>
+        </main>
+        
+
+        <!-- CTA -->
+        <section id="portfolio-cta" class="container mx-auto px-4 sm:px-6 pb-16 -mt-4">
+            <div class="rounded-3xl border border-slate-800 bg-gray-900/60 backdrop-blur-xl p-8 md:p-10 text-center shadow-lg">
+                <h2 class="text-2xl md:text-3xl font-bold mb-3" data-en="Need a website or a design project?">تبي موقع أو مشروع تصميم؟</h2>
+                <p class="text-slate-400 mb-6 max-w-2xl mx-auto" data-en="Tell me what you need and I'll help you with a modern, fast, responsive website and a clean visual identity.">
+                    علّمني وش تحتاج، وبأساعدك بموقع حديث وسريع ومتجاوب + هوية وتصميم نظيف.
                 </p>
-                <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-8">
-                    <div>
-                        <h4 class="font-bold text-white mb-3">التحديات</h4>
-                        <ul class="space-y-2">
-                            <li class="flex items-start">
-                                <i class="fas fa-circle text-xs mt-1.5 mr-2 text-blue-400"></i>
-                                <span>تصميم واجهة تعمل بكفاءة على جميع أحجام الشاشات</span>
-                            </li>
-                            <li class="flex items-start">
-                                <i class="fas fa-circle text-xs mt-1.5 mr-2 text-blue-400"></i>
-                                <span>إنشاء نظام تصفح سهل للمحتوى التقني المعقد</span>
-                            </li>
-                            <li class="flex items-start">
-                                <i class="fas fa-circle text-xs mt=1.5 mr-2 text-blue-400"></i>
-                                <span>تحسين أداء الموقع لتحقيق أعلى سرعة تحميل</span>
-                            </li>
-                        </ul>
-                    </div>
-                    <div>
-                        <h4 class="font-bold text-white mb-3">الحلول</h4>
-                        <ul class="space-y-2">
-                            <li class="flex items-start">
-                                <i class="fas fa-check-circle text-xs mt-1.5 mr-2 text-green-400"></i>
-                                <span>تصميم متجاوب يعمل على جميع الأجهزة</span>
-                            </li>
-                            <li class="flex items-start">
-                                <i class="fas fa-check-circle text-xs mt-1.5 mr-2 text-green-400"></i>
-                                <span>إنشاء نظام تصنيف وتصفية متقدم للمحتوى</span>
-                            </li>
-                            <li class="flex items-start">
-                                <i class="fas fa-check-circle text-xs mt=1.5 mr-2 text-green-400"></i>
-                                <span>تحسين الصور وتقليل طلبات HTTP</span>
-                            </li>
-                        </ul>
-                    </div>
-                </div>
-                <div class="mb-8">
-                    <h4 class="font-bold text-white mb-4">أدوات وتقنيات المستخدمة</h4>
-                    <div class="flex flex-wrap gap-3">
-                        <span class="bg-slate-700 text-white px-3 py-1 rounded-full text-sm">HTML5</span>
-                        <span class="bg-slate-700 text-white px-3 py-1 rounded-full text-sm">CSS3</span>
-                        <span class="bg-slate-700 text-white px-3 py-1 rounded-full text-sm">JavaScript</span>
-                        <span class="bg-slate-700 text-white px-3 py-1 rounded-full text-sm">React</span>
-                        <span class="bg-slate-700 text-white px-3 py-1 rounded-full text-sm">TailwindCSS</span>
-                        <span class="bg-slate-700 text-white px-3 py-1 rounded-full text-sm">Figma</span>
-                    </div>
-                </div>
-                <div>
-                    <h4 class="font-bold text-white mb-4">معاينة المشروع</h4>
-                    <div class="grid grid-cols-2 md:grid-cols-3 gap-4">
-                        <img src="imges/project1-preview1.jpg" alt="Project Preview 1" class="rounded-lg h-32 object-cover cursor-pointer hover:opacity-90 transition">
-                        <img src="imges/project1-preview2.jpg" alt="Project Preview 2" class="rounded-lg h-32 object-cover cursor-pointer hover:opacity-90 transition">
-                        <img src="imges/project1-preview3.jpg" alt="Project Preview 3" class="rounded-lg h-32 object-cover cursor-pointer hover:opacity-90 transition">
-                    </div>
-                </div>
+                <a href="https://wa.me/966575570110" target="_blank" class="inline-flex items-center justify-center gap-3 bg-gradient-to-r from-green-500 to-emerald-600 text-white px-10 py-4 rounded-full font-semibold text-lg transition-all duration-300">
+                    <span data-en="Message me on WhatsApp">كلّمني واتساب</span>
+                    <i class="fab fa-whatsapp"></i>
+                </a>
             </div>
-        </div>
+        </section>
+
+        <!-- التذييل -->
+        <footer class="bg-transparent py-12 border-t border-slate-800/30 relative mt-16">
+            <div class="absolute inset-x-0 top-0 h-px bg-gradient-to-r from-transparent via-indigo-500/30 to-transparent"></div>
+            <div class="container mx-auto px-6 text-center text-slate-400">
+                <p data-en="© 2025 All rights reserved for Designer Anas. Designed with dedication and love.">© 2025 جميع الحقوق محفوظة للمصمم أنس. صمم بتفانٍ وحب.</p>
+            </div>
+        </footer>
     </div>
 
-    <!-- Modal 2 -->
-    <div class="project-modal fixed inset-0 bg-black/80 flex items-center justify-center p-4" id="project-modal-2">
-        <div class="project-modal-content bg-slate-800 rounded-xl max-w-4xl w-full overflow-hidden">
-            <div class="relative">
-                <img src="imges/project2-main.jpg" alt="Mobile App Project" class="w-full h-64 md:h-96 object-cover">
-                <button class="close-modal absolute top-4 left-4 bg-slate-900/50 hover:bg-slate-900/80 text-white w-10 h-10 rounded-full flex items-center justify-center transition">
-                    <i class="fas fa-times"></i>
-                </button>
+    <!-- النافذة المنبثقة (Modal) -->
+    <div class="modal fixed inset-0 bg-black/80 backdrop-blur-sm z-[1001] flex items-center justify-center p-4" id="imageModal">
+        <div class="modal-content bg-gray-900 border border-slate-700 rounded-2xl max-w-5xl w-full max-h-[90vh] flex flex-col md:flex-row overflow-hidden">
+            <!-- قسم السلايدر -->
+            <div class="w-full md:w-2/3 bg-black/50 relative">
+                <div class="h-[50vh] md:h-full overflow-hidden">
+                    <div class="slider-container h-full" id="modalSlider">
+                        <!-- صور السلايدر -->
+                    </div>
+                </div>
+                <div class="slider-arrow prev" id="modalPrev">
+                    <i class="fas fa-chevron-right"></i>
+                </div>
+                <div class="slider-arrow next" id="modalNext">
+                    <i class="fas fa-chevron-left"></i>
+                </div>
+                <div class="absolute top-4 right-4 bg-black/50 text-white text-sm px-3 py-1 rounded-full" id="modalImageCount"></div>
             </div>
-            <div class="p-6 md:p-8">
-                <div class="flex flex-wrap gap-2 mb-6">
-                    <span class="bg-purple-500 text-white text-xs px-3 py-1 rounded-full">تطبيق جوال</span>
-                    <span class="bg-slate-700 text-white text-xs px-3 py-1 rounded-full">UI/UX</span>
-                    <span class="bg-slate-700 text-white text-xs px-3 py-1 rounded-full">Flutter</span>
-                </div>
-                <h3 class="text-2xl font-bold mb-4">تطبيق توصيل طعام</h3>
-                <p class="text-slate-400 mb-6 leading-relaxed">
-                    تصميم واجهة مستخدم لتطبيق توصيل طعام سريع وسهل الاستخدام. ركز المشروع على إنشاء تجربة مستخدم سلسة تمكن العملاء من طلب الطعام بسهولة وتتبع الطلبات في الوقت الفعلي.
-                </p>
-                <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-8">
-                    <div>
-                        <h4 class="font-bold text-white mb-3">التحديات</h4>
-                        <ul class="space-y-2">
-                            <li class="flex items-start">
-                                <i class="fas fa-circle text-xs mt-1.5 mr-2 text-purple-400"></i>
-                                <span>تصميم واجهة سهلة الاستخدام لمختلف الفئات العمرية</span>
-                            </li>
-                            <li class="flex items-start">
-                                <i class="fas fa-circle text-xs mt-1.5 mr-2 text-purple-400"></i>
-                                <span>إنشاء نظام تصفح سريع لقوائم المطاعم</span>
-                            </li>
-                            <li class="flex items-start">
-                                <i class="fas fa-circle text-xs mt-1.5 mr-2 text-purple-400"></i>
-                                <span>تحسين تجربة اختيار المطعم والوجبات</span>
-                            </li>
-                        </ul>
-                    </div>
-                    <div>
-                        <h4 class="font-bold text-white mb-3">الحلول</h4>
-                        <ul class="space-y-2">
-                            <li class="flex items-start">
-                                <i class="fas fa-check-circle text-xs mt-1.5 mr-2 text-green-400"></i>
-                                <span>تصميم واجهة بديهية مع إرشادات واضحة</span>
-                            </li>
-                            <li class="flex items-start">
-                                <i class="fas fa-check-circle text-xs mt-1.5 mr-2 text-green-400"></i>
-                                <span>إنشاء نظام تصنيف وتصفية متقدم للمطاعم</span>
-                            </li>
-                            <li class="flex items-start">
-                                <i class="fas fa-check-circle text-xs mt-1.5 mr-2 text-green-400"></i>
-                                <span>إضافة ميزة البحث الذكي والاقتراحات</span>
-                            </li>
-                        </ul>
-                    </div>
-                </div>
-                <div class="mb-8">
-                    <h4 class="font-bold text-white mb-4">أدوات وتقنيات المستخدمة</h4>
-                    <div class="flex flex-wrap gap-3">
-                        <span class="bg-slate-700 text-white px-3 py-1 rounded-full text-sm">Flutter</span>
-                        <span class="bg-slate-700 text-white px-3 py-1 rounded-full text-sm">Dart</span>
-                        <span class="bg-slate-700 text-white px-3 py-1 rounded-full text-sm">Firebase</span>
-                        <span class="bg-slate-700 text-white px-3 py-1 rounded-full text-sm">Figma</span>
-                        <span class="bg-slate-700 text-white px-3 py-1 rounded-full text-sm">Adobe XD</span>
-                    </div>
-                </div>
-                <div>
-                    <h4 class="font-bold text-white mb-4">معاينة المشروع</h4>
-                    <div class="grid grid-cols-2 md:grid-cols-3 gap-4">
-                        <img src="imges/project2-preview1.jpg" alt="Project Preview 1" class="rounded-lg h-32 object-cover cursor-pointer hover:opacity-90 transition">
-                        <img src="imges/project2-preview2.jpg" alt="Project Preview 2" class="rounded-lg h-32 object-cover cursor-pointer hover:opacity-90 transition">
-                        <img src="imges/project2-preview3.jpg" alt="Project Preview 3" class="rounded-lg h-32 object-cover cursor-pointer hover:opacity-90 transition">
-                    </div>
+            <!-- قسم التفاصيل -->
+            <div class="w-full md:w-1/3 p-6 md:p-8 flex flex-col overflow-y-auto">
+                <div class="flex-grow">
+                    <h3 class="text-2xl font-bold text-white mb-2" id="modalTitle"></h3>
+                    <p class="text-slate-400" id="modalDescription"></p>
                 </div>
             </div>
         </div>
+        <button class="absolute top-4 right-4 text-white w-12 h-12 rounded-full flex items-center justify-center text-2xl bg-black/30 hover:bg-black/60 transition-colors" id="closeModal">
+            <i class="fas fa-times"></i>
+        </button>
     </div>
 
-    <!-- Modal 3 -->
-    <div class="project-modal fixed inset-0 bg-black/80 flex items-center justify-center p=4" id="project-modal-3">
-        <div class="project-modal-content bg-slate-800 rounded-xl max-w-4xl w-full overflow-hidden">
-            <div class="relative">
-                <img src="imges/project3-main.jpg" alt="Branding Project" class="w-full h-64 md:h-96 object-cover">
-                <button class="close-modal absolute top-4 left-4 bg-slate-900/50 hover:bg-slate-900/80 text-white w-10 h-10 rounded-full flex items-center justify-center transition">
-                    <i class="fas fa-times"></i>
-                </button>
-            </div>
-            <div class="p-6 md:p-8">
-                <div class="flex flex-wrap gap=2 mb-6">
-                    <span class="bg-pink-500 text-white text-xs px-3 py-1 rounded-full">هوية بصرية</span>
-                    <span class="bg-slate-700 text-white text-xs px-3 py-1 rounded-full">تصميم شعار</span>
-                    <span class="bg-slate-700 text-white text-xs px-3 py-1 rounded-full">مواد دعائية</span>
-                </div>
-                <h3 class="text-2xl font-bold mb-4">هوية مقهى جديد</h3>
-                <p class="text-slate-400 mb-6 leading-relaxed">
-                    تصميم هوية بصرية متكاملة لمقهى عصري في وسط المدينة. تضمن المشروع تصميم الشعار والألوان والطباعة والمواد الدعائية المختلفة لتعكس هوية المقهى الفريدة وروحه العصرية.
-                </p>
-                <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-8">
-                    <div>
-                        <h4 class="font-bold text-white mb-3">التحديات</h4>
-                        <ul class="space-y-2">
-                            <li class="flex items-start">
-                                <i class="fas fa-circle text-xs mt-1.5 mr-2 text-pink-400"></i>
-                                <span>إنشاء هوية مميزة تبرز بين المنافسين</span>
-                            </li>
-                            <li class="flex items-start">
-                                <i class="fas fa-circle text-xs mt-1.5 mr-2 text-pink-400"></i>
-                                <span>تصميم شعار يعبر عن روح المقهى</span>
-                            </li>
-                            <li class="flex items-start">
-                                <i class="fas fa-circle text-xs mt=1.5 mr-2 text-pink-400"></i>
-                                <span>إنشاء نظام مرئي متكامل للمواد الدعائية</span>
-                            </li>
-                        </ul>
-                    </div>
-                    <div>
-                        <h4 class="font-bold text-white mb-3">الحلول</h4>
-                        <ul class="space-y=2">
-                            <li class="flex items-start">
-                                <i class="fas fa-check-circle text-xs mt-1.5 mr-2 text-green-400"></i>
-                                <span>تصميم شعار فريد يعكس هوية المقهى</span>
-                            </li>
-                            <li class="flex items-start">
-                                <i class="fas fa-check-circle text-xs mt-1.5 mr-2 text-green-400"></i>
-                                <span>إنشاء نظام ألوان وطباعة مميز</span>
-                            </li>
-                            <li class="flex items-start">
-                                <i class="fas fa-check-circle text-xs mt=1.5 mr-2 text-green-400"></i>
-                                <span>تصميم مجموعة متكاملة من المواد الدعائية</span>
-                            </li>
-                        </ul>
-                    </div>
-                </div>
-                <div class="mb-8">
-                    <h4 class="font-bold text-white mb-4">أدوات وتقنيات المستخدمة</h4>
-                    <div class="flex flex-wrap gap-3">
-                        <span class="bg-slate-700 text-white px-3 py-1 rounded-full text-sm">Adobe Illustrator</span>
-                        <span class="bg-slate=700 text-white px-3 py-1 rounded-full text-sm">Adobe Photoshop</span>
-                        <span class="bg-slate-700 text-white px-3 py-1 rounded-full text-sm">InDesign</span>
-                        <span class="bg-slate-700 text-white px-3 py-1 rounded-full text-sm">Figma</span>
-                    </div>
-                </div>
-                <div>
-                    <h4 class="font-bold text-white mb-4">معاينة المشروع</h4>
-                    <div class="grid grid-cols-2 md:grid-cols-3 gap-4">
-                        <img src="imges/project3-preview1.jpg" alt="Project Preview 1" class="rounded-lg h-32 object-cover cursor-pointer hover:opacity-90 transition">
-                        <img src="imges/project3-preview2.jpg" alt="Project Preview 2" class="rounded-lg h-32 object-cover cursor-pointer hover:opacity-90 transition">
-                        <img src="imges/project3-preview3.jpg" alt="Project Preview 3" class="rounded-lg h-32 object-cover cursor-pointer hover:opacity-90 transition">
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
- 
-    <!-- Modal 4 -->
-    <div class="project-modal fixed inset-0 bg-black/80 flex items-center justify-center p=4" id="project-modal-4">
-        <div class="project-modal-content bg-slate-800 rounded-xl max-w-4xl w-full overflow-hidden">
-            <div class="relative">
-                <img src="imges/project4-main.jpg" alt="Web Design Project" class="w-full h-64 md:h-96 object-cover">
-                <button class="close-modal absolute top-4 left-4 bg-slate-900/50 hover:bg-slate-900/80 text-white w-10 h-10 rounded-full flex items-center justify-center transition">
-                    <i class="fas fa-times"></i>
-                </button>
-            </div>
-            <div class="p-6 md:p-8">
-                <div class="flex flex-wrap gap=2 mb-6">
-                    <span class="bg-blue-500 text-white text-xs px-3 py-1 rounded-full">موقع ويب</span>
-                    <span class="bg-slate-700 text-white text-xs px-3 py-1 rounded-full">متجر إلكتروني</span>
-                    <span class="bg-slate-700 text-white text-xs px-3 py-1 rounded-full">تطوير</span>
-                </div>
-                <h3 class="text-2xl font-bold mb-4">موقع متجر إلكتروني</h3>
-                <p class="text-slate-400 mb-6 leading-relaxed">
-                    تصميم وتطوير متجر إلكتروني متكامل لمنتجات فاخرة. تضمن المشروع إنشاء نظام متكامل لإدارة المنتجات والطلبات والدفع الإلكتروني مع التركيز على تجربة مستخدم سلسة وآمنة.
-                </p>
-                <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-8">
-                    <div>
-                        <h4 class="font-bold text-white mb-3">التحديات</h4>
-                        <ul class="space-y-2">
-                            <li class="flex items-start">
-                                <i class="fas fa-circle text-xs mt-1.5 mr-2 text-blue-400"></i>
-                                <span>تصميم واجهة تعرض المنتجات الفاخرة بشكل مميز</span>
-                            </li>
-                            <li class="flex items-start">
-                                <i class="fas fa-circle text-xs mt-1.5 mr-2 text-blue-400"></i>
-                                <span>إنشاء نظام دفع إلكتروني آمن وسهل الاستخدام</span>
-                            </li>
-                            <li class="flex items-start">
-                                <i class="fas fa-circle text-xs mt=1.5 mr-2 text-blue-400"></i>
-                                <span>تحسين أداء المتجر لتحميل سريع للصور عالية الجودة</span>
-                            </li>
-                        </ul>
-                    </div>
-                    <div>
-                        <h4 class="font-bold text-white mb-3">الحلول</h4>
-                        <ul class="space-y=2">
-                            <li class="flex items-start">
-                                <i class="fas fa-check-circle text-xs mt-1.5 mr-2 text-green-400"></i>
-                                <span>تصميم معارض منتجات تفاعلية وعالية الجودة</span>
-                            </li>
-                            <li class="flex items-start">
-                                <i class="fas fa-check-circle text-xs mt-1.5 mr-2 text-green-400"></i>
-                                <span>دمج أنظمة دفع متعددة مع حماية متقدمة</span>
-                            </li>
-                            <li class="flex items-start">
-                                <i class="fas fa-check-circle text-xs mt=1.5 mr-2 text-green-400"></i>
-                                <span>تحسين الصور مع الحفاظ على جودتها</span>
-                            </li>
-                        </ul>
-                    </div>
-                </div>
-                <div class="mb-8">
-                    <h4 class="font-bold text-white mb-4">أدوات وتقنيات المستخدمة</h4>
-                    <div class="flex flex-wrap gap-3">
-                        <span class="bg-slate-700 text-white px-3 py-1 rounded-full text-sm">React</span>
-                        <span class="bg-slate=700 text-white px-3 py-1 rounded-full text-sm">Next.js</span>
-                        <span class="bg-slate-700 text-white px-3 py-1 rounded-full text-sm">Node.js</span>
-                        <span class="bg-slate-700 text-white px-3 py-1 rounded-full text-sm">MongoDB</span>
-                        <span class="bg-slate-700 text-white px-3 py-1 rounded-full text-sm">Stripe</span>
-                        <span class="bg-slate-700 text-white px-3 py-1 rounded-full text-sm">Figma</span>
-                    </div>
-                </div>
-                <div>
-                    <h4 class="font-bold text-white mb-4">معاينة المشروع</h4>
-                    <div class="grid grid-cols-2 md:grid-cols-3 gap-4">
-                        <img src="imges/project4-preview1.jpg" alt="Project Preview 1" class="rounded-lg h-32 object-cover cursor-pointer hover:opacity-90 transition">
-                        <img src="imges/project4-preview2.jpg" alt="Project Preview 2" class="rounded-lg h-32 object-cover cursor-pointer hover:opacity-90 transition">
-                        <img src="imges/project4-preview3.jpg" alt="Project Preview 3" class="rounded-lg h-32 object-cover cursor-pointer hover:opacity-90 transition">
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-
-    <!-- Modal 5 -->
-    <div class="project-modal fixed inset-0 bg-black/80 flex items-center justify-center p=4" id="project-modal-5">
-        <div class="project-modal-content bg-slate-800 rounded-xl max-w-4xl w-full overflow-hidden">
-            <div class="relative">
-                <img src="imges/project5-main.jpg" alt="Branding Project" class="w-full h-64 md:h-96 object-cover">
-                <button class="close-modal absolute top-4 left-4 bg-slate-900/50 hover:bg-slate-900/80 text-white w-10 h-10 rounded-full flex items-center justify-center transition">
-                    <i class="fas fa-times"></i>
-                </button>
-            </div>
-            <div class="p-6 md:p-8">
-                <div class="flex flex-wrap gap=2 mb-6">
-                    <span class="bg-pink-500 text-white text-xs px-3 py-1 rounded-full">هوية بصرية</span>
-                    <span class="bg-slate-700 text-white text-xs px-3 py-1 rounded-full">تصميم شعار</span>
-                    <span class="bg-slate-700 text-white text-xs px-3 py-1 rounded-full">مواد دعائية</span>
-                </div>
-                <h3 class="text-2xl font-bold mb-4">هوية شركة عقارية</h3>
-                <p class="text-slate-400 mb-6 leading-relaxed">
-                    تصميم هوية متكاملة لشركة عقارية فاخرة. تضمن المشروع إنشاء نظام مرئي متكامل يعكس الفخامة والاحترافية، بما في ذلك الشعار والألوان والطباعة والمواد التسويقية المختلفة.
-                </p>
-                <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-8">
-                    <div>
-                        <h4 class="font-bold text-white mb-3">التحديات</h4>
-                        <ul class="space-y-2">
-                            <li class="flex items-start">
-                                <i class="fas fa-circle text-xs mt-1.5 mr-2 text-pink-400"></i>
-                                <span>إنشاء هوية تعكس الفخامة والثقة في مجال العقارات</span>
-                            </li>
-                            <li class="flex items-start">
-                                <i class="fas fa-circle text-xs mt-1.5 mr-2 text-pink-400"></i>
-                                <span>تصميم شعار يبرز بين المنافسين في السوق</span>
-                            </li>
-                            <li class="flex items-start">
-                                <i class="fas fa-circle text-xs mt=1.5 mr-2 text-pink-400"></i>
-                                <span>إنشاء نظام مرئي متكامل للمواد التسويقية</span>
-                            </li>
-                        </ul>
-                    </div>
-                    <div>
-                        <h4 class="font-bold text-white mb=3">الحلول</h4>
-                        <ul class="space-y=2">
-                            <li class="flex items-start">
-                                <i class="fas fa-check-circle text-xs mt-1.5 mr=2 text-green-400"></i>
-                                <span>تصميم شعار فريد يعكس الفخامة والاحترافية</span>
-                            </li>
-                            <li class="flex items-start">
-                                <i class="fas fa-check-circle text-xs mt-1.5 mr=2 text-green-400"></i>
-                                <span>اختيار ألوان وطباعة تعزز الهوية البصرية</span>
-                            </li>
-                            <li class="flex items-start">
-                                <i class="fas fa-check-circle text-xs mt=1.5 mr=2 text-green-400"></i>
-                                <span>إنشاء مجموعة متكاملة من المواد التسويقية</span>
-                            </li>
-                        </ul>
-                    </div>
-                </div>
-                <div class="mb-8">
-                    <h4 class="font-bold text-white mb-4">أدوات وتقنيات المستخدمة</h4>
-                    <div class="flex flex-wrap gap-3">
-                        <span class="bg-slate-700 text-white px-3 py-1 rounded-full text-sm">Adobe Illustrator</span>
-                        <span class="bg-slate=700 text-white px-3 py-1 rounded-full text-sm">Adobe Photoshop</span>
-                        <span class="bg-slate-700 text-white px-3 py-1 rounded-full text-sm">InDesign</span>
-                        <span class="bg-slate-700 text-white px-3 py-1 rounded-full text-sm">Figma</span>
-                    </div>
-                </div>
-                <div>
-                    <h4 class="font-bold text-white mb-4">معاينة المشروع</h4>
-                    <div class="grid grid-cols-2 md:grid-cols-3 gap=4">
-                        <img src="imges/project5-preview1.jpg" alt="Project Preview 1" class="rounded-lg h-32 object-cover cursor-pointer hover:opacity-90 transition">
-                        <img src="imges/project5-preview2.jpg" alt="Project Preview 2" class="rounded-lg h-32 object-cover cursor-pointer hover:opacity-90 transition">
-                        <img src="imges/project5-preview3.jpg" alt="Project Preview 3" class="rounded-lg h-32 object-cover cursor-pointer hover:opacity-90 transition">
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-
-    <!-- Modal 6 -->
-    <div class="project-modal fixed inset-0 bg-black/80 flex items-center justify-center p=4" id="project-modal-6">
-        <div class="project-modal-content bg-slate-800 rounded-xl max-w-4xl w-full overflow-hidden">
-            <div class="relative">
-                <img src="imges\anas1.png" alt="UI/UX Project" class="w-full h-64 md:h-96 object-cover">
-                <button class="close-modal absolute top-4 left-4 bg-slate-900/50 hover:bg-slate-900/80 text-white w-10 h-10 rounded-full flex items-center justify-center transition">
-                    <i class="fas fa-times"></i>
-                </button>
-            </div>
-            <div class="p-6 md:p-8">
-                <div class="flex flex-wrap gap=2 mb-6">
-                    <span class="bg-blue-400 text-white text-xs px-3 py-1 rounded-full">تطبيق جوال</span>
-                    <span class="bg-slate-700 text-white text-xs px-3 py-1 rounded-full">لوحة تحكم</span>
-                    <span class="bg-slate-700 text-white text-xs px-3 py-1 rounded-full">UI/UX</span>
-                </div>
-                <h3 class="text-2xl font-bold mb-4">لوحة تحكم إدارية</h3>
-                <p class="text-slate-400 mb-6 leading-relaxed">
-                    تصميم لوحة تحكم إدارية معقدة مع التركيز على تجربة المستخدم. تضمن المشروع إنشاء واجهة مستخدم تمكن المسؤولين من إدارة المحتوى والمستخدمين والإحصائيات بسهولة وكفاءة.
-                </p>
-                <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-8">
-                    <div>
-                        <h4 class="font-bold text-white mb-3">التحديات</h4>
-                        <ul class="space-y-2">
-                            <li class="flex items-start">
-                                <i class="fas fa-circle text-xs mt-1.5 mr-2 text-blue-300"></i>
-                                <span>تصميم واجهة لإدارة كميات كبيرة من البيانات</span>
-                            </li>
-                            <li class="flex items-start">
-                                <i class="fas fa-circle text-xs mt-1.5 mr-2 text-blue-300"></i>
-                                <span>إنشاء نظام تصفح وتعديل سهل للمحتوى المعقد</span>
-                            </li>
-                            <li class="flex items-start">
-                                <i class="fas fa-circle text-xs mt=1.5 mr-2 text-blue-300"></i>
-                                <span>تحسين تجربة المستخدم للعمليات المتكررة</span>
-                            </li>
-                        </ul>
-                    </div>
-                    <div>
-                        <h4 class="font-bold text-white mb=3">الحلول</h4>
-                        <ul class="space-y=2">
-                            <li class="flex items-start">
-                                <i class="fas fa-check-circle text-xs mt-1.5 mr=2 text-green-400"></i>
-                                <span>تصميم جداول بيانات قابلة للتخصيص والتصفية</span>
-                            </li>
-                            <li class="flex items-start">
-                                <i class="fas fa-check-circle text-xs mt-1.5 mr=2 text-green-400"></i>
-                                <span>إنشاء واجهات تعديل سريعة وسهلة</span>
-                            </li>
-                            <li class="flex items-start">
-                                <i class="fas fa-check-circle text-xs mt=1.5 mr=2 text-green-400"></i>
-                                <span>إضافة اختصارات لوحة المفاتيح للعمليات المتكررة</span>
-                            </li>
-                        </ul>
-                    </div>
-                </div>
-                <div class="mb-8">
-                    <h4 class="font-bold text-white mb-4">أدوات وتقنيات المستخدمة</h4>
-                    <div class="flex flex-wrap gap-3">
-                        <span class="bg-slate-700 text-white px-3 py-1 rounded-full text-sm">React</span>
-                        <span class="bg-slate=700 text-white px-3 py-1 rounded-full text-sm">TypeScript</span>
-                        <span class="bg-slate-700 text-white px-3 py-1 rounded-full text-sm">Material UI</span>
-                        <span class="bg-slate-700 text-white px-3 py-1 rounded-full text-sm">Figma</span>
-                        <span class="bg-slate-700 text-white px-3 py-1 rounded-full text-sm">Adobe XD</span>
-                    </div>
-                </div>
-                <div>
-                    <h4 class="font-bold text-white mb-4">معاينة المشروع</h4>
-                    <div class="grid grid-cols-2 md:grid-cols-3 gap=4">
-                        <img src="imges\anas1.png" alt="Project Preview 1" class="rounded-lg h-32 object-cover cursor-pointer hover:opacity-90 transition">
-                        <img src="imges/project6-preview2.jpg" alt="Project Preview 2" class="rounded-lg h-32 object-cover cursor-pointer hover:opacity-90 transition">
-                        <img src="imges/project6-preview3.jpg" alt="Project Preview 3" class="rounded-lg h-32 object-cover cursor-pointer hover:opacity-90 transition">
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-
-    <!-- Footer -->
-    <footer class="bg-slate-800/50 border-t border-slate-800/50 py-8">
-        <div class="container mx-auto px-6">
-            <div class="flex flex-col md:flex-row justify-between items-center">
-                <div class="mb-4 md:mb-0">
-                    <a href="#" class="text-xl font-bold flex items-center">
-                        <div class="w-8 h-8 rounded-full bg-gradient-to-r from-blue-500 to-purple-600 mr-3"></div>
-                        <span class="gradient-text">معرض أعمالي</span>
-                    </a>
-                </div>
-                <div class="flex space-x-4 space-x-reverse">
-                    <a href="#" class="text-slate-400 hover:text-white transition">
-                        <i class="fab fa-twitter text-xl"></i>
-                    </a>
-                    <a href="#" class="text-slate-400 hover:text-white transition">
-                        <i class="fab fa-instagram text-xl"></i>
-                    </a>
-                    <a href="#" class="text-slate-400 hover:text-white transition">
-                        <i class="fab fa-linkedin text-xl"></i>
-                    </a>
-                    <a href="#" class="text-slate-400 hover:text-white transition">
-                        <i class="fab fa-behance text-xl"></i>
-                    </a>
-                </div>
-            </div>
-            <div class="mt-8 text-center text-slate-500 text-sm">
-                <p>© 4090 معرض أعمالي. جميع الحقوق محفوظة.</p>
-            </div>
-        </div>
-    </footer>
+    <!-- مكتبة الجسيمات المتحركة -->
+    <script src="https://cdn.jsdelivr.net/npm/particles.js@2.0.0/particles.min.js"></script>
 
     <script>
-        // Filter Projects
-        const filterButtons = document.querySelectorAll('.filter-btn');
-        const projectCards = document.querySelectorAll('.project-card');
-        
-        filterButtons.forEach(button => {
-            button.addEventListener('click', () => {
-                // Remove active class from all buttons
-                filterButtons.forEach(btn => btn.classList.remove('active'));
+        document.addEventListener('DOMContentLoaded', () => {
+            // --- شاشة التحميل ---
+            const preloader = document.getElementById('preloader');
+            window.addEventListener('load', () => {
+                preloader.style.opacity = '0';
+                setTimeout(() => {
+                    preloader.style.display = 'none';
+                }, 500);
+            });
+
+            // --- مؤشر الفأرة المخصص ---
+            const isTouchDevice = 'ontouchstart' in window || navigator.maxTouchPoints > 0;
+            if (isTouchDevice) {
+                document.querySelector('.cursor-dot')?.remove();
+                document.querySelector('.cursor-outline')?.remove();
+            } else {
+                document.body.style.cursor = 'none';
+                const cursorDot = document.querySelector('.cursor-dot');
+                const cursorOutline = document.querySelector('.cursor-outline');
+                window.addEventListener('mousemove', (e) => {
+                    const { clientX: posX, clientY: posY } = e;
+                    cursorDot.style.left = `${posX}px`;
+                    cursorDot.style.top = `${posY}px`;
+                    cursorOutline.animate({
+                        left: `${posX}px`,
+                        top: `${posY}px`
+                    }, { duration: 500, fill: 'forwards' });
+                });
+                document.querySelectorAll('a, button, .gallery-item').forEach(el => {
+                    el.addEventListener('mouseenter', () => cursorOutline.classList.add('hover'));
+                    el.addEventListener('mouseleave', () => cursorOutline.classList.remove('hover'));
+                });
+            }
+
+            // --- نظام القائمة عند التمرير ---
+            let lastScrollTop = 0;
+            const navbar = document.getElementById('navbar');
+            const scrollToTopBtn = document.getElementById('scrollToTopBtn');
+            const navbarHeight = navbar.offsetHeight;
+            
+            window.addEventListener('scroll', function() {
+                let scrollTop = window.pageYOffset || document.documentElement.scrollTop;
                 
-                // Add active class to clicked button
-                button.classList.add('active');
+                if (scrollTop > lastScrollTop && scrollTop > navbarHeight) {
+                    navbar.style.top = `-${navbarHeight}px`;
+                } else {
+                    navbar.style.top = "0";
+                }
+                lastScrollTop = scrollTop <= 0 ? 0 : scrollTop;
+
+                if (scrollTop > 50) {
+                    navbar.classList.add('bg-gray-950/90', 'backdrop-blur-xl');
+                } else {
+                    navbar.classList.remove('bg-gray-950/90', 'backdrop-blur-xl');
+                }
                 
-                const filterValue = button.getAttribute('data-filter');
-                
-                projectCards.forEach(card => {
-                    if (filterValue === 'all' || card.getAttribute('data-category') === filterValue) {
-                        card.style.display = 'block';
-                    } else {
-                        card.style.display = 'none';
-                    }
+                if (scrollTop > 300) {
+                    scrollToTopBtn.classList.add('show');
+                } else {
+                    scrollToTopBtn.classList.remove('show');
+                }
+            }, { passive: true });
+
+            scrollToTopBtn.addEventListener('click', () => {
+                window.scrollTo({ top: 0, behavior: 'smooth' });
+            });
+
+            // --- شريط التقدم ---
+            const progressBar = document.getElementById('progressBar');
+            window.addEventListener('scroll', () => {
+                const scrollHeight = document.documentElement.scrollHeight - document.documentElement.clientHeight;
+                const scrollProgress = (window.scrollY / scrollHeight) * 100;
+                progressBar.style.width = scrollProgress + '%';
+            });
+
+            // --- تشغيل خلفية الجسيمات ---
+            particlesJS('particles-js', {
+                "particles": { "number": { "value": 80, "density": { "enable": true, "value_area": 1000 } }, "color": { "value": ["#4f46e5", "#a855f7", "#d946ef"] }, "shape": { "type": "circle" }, "opacity": { "value": 0.5, "random": true, "anim": { "enable": true, "speed": 1, "opacity_min": 0.1, "sync": false } }, "size": { "value": 3, "random": true }, "line_linked": { "enable": true, "distance": 150, "color": "#4f46e5", "opacity": 0.4, "width": 1 }, "move": { "enable": true, "speed": 2, "direction": "none", "out_mode": "out" } }, "interactivity": { "detect_on": "canvas", "events": { "onhover": { "enable": true, "mode": "grab" }, "onclick": { "enable": true, "mode": "push" } }, "modes": { "grab": { "distance": 140, "line_linked": { "opacity": 1 } }, "push": { "particles_nb": 4 } } }, "retina_detect": true
+            });
+            
+            // --- منطق صفحة معرض الأعمال ---
+            const projects = [
+                { category: 'logos-artworks', title: 'مجموعة شعارات', description: 'مجموعة متنوعة من الشعارات التي تم تصميمها لعملاء في مجالات مختلفة.', images: ["https://i.imgur.com/Kle7dYD.png", "https://i.imgur.com/h54FsLd.png", "https://i.imgur.com/dsWu4E9.png", "https://i.imgur.com/mKRQM6X.png", "https://i.imgur.com/hFwx46q.png", "https://i.imgur.com/MwjInF3.png", "https://i.imgur.com/0Jspbzl.png"] },
+                { category: 'ui', title: 'تصميم تطبيق إيجار', description: 'واجهة مستخدم لتطبيق متخصص في إيجار الأجهزة والمعدات.', images: ["https://i.imgur.com/mFeKHnu.jpeg", "https://i.imgur.com/qug7nch.jpeg"] },
+                { category: 'branding', title: 'هوية بصرية لبودكاست', description: 'تصميم هوية متكاملة لبودكاست "كركبة"، تشمل الشعار والأنماط البصرية.', images: ["https://i.imgur.com/oaO3OJY.jpeg", "https://i.imgur.com/g4HjkPY.png", "https://i.imgur.com/Kle7dYD.png"] },
+                { category: 'print', title: 'تصميم منيو مطعم', description: 'تصميم قائمة طعام عصرية لمطعم، مع مراعاة الهوية البصرية للمكان.', images: ["https://i.imgur.com/iHp6BbS.jpeg", "https://i.imgur.com/YKh7RnD.png"] },
+                { category: 'web', title: 'تصميم موقع ويب', description: 'تصميم واجهة مستخدم لموقع تعريفي يعرض الخدمات بشكل جذاب.', images: ["https://i.imgur.com/1wRSAcT.png", "https://i.imgur.com/frKd5s1.jpeg", "https://i.imgur.com/Sffw4q5.png"] },
+                { category: 'ui', title: 'تصميم واجهة موقع AI Chat', description: 'واجهة مستخدم لموقع دردشة يعتمد على الذكاء الاصطناعي.', images: ["https://i.imgur.com/WIsOpzz.png", "https://i.imgur.com/qX9sXbW.jpeg"] },
+                { category: 'branding', title: 'هوية بصرية لمخبز', description: 'تصميم هوية جديدة لشركة مخبوزات وحلويات.', images: ["https://i.imgur.com/03A0fuO.jpeg", "https://i.imgur.com/o5gixpv.jpeg", "https://i.imgur.com/h54FsLd.png"] },
+                { category: 'print', title: 'تصميم منيو لمطعم شعبي', description: 'تصميم قائمة طعام لمطعم يقدم المأكولات الشعبية.', images: ["https://i.imgur.com/0QUo8Mz.jpeg", "https://i.imgur.com/T3QsKV1.jpeg"] },
+                { category: 'web', title: 'تصميم موقع إلكتروني', description: 'تصميم واجهة مستخدم لموقع إلكتروني.', images: ["https://i.imgur.com/UCdgTCZ.jpeg", "https://i.imgur.com/1jf8JzM.jpeg", "https://i.imgur.com/dsWu4E9.png"] },
+                { category: 'web', title: 'تصميم موقع ويب', description: 'تصميم واجهة مستخدم لموقع ويب.', images: ["https://i.imgur.com/FgXWaMY.jpeg", "https://i.imgur.com/aSsmWkD.png", "https://i.imgur.com/mKRQM6X.png"] },
+                { category: 'web', title: 'تصميم موقع إلكتروني', description: 'تصميم واجهة مستخدم لموقع إلكتروني.', images: ["https://i.imgur.com/h1cI3bq.jpeg", "https://i.imgur.com/lG09ZE5.jpeg", "https://i.imgur.com/nPquTSC.jpeg"] },
+                { category: 'web', title: 'تصميم موقع ويب', description: 'تصميم واجهة مستخدم لموقع ويب.', images: ["https://i.imgur.com/r6X0XOU.jpeg", "https://i.imgur.com/JsTddyW.jpeg", "https://i.imgur.com/0Jspbzl.png"] },
+                { category: 'web', title: 'تصميم موقع ويب', description: 'تصميم واجهة مستخدم لموقع ويب.', images: ["https://i.imgur.com/Yca5jp1.png", "https://i.imgur.com/9zaHkni.jpeg", "https://i.imgur.com/MwjInF3.png"] },
+                { category: 'web', title: 'تصميم موقع ويب', description: 'تصميم واجهة مستخدم لموقع ويب.', images: ["https://i.imgur.com/B8MDksf.png", "https://i.imgur.com/jbAbPet.png", "https://i.imgur.com/hFwx46q.png"] }
+            ];
+
+            const galleryGrid = document.getElementById('galleryGrid');
+            const categoryButtons = document.querySelectorAll('.category-btn');
+            const modal = document.getElementById('imageModal');
+            const closeModalBtn = document.getElementById('closeModal');
+            const modalSlider = document.getElementById('modalSlider');
+            const modalTitle = document.getElementById('modalTitle');
+            const modalDescription = document.getElementById('modalDescription');
+            const modalImageCount = document.getElementById('modalImageCount');
+            const modalPrev = document.getElementById('modalPrev');
+            const modalNext = document.getElementById('modalNext');
+            
+            let currentModalImages = [];
+            let currentModalIndex = 0;
+
+            function renderGallery(filter = 'all') {
+                galleryGrid.innerHTML = '';
+                const filteredProjects = filter === 'all' ? projects : projects.filter(p => p.category === filter);
+                filteredProjects.forEach((project) => {
+                    const item = document.createElement('div');
+                    item.className = 'gallery-item cursor-pointer group';
+                    item.dataset.category = project.category;
+                    item.innerHTML = `
+                        <div class="item-content relative rounded-2xl overflow-hidden border border-slate-800 bg-gray-900 shadow-lg">
+                            <img src="${project.images[0]}" alt="${project.title}" class="w-full h-full object-cover transition-transform duration-500 ease-in-out group-hover:scale-105">
+                            <div class="absolute inset-0 bg-gradient-to-t from-black/80 to-transparent flex flex-col justify-end p-6">
+                                <div class="overlay">
+                                    <h3 class="text-xl font-bold text-white">${project.title}</h3>
+                                    <p class="text-sm text-slate-300 mt-1">اضغط للمزيد</p>
+                                </div>
+                            </div>
+                        </div>
+                    `;
+                    item.addEventListener('click', () => openModal(project));
+                    galleryGrid.appendChild(item);
+                });
+            }
+
+            categoryButtons.forEach(button => {
+                button.addEventListener('click', () => {
+                    categoryButtons.forEach(btn => btn.classList.remove('active'));
+                    button.classList.add('active');
+                    renderGallery(button.dataset.category);
                 });
             });
-        });
-        
-        // Project Modals
-        const viewDetailButtons = document.querySelectorAll('.view-details-btn');
-        const projectModals = document.querySelectorAll('.project-modal');
-        const closeModalButtons = document.querySelectorAll('.close-modal');
-        
-        viewDetailButtons.forEach(button => {
-            button.addEventListener('click', () => {
-                const projectId = button.getAttribute('data-project');
-                const modal = document.getElementById(`project-modal-${projectId}`);
-                
+
+            function openModal(project) {
+                currentModalImages = project.images;
+                currentModalIndex = 0;
+                modalTitle.textContent = project.title;
+                modalDescription.textContent = project.description;
+                updateModalSlider();
                 modal.classList.add('active');
                 document.body.style.overflow = 'hidden';
-            });
-        });
-        
-        closeModalButtons.forEach(button => {
-            button.addEventListener('click', () => {
-                const modal = button.closest('.project-modal');
+            }
+
+            function updateModalSlider() {
+                modalSlider.innerHTML = '';
+                currentModalImages.forEach(src => {
+                    const slide = document.createElement('div');
+                    slide.className = 'slider-slide';
+                    slide.innerHTML = `<img src="${src}" alt="${modalTitle.textContent}">`;
+                    modalSlider.appendChild(slide);
+                });
+                goToSlide(0);
+            }
+
+            function goToSlide(index) {
+                currentModalIndex = (index + currentModalImages.length) % currentModalImages.length;
+                modalSlider.style.transform = `translateX(-${currentModalIndex * 100}%)`;
+                modalImageCount.textContent = `${currentModalIndex + 1} / ${currentModalImages.length}`;
+            }
+
+            modalPrev.addEventListener('click', () => goToSlide(currentModalIndex - 1));
+            modalNext.addEventListener('click', () => goToSlide(currentModalIndex + 1));
+
+            function closeModal() {
                 modal.classList.remove('active');
                 document.body.style.overflow = 'auto';
-            });
-        });
-        
-        // Close modal when clicking outside
-        projectModals.forEach(modal => {
+            }
+
+            closeModalBtn.addEventListener('click', closeModal);
             modal.addEventListener('click', (e) => {
-                if (e.target === modal) {
-                    modal.classList.remove('active');
-                    document.body.style.overflow = 'auto';
-                }
+                if (e.target === modal) closeModal();
+            });
+            document.addEventListener('keydown', (e) => {
+                if (e.key === 'Escape' && modal.classList.contains('active')) closeModal();
+            });
+
+            renderGallery();
+
+            // --- Translation Logic ---
+            let currentLang = 'ar';
+            const elementsToTranslate = document.querySelectorAll('[data-en]');
+            
+            elementsToTranslate.forEach(el => {
+                el.dataset.ar = el.textContent;
+            });
+
+            function updateContent() {
+                document.documentElement.lang = currentLang;
+                document.documentElement.dir = currentLang === 'ar' ? 'rtl' : 'ltr';
+                document.body.classList.toggle('en', currentLang === 'en');
+
+                elementsToTranslate.forEach(el => {
+                    el.textContent = currentLang === 'en' ? el.dataset.en : el.dataset.ar;
+                });
+                
+                document.getElementById('language-toggle').textContent = currentLang === 'en' ? 'العربية' : 'English';
+            }
+
+            document.getElementById('language-toggle').addEventListener('click', () => {
+                currentLang = currentLang === 'ar' ? 'en' : 'ar';
+                updateContent();
             });
         });
     </script>
